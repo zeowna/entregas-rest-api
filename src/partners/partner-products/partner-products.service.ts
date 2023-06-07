@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractService } from '../../common/service/abstract-service.service';
 import { PartnerProduct } from './entities/partner-product.entity';
-import { PartnerProductsRepository } from './partner-products.repository';
+import { PartnerProductsTypeORMRepository } from './partner-products-typeorm.repository';
 import { FindOptionsOrder } from 'typeorm/find-options/FindOptionsOrder';
 
 @Injectable()
 export class PartnerProductsService extends AbstractService<PartnerProduct> {
   constructor(
-    private readonly partnerProductRepository: PartnerProductsRepository,
+    private readonly partnerProductRepository: PartnerProductsTypeORMRepository,
   ) {
     super(partnerProductRepository);
   }

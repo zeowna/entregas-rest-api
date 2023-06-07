@@ -26,7 +26,7 @@ export abstract class AbstractService<T = AbstractEntity>
 
     if (!found) {
       throw new NotFoundException(
-        `${this.repository.entityName} not found with id ${id}`,
+        `${this.repository.entityName} not found with id: ${id}`,
       );
     }
 

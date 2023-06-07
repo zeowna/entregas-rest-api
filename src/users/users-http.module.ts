@@ -7,6 +7,8 @@ import { UsersRepository } from './users.repository';
 import { UserAddressesController } from './addresses/user-addresses.controller';
 import { UserAddressService } from './addresses/user-address.service';
 import { BcryptHashService } from './hash/bcrypt-hash.service';
+import { IsUserEmailAlreadyInUse } from './dto/is-user-email-already-in-use.validation';
+import { IsUserCpfAlreadyInUse } from './dto/is-user-cpf-already-in-use.validation';
 
 @Module({
   imports: [UsersModule, AddressesHttpModule],
@@ -16,6 +18,8 @@ import { BcryptHashService } from './hash/bcrypt-hash.service';
     UsersService,
     UserAddressService,
     BcryptHashService,
+    IsUserEmailAlreadyInUse,
+    IsUserCpfAlreadyInUse,
   ],
   exports: [UsersService, BcryptHashService],
 })

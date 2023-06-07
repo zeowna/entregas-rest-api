@@ -11,10 +11,10 @@ export class User extends AbstractTypeORMEntity {
   @Column()
   birthday: Date;
 
-  @Column()
+  @Column({ unique: true })
   cpf: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()

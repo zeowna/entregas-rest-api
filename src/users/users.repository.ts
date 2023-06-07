@@ -16,4 +16,8 @@ export class UsersRepository extends AbstractTypeORMRepository<User> {
   async findByEmail(email: string) {
     return this.usersRepository.findOne({ where: { email } });
   }
+
+  async findByCpf(cpf: string) {
+    return this.usersRepository.findOne({ where: { cpf } });
+  }
 }

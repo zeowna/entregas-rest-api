@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { UsersRepository } from './users.repository';
 import { AbstractService } from '../common/service/abstract-service.service';
@@ -28,6 +28,28 @@ export class UsersService extends AbstractService<User> {
   }
 
   async findByEmail(email: string) {
-    return this.usersRepository.findByEmail(email);
+    const user = await this.usersRepository.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException(
+        `${this.usersRepository.entityName} not found with email: ${email}`,
+        { description: 'USER_NOT_FOUND' },
+      );
+    }
+
+    return user;
+  }
+
+  async findByCpf(cpf: string) {
+    const user = await this.usersRepository.findByCpf(cpf);
+
+    if (!user) {
+      throw new NotFoundException(
+        `${this.usersRepository.entityName} not found with cpf: ${cpf}`,
+        { description: 'USER_NOT_FOUND' },
+      );
+    }
+
+    return user;
   }
 }
