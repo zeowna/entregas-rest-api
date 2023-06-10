@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import { UsersRepository } from './users.repository';
+import { UsersTypeORMRepository } from './users-typeorm.repository';
 import { AbstractService } from '../common/service/abstract-service.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { BcryptHashService } from './hash/bcrypt-hash.service';
@@ -8,7 +8,7 @@ import { BcryptHashService } from './hash/bcrypt-hash.service';
 @Injectable()
 export class UsersService extends AbstractService<User> {
   constructor(
-    private readonly usersRepository: UsersRepository,
+    private readonly usersRepository: UsersTypeORMRepository,
     private readonly hashService: BcryptHashService,
   ) {
     super(usersRepository);
@@ -31,10 +31,7 @@ export class UsersService extends AbstractService<User> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new NotFoundException(
-        `${this.usersRepository.entityName} not found with email: ${email}`,
-        { description: 'USER_NOT_FOUND' },
-      );
+      throw new NotFoundException(this.getNotFoundMessage('email', email));
     }
 
     return user;
@@ -44,10 +41,7 @@ export class UsersService extends AbstractService<User> {
     const user = await this.usersRepository.findByCpf(cpf);
 
     if (!user) {
-      throw new NotFoundException(
-        `${this.usersRepository.entityName} not found with cpf: ${cpf}`,
-        { description: 'USER_NOT_FOUND' },
-      );
+      throw new NotFoundException(this.getNotFoundMessage('cpf', cpf));
     }
 
     return user;

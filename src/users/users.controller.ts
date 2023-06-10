@@ -11,6 +11,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { I18n, I18nContext } from 'nestjs-i18n';
 
 @Controller('users')
 export class UsersController {
@@ -27,7 +28,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: string) {
+  findById(@Param('id') id: string, @I18n() i18n: I18nContext) {
+    this.usersService.setI18n(i18n);
     return this.usersService.findById(+id);
   }
 

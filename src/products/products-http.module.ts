@@ -6,9 +6,9 @@ import { ProductCategoriesController } from './product-categories/product-catego
 import { ProductCategorySizesController } from './product-category-sizes/product-category-sizes.controller';
 import { ProductCategoriesService } from './product-categories/product-categories.service';
 import { ProductCategorySizesService } from './product-category-sizes/product-category-sizes.service';
-import { ProductsRepository } from './products.repository';
-import { ProductCategoryRepository } from './product-categories/product-category.repository';
-import { ProductCategorySizesRepository } from './product-category-sizes/product-category-sizes.repository';
+import { ProductsTypeORMRepository } from './products-typeorm.repository';
+import { ProductCategoryTypeORMRepository } from './product-categories/product-category-typeorm-repository';
+import { ProductCategorySizesTypeORMRepository } from './product-category-sizes/product-category-sizes-typeorm.repository';
 
 @Module({
   imports: [ProductsModule],
@@ -19,11 +19,11 @@ import { ProductCategorySizesRepository } from './product-category-sizes/product
   ],
   providers: [
     ProductsService,
-    ProductsRepository,
+    ProductsTypeORMRepository,
     ProductCategoriesService,
-    ProductCategoryRepository,
+    ProductCategoryTypeORMRepository,
     ProductCategorySizesService,
-    ProductCategorySizesRepository,
+    ProductCategorySizesTypeORMRepository,
   ],
   exports: [
     ProductsService,

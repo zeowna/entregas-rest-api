@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { AbstractTypeORMRepository } from '../common/repository/abstract-typeorm.repository';
 
 @Injectable()
-export class UsersRepository extends AbstractTypeORMRepository<User> {
+export class UsersTypeORMRepository extends AbstractTypeORMRepository<User> {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,

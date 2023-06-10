@@ -6,7 +6,7 @@ import {
 import { UsersService } from '../users.service';
 
 @Injectable()
-@ValidatorConstraint({ name: 'IsUserEmailAlreadyInUse', async: true })
+@ValidatorConstraint({ name: 'isUserEmailAlreadyInUse', async: true })
 export class IsUserEmailAlreadyInUse implements ValidatorConstraintInterface {
   constructor(private readonly usersService: UsersService) {}
 

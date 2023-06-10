@@ -10,17 +10,24 @@ import { AppService } from './app.service';
 import { PartnersHttpModule } from './partners/partners-http.module';
 import { AuthModule } from './auth/auth.module';
 import { DbModule } from './db/db.module';
-import { I18nModule } from 'nestjs-i18n';
+import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'path';
 
 @Module({
   imports: [
     I18nModule.forRoot({
-      fallbackLanguage: 'pt-br',
+      fallbackLanguage: 'en',
+      fallbacks: {
+        'pt-*': 'pt-BR',
+      },
       loaderOptions: {
         path: path.join(__dirname, '/i18n/'),
         watch: true,
       },
+      resolvers: [
+        { use: QueryResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+      ],
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersHttpModule,

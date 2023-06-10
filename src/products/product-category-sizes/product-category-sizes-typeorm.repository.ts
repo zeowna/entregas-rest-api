@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractTypeORMRepository } from '../../common/repository/abstract-typeorm.repository';
-import { ProductCategory } from './entities/product-category.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ProductCategorySize } from './entities/product-category-size.entity';
 
 @Injectable()
-export class ProductCategoryRepository extends AbstractTypeORMRepository<ProductCategory> {
+export class ProductCategorySizesTypeORMRepository extends AbstractTypeORMRepository<ProductCategorySize> {
   constructor(
-    @InjectRepository(ProductCategory)
-    productCategorySizeRepository: Repository<ProductCategory>,
+    @InjectRepository(ProductCategorySize)
+    productCategorySizeRepository: Repository<ProductCategorySize>,
   ) {
     super(productCategorySizeRepository);
   }
