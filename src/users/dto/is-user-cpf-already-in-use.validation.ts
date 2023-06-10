@@ -16,7 +16,7 @@ export class IsUserCpfAlreadyInUse implements ValidatorConstraintInterface {
       return !exists;
     } catch (err) {
       if (err instanceof NotFoundException) {
-        return false;
+        return true;
       }
 
       throw err;

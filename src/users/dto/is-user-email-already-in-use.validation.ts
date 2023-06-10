@@ -13,10 +13,13 @@ export class IsUserEmailAlreadyInUse implements ValidatorConstraintInterface {
   async validate(email: string) {
     try {
       const exists = await this.usersService.findByEmail(email);
+
+      console.log({ exists });
+
       return !exists;
     } catch (err) {
       if (err instanceof NotFoundException) {
-        return false;
+        return true;
       }
 
       throw err;
@@ -24,6 +27,6 @@ export class IsUserEmailAlreadyInUse implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'User already exist with email: $value';
+    return 'User already exists with email: $value';
   }
 }
