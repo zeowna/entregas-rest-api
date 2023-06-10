@@ -1,0 +1,39 @@
+{
+  "common": {
+    "id": "id",
+    "createdAt": "create at",
+    "updatedAt": "updated at"
+  },
+  "User": {
+    "entityName": "User",
+    "properties": {
+      "id": "$t(entity.common.id)",
+      "createdAt": "$t(entity.common.createdAt)",
+      "updatedAt": "$t(entity.common.updatedAt)",
+      "name": "Name",
+      "birthday": "Birthday",
+      "cpf": "CPF",
+      "email": "Email",
+      "password": "Password",
+      "profilePictureURI": "Profile Picture",
+      "type": "type",
+      "addresses": "Addresses"
+    }
+  },
+  "Product": {
+    "entityName": "Product",
+    "properties": {
+      "id": "$t(entity.common.id)",
+      "createdAt": "$t(entity.common.createdAt)",
+      "updatedAt": "$t(entity.common.updatedAt)"
+    }
+  },
+  "Order": {
+    "entityName": "Order",
+    "properties": {
+      "id": "$t(entity.common.id)",
+      "createdAt": "$t(entity.common.createdAt)",
+      "updatedAt": "$t(entity.common.updatedAt)"
+    }
+  }
+}

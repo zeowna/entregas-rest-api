@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsDefined,
   IsEmail,
   IsOptional,
@@ -13,29 +14,31 @@ import { CreateAddressDto } from '../../addresses/dto/create-address.dto';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { IsUserCpfAlreadyInUse } from './is-user-cpf-already-in-use.validation';
 import { IsUserEmailAlreadyInUse } from './is-user-email-already-in-use.validation';
+import { IsCPF } from 'brazilian-class-validator';
 
 export class CreateUserDto {
   @IsDefined({
-    message: i18nValidationMessage('validation.required'),
+    message: i18nValidationMessage('validation.user.name.required'),
   })
   @IsString({
-    message: i18nValidationMessage('validation.isString'),
+    message: i18nValidationMessage('validation.user.name.isString'),
   })
   name: string;
 
   @IsDefined({
-    message: i18nValidationMessage('validation.required'),
+    message: i18nValidationMessage('validation.user.birthday.required'),
   })
-  @IsString({
-    message: i18nValidationMessage('validation.isString'),
-  })
+  @IsDateString(
+    {},
+    { message: i18nValidationMessage('validation.user.birthday.isDate') },
+  )
   birthday: Date;
 
   @IsDefined({
-    message: i18nValidationMessage('validation.required'),
+    message: i18nValidationMessage('validation.user.cpf.required'),
   })
-  @IsString({
-    message: i18nValidationMessage('validation.isString'),
+  @IsCPF({
+    message: i18nValidationMessage('validation.user.cpf.invalid'),
   })
   @Validate(IsUserCpfAlreadyInUse, {
     message: i18nValidationMessage('validation.user.cpf.exists'),
@@ -47,7 +50,7 @@ export class CreateUserDto {
   })
   @IsEmail(
     {},
-    { message: i18nValidationMessage('validation.user.email.valid') },
+    { message: i18nValidationMessage('validation.user.email.isEmail') },
   )
   @Validate(IsUserEmailAlreadyInUse, {
     message: i18nValidationMessage('validation.user.email.exists'),
@@ -55,18 +58,12 @@ export class CreateUserDto {
   email: string;
 
   @IsDefined({
-    message: i18nValidationMessage('validation.required'),
+    message: i18nValidationMessage('validation.user.password.required'),
   })
   @IsString({
-    message: i18nValidationMessage('validation.isString'),
+    message: i18nValidationMessage('validation.user.password.isString'),
   })
   password: string;
-
-  @IsOptional()
-  @IsString({
-    message: i18nValidationMessage('validation.isString'),
-  })
-  profilePictureURI?: string;
 
   @IsDefined({
     message: i18nValidationMessage('validation.required'),

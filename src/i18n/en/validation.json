@@ -1,0 +1,44 @@
+{
+  "required": "is required",
+  "isString": "must be composed by words",
+  "isDate": "must be a date",
+  "isEmail": "must be a email",
+  "exists": "already exists",
+  "invalid": "invalid",
+  "notFound": "not found",
+  "entity": {
+    "notFound": "{entityName} $t(validation.notFound) with {param} {value}"
+  },
+  "user": {
+    "name": {
+      "required": "$t(entity.User.properties.name) $t(validation.required)",
+      "isString": "$t(entity.User.properties.name) $t(validation.isString)"
+    },
+    "birthday": {
+      "required": "$t(entity.User.properties.birthday) $t(validation.required)",
+      "isDate": "$t(entity.User.properties.birthday) $t(validation.isDate)"
+    },
+    "cpf": {
+      "required": "$t(entity.User.properties.cpf) $t(validation.required)",
+      "exists": "$t(entity.User.properties.cpf) $t(validation.exists)",
+      "invalid": "$t(entity.User.properties.cpf) $t(validation.invalid)"
+    },
+    "email": {
+      "required": "$t(entity.User.properties.cpf) $t(validation.required)",
+      "isEmail": "$t(entity.User.properties.name) $t(validation.isEmail)",
+      "exists": "$t(entity.User.properties.email) $t(validation.exists)",
+      "invalid": "$t(entity.User.properties.email) $t(validation.invalid)"
+    },
+    "password": {
+      "required": "$t(entity.User.properties.password) $t(validation.required)",
+      "isString": "$t(entity.User.properties.password) $t(validation.isString)"
+    },
+    "profilePictureURI": {
+      "isString": "$t(entity.User.properties.profilePictureURI) $t(validation.isString)"
+    },
+    "type": {
+      "required": "$t(entity.User.properties.type) $t(validation.required)",
+      "isString": "$t(entity.User.properties.type) $t(validation.isString)"
+    }
+  }
+}
