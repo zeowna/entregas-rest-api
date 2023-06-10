@@ -7,7 +7,10 @@
   "invalid": "invalid",
   "notFound": "not found",
   "entity": {
-    "notFound": "{entityName} $t(validation.notFound) with {param} {value}"
+    "notFound": "{entityName} $t(validation.notFound) with {param}: {value}"
+  },
+  "auth": {
+    "password": "$t(entity.User.entityName) $t(entity.User.properties.password) doesn't match"
   },
   "user": {
     "name": {

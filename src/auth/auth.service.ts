@@ -3,6 +3,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { BcryptHashService } from '../users/hash/bcrypt-hash.service';
 import { jwtConstants } from './constants';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string, i18n: I18nContext) {
+    this.usersService.setI18n(i18n);
     const user = await this.usersService.findByEmail(email);
 
     const isEqual = await this.hashService.comparePasswords(
@@ -21,7 +23,7 @@ export class AuthService {
     );
 
     if (isEqual) {
-      throw new UnauthorizedException("User password doesn't match");
+      throw new UnauthorizedException(i18n.t('validation.auth.password'));
     }
 
     const signed = await this.jwtService.signAsync(
