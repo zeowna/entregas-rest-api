@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { AbstractTypeORMEntity } from '../../../common/entity/abstract-typeorm.entity';
 import { Partner } from '../../entities/partner.entity';
 import { Product } from '../../../products/entities/product.entity';
-import { PartnerProductStatusesEnum } from './partner-product-statuses.enum';
+import { PartnerProductStatus } from './partner-product-status.enum';
 
 @Entity()
 export class PartnerProduct extends AbstractTypeORMEntity {
@@ -16,5 +16,5 @@ export class PartnerProduct extends AbstractTypeORMEntity {
   value: number;
 
   @Column()
-  status: PartnerProductStatusesEnum;
+  status: PartnerProductStatus;
 }

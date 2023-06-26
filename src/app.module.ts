@@ -12,6 +12,8 @@ import { AuthModule } from './auth/auth.module';
 import { DbModule } from './db/db.module';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'path';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { PresentAbstractEntityInterceptor } from './common/interceptors/present-abstract-entity.interceptor';
 
 @Module({
   imports: [
@@ -39,6 +41,9 @@ import * as path from 'path';
     DbModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    { provide: APP_INTERCEPTOR, useClass: PresentAbstractEntityInterceptor },
+    AppService,
+  ],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { ProductCategory } from '../product-categories/entities/product-category.entity';
-import { ProductStatuses } from '../entities/product-statuses.enum';
+import { PartnerProductStatus } from '../../partners/partner-products/entities/partner-product-status.enum';
 import { IsDefined, IsOptional, IsString } from 'class-validator';
 
 export class CreateProductDto {
@@ -17,7 +17,7 @@ export class CreateProductDto {
 
   @IsDefined()
   @IsString()
-  status: ProductStatuses;
+  status: PartnerProductStatus;
 
   @IsOptional()
   @IsString()

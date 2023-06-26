@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { AbstractTypeORMEntity } from '../../common/entity/abstract-typeorm.entity';
-import { ProductStatuses } from './product-statuses.enum';
+import { ProductStatus } from './product-status.enum';
 import { ProductCategory } from '../product-categories/entities/product-category.entity';
 
 @Entity()
@@ -14,8 +14,8 @@ export class Product extends AbstractTypeORMEntity {
   @Column()
   size: string;
 
-  @Column({ default: ProductStatuses.Active })
-  status: ProductStatuses;
+  @Column({ default: ProductStatus.Active })
+  status: ProductStatus;
 
   @Column({ nullable: true })
   pictureURI?: string;

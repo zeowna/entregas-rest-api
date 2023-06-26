@@ -7,8 +7,9 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CartProductsTypeORMRepository extends AbstractTypeORMRepository<CartProduct> {
   constructor(
-    @InjectRepository(CartProduct) repository: Repository<CartProduct>,
+    @InjectRepository(CartProduct)
+    private readonly cartProductRepository: Repository<CartProduct>,
   ) {
-    super(repository);
+    super(cartProductRepository);
   }
 }

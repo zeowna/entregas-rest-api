@@ -20,7 +20,7 @@ export class Order extends AbstractTypeORMEntity {
   address: Address;
 
   @Column('integer')
-  value: number;
+  totalValue: number;
 
   @Column({ default: OrderStatuses.Created })
   status: OrderStatuses;

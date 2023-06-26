@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ProductStatuses } from '../products/entities/product-statuses.enum';
+import { ProductStatus } from '../products/entities/product-status.enum';
 import { ProductCategoriesService } from '../products/product-categories/product-categories.service';
 import { ProductCategorySizesService } from '../products/product-category-sizes/product-category-sizes.service';
 import { ProductsService } from '../products/products.service';
 import { PartnersService } from '../partners/partners.service';
 import { PartnerProductsService } from '../partners/partner-products/partner-products.service';
-import { PartnerProductStatusesEnum } from '../partners/partner-products/entities/partner-product-statuses.enum';
+import { PartnerProductStatus } from '../partners/partner-products/entities/partner-product-status.enum';
 
 @Injectable()
 export class DbService {
@@ -35,7 +35,7 @@ export class DbService {
           name: 'Botijão',
           category,
           size: size.name,
-          status: ProductStatuses.Active,
+          status: ProductStatus.Active,
         }),
       ),
     );
@@ -44,7 +44,7 @@ export class DbService {
       name: 'Saldanha Distribuidora',
       cnpj: '12312312',
       pictureURI:
-        'https://clubedoassinante.clicrbs.com.br/imagens/beneficio/large_beneficio20171010091920.png',
+        'https://scontent.fcwb2-3.fna.fbcdn.net/v/t39.30808-6/245969868_3154848254745379_1920533050163387630_n.jpg?_nc_cat=103&cb=99be929b-3346023f&ccb=1-7&_nc_sid=9267fe&_nc_ohc=wFkn6ryvCssAX9BcKK0&_nc_ht=scontent.fcwb2-3.fna&oh=00_AfAZ3x-Y5PPA5ui-OJIlsyXlytEB6LYD5ljSBk7qp2kKjQ&oe=6499593D',
       address: {
         cep: '806200070',
         city: 'Curitiba',
@@ -56,11 +56,15 @@ export class DbService {
       },
     });
 
-    const partnerProduct = await this.partnerProductsService.create({
-      product: products.find(({ size }) => size === 'P13'),
-      partner,
-      status: PartnerProductStatusesEnum.Active,
-      value: 15000,
-    });
+    await Promise.all(
+      products.map(async (product, index) =>
+        this.partnerProductsService.create({
+          product: product,
+          partner,
+          status: PartnerProductStatus.Active,
+          value: 100 * (index + 1),
+        }),
+      ),
+    );
   }
 }

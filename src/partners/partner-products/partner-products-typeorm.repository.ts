@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common';
 export class PartnerProductsTypeORMRepository extends AbstractTypeORMRepository<PartnerProduct> {
   constructor(
     @InjectRepository(PartnerProduct)
-    partnerProductRepository: Repository<PartnerProduct>,
+    private partnerProductRepository: Repository<PartnerProduct>,
   ) {
     super(partnerProductRepository);
   }

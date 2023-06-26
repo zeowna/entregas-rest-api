@@ -16,7 +16,7 @@ export class CartProduct extends AbstractTypeORMEntity {
   quantity: number;
 
   @Column('integer')
-  value: number;
+  totalValue: number;
 
   @ManyToOne(() => Order)
   order: Order;

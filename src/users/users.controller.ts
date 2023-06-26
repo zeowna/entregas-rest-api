@@ -18,28 +18,31 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  private create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  findAll(@Query('skip') skip = 0, @Query('limit') limit = 10) {
+  private findAll(@Query('skip') skip = 0, @Query('limit') limit = 10) {
     return this.usersService.findAll(+skip, +limit);
   }
 
   @Get(':id')
-  findById(@Param('id') id: string, @I18n() i18n: I18nContext) {
+  private findById(@Param('id') id: string, @I18n() i18n: I18nContext) {
     this.usersService.setI18n(i18n);
     return this.usersService.findById(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Delete(':id')
+  private remove(@Param('id') id: string) {
+    return this.usersService.remove(+id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Patch(':id')
+  private update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(+id, updateUserDto);
   }
 }
