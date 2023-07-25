@@ -5,7 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map } from 'rxjs/operators';
-import { AbstractEntity } from '../entity/abstract-entity.entity';
+import { AbstractEntity } from '../entities';
 
 @Injectable()
 export class PresentAbstractEntityInterceptor implements NestInterceptor {

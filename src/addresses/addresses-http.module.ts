@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AddressesService } from './addresses.service';
 import { AddressesModule } from './entities/addresses.module';
-import { AddressesTypeORMRepository } from './addresses-typeorm-repository';
+import { AddressesTypeORMRepository } from './repositories/addresses-typeorm-repository';
+import { CreateAddressService } from './services/create-address.service';
 
 @Module({
   imports: [AddressesModule],
-  providers: [AddressesService, AddressesTypeORMRepository],
-  exports: [AddressesService],
+  providers: [AddressesTypeORMRepository, CreateAddressService],
+  exports: [CreateAddressService],
 })
 export class AddressesHttpModule {}

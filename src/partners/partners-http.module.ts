@@ -1,22 +1,30 @@
 import { Module } from '@nestjs/common';
-import { PartnersService } from './partners.service';
-import { PartnersController } from './partners.controller';
+import { PartnersController } from './controllers/partners.controller';
 import { PartnersModule } from './partners.module';
-import { PartnerProductsController } from './partner-products/partner-products.controller';
-import { PartnerProductsService } from './partner-products/partner-products.service';
+import { PartnerProductsController } from './controllers/partner-products.controller';
 import { AddressesHttpModule } from '../addresses/addresses-http.module';
-import { PartnersTypeORMRepository } from './partners-typeorm.repository';
-import { PartnerProductsTypeORMRepository } from './partner-products/partner-products-typeorm.repository';
+import { PartnersTypeORMRepository } from './repositores/partners-typeorm.repository';
+import { CountPartnersService } from './services/count-partners.service';
+import { FindPartnersService } from './services/find-partners.service';
+import { CreatePartnerService } from './services/create-partner.service';
+import { CreatePartnerProductService } from './services/create-partner-product.service';
+import { PartnerProductsTypeORMRepository } from './repositores/partner-products-typeorm.repository';
+import { CountPartnerProductsService } from './services/count-partner-products.service';
+import { FindPartnerProductsService } from './services/find-partner-products.service';
 
 @Module({
   imports: [PartnersModule, AddressesHttpModule],
   controllers: [PartnersController, PartnerProductsController],
   providers: [
-    PartnersService,
     PartnersTypeORMRepository,
-    PartnerProductsService,
     PartnerProductsTypeORMRepository,
+    CountPartnersService,
+    FindPartnersService,
+    CreatePartnerService,
+    CreatePartnerProductService,
+    CountPartnerProductsService,
+    FindPartnerProductsService,
   ],
-  exports: [PartnersService, PartnerProductsService],
+  exports: [CreatePartnerService, CreatePartnerProductService],
 })
 export class PartnersHttpModule {}

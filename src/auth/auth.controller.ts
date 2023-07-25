@@ -1,14 +1,14 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Body, Controller, Post, Req } from '@nestjs/common';
+import { SignInService } from './services/sign-in.service';
 import { SignInDto } from './dto/sign-in.dto';
-import { I18n, I18nContext } from 'nestjs-i18n';
+import { CustomRequest } from '../common';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private signInService: SignInService) {}
 
   @Post()
-  signIn(@Body() signInDto: SignInDto, @I18n() i18n: I18nContext) {
-    return this.authService.signIn(signInDto.email, signInDto.password, i18n);
+  signIn(@Req() request: CustomRequest, @Body() signInDto: SignInDto) {
+    return this.signInService.execute(signInDto, request.correlationId);
   }
 }

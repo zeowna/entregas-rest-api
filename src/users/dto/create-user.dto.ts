@@ -1,22 +1,11 @@
-import {
-  IsDateString,
-  IsDefined,
-  IsEmail,
-  IsOptional,
-  IsString,
-  Validate,
-  ValidateNested,
-} from 'class-validator';
-import { UserTypes } from '../entities/user-types.enum';
-import { Address } from '../../addresses/entities/address.entity';
-import { Type } from 'class-transformer';
-import { CreateAddressDto } from '../../addresses/dto/create-address.dto';
+import { IsDateString, IsDefined, IsEmail, IsString } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
-import { IsUserCpfAlreadyInUse } from './is-user-cpf-already-in-use.validation';
-import { IsUserEmailAlreadyInUse } from './is-user-email-already-in-use.validation';
 import { IsCPF } from 'brazilian-class-validator';
+import { AbstractDto } from '../../common';
+import { User } from '../entities/user.entity';
+import { CustomerUser } from '../entities/customer-user.entity';
 
-export class CreateUserDto {
+export class CreateUserDto extends AbstractDto<User> {
   @IsDefined({
     message: i18nValidationMessage('validation.user.name.required'),
   })
@@ -40,9 +29,9 @@ export class CreateUserDto {
   @IsCPF({
     message: i18nValidationMessage('validation.user.cpf.invalid'),
   })
-  @Validate(IsUserCpfAlreadyInUse, {
-    message: i18nValidationMessage('validation.user.cpf.exists'),
-  })
+  // @Validate(IsUserCpfAlreadyInUse, {
+  //   message: i18nValidationMessage('validation.user.cpf.exists'),
+  // })
   cpf: string;
 
   @IsDefined({
@@ -52,9 +41,9 @@ export class CreateUserDto {
     {},
     { message: i18nValidationMessage('validation.user.email.isEmail') },
   )
-  @Validate(IsUserEmailAlreadyInUse, {
-    message: i18nValidationMessage('validation.user.email.exists'),
-  })
+  // @Validate(IsUserEmailAlreadyInUse, {
+  //   message: i18nValidationMessage('validation.user.email.exists'),
+  // })
   email: string;
 
   @IsDefined({
@@ -65,19 +54,13 @@ export class CreateUserDto {
   })
   password: string;
 
-  @IsDefined({
-    message: i18nValidationMessage('validation.required'),
-  })
-  @IsString({
-    message: i18nValidationMessage('validation.isString'),
-  })
-  type: UserTypes;
-
-  @IsOptional()
-  @IsString({
-    message: i18nValidationMessage('validation.isString'),
-  })
-  @ValidateNested({ each: true })
-  @Type(() => CreateAddressDto)
-  addresses?: Address[];
+  toEntity() {
+    return new CustomerUser({
+      name: this.name,
+      birthday: this.birthday,
+      cpf: this.cpf,
+      email: this.email,
+      password: this.password,
+    });
+  }
 }

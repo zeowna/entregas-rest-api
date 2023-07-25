@@ -1,26 +1,31 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
+import { CustomersController } from './controllers/customers.controller';
 import { UsersModule } from './users.module';
 import { AddressesHttpModule } from '../addresses/addresses-http.module';
-import { UsersTypeORMRepository } from './users-typeorm.repository';
-import { UserAddressesController } from './addresses/user-addresses.controller';
-import { UserAddressService } from './addresses/user-address.service';
-import { BcryptHashService } from './hash/bcrypt-hash.service';
-import { IsUserEmailAlreadyInUse } from './dto/is-user-email-already-in-use.validation';
-import { IsUserCpfAlreadyInUse } from './dto/is-user-cpf-already-in-use.validation';
+import { CustomerAddressesController } from './controllers/customer-addresses.controller';
+import { FindUserByEmailService } from './services/find-user-by-email.service';
+import { FindUserByCpfService } from './services/find-user-by-cpf.service';
+import { HashModule } from '../hash/hash.module';
+import { FindUserByIdService } from './services/find-user-by-id.service';
+import { FindUsersService } from './services/find-users.service';
+import { CountUsersService } from './services/count-users.service';
+import { UpdateUserService } from './services/update-user.service';
+import { UsersTypeORMRepository } from './repositores/users-typeorm-repository.service';
+import { CreateUserService } from './services/create-user.service';
 
 @Module({
-  imports: [UsersModule, AddressesHttpModule],
-  controllers: [UsersController, UserAddressesController],
+  imports: [UsersModule, AddressesHttpModule, HashModule],
+  controllers: [CustomersController, CustomerAddressesController],
   providers: [
     UsersTypeORMRepository,
-    UsersService,
-    UserAddressService,
-    BcryptHashService,
-    IsUserEmailAlreadyInUse,
-    IsUserCpfAlreadyInUse,
+    FindUserByEmailService,
+    FindUserByCpfService,
+    CountUsersService,
+    FindUsersService,
+    FindUserByIdService,
+    CreateUserService,
+    UpdateUserService,
   ],
-  exports: [UsersService, BcryptHashService],
+  exports: [FindUserByEmailService, CreateUserService],
 })
 export class UsersHttpModule {}

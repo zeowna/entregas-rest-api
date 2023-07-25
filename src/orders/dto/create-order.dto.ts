@@ -1,6 +1,6 @@
 import { IsDefined, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateCartProductDto } from '../cart-products/dto/create-cart-product.dto';
+import { CreateCartProductDto } from './create-cart-product.dto';
 
 export class CreateOrderDto {
   @IsDefined()

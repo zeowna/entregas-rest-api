@@ -1,9 +1,10 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
-import { AbstractTypeORMEntity } from '../../common/entity/abstract-typeorm.entity';
+import { Column, Entity, TableInheritance } from 'typeorm';
+import { AbstractTypeORMEntity, ExcludeMethods } from '../../common';
 import { UserTypes } from './user-types.enum';
-import { Address } from '../../addresses/entities/address.entity';
+import { UserResponse } from '../responses/user.response';
 
 @Entity()
+@TableInheritance({ column: { type: String, name: 'type' } })
 export class User extends AbstractTypeORMEntity {
   @Column()
   name: string;
@@ -23,9 +24,20 @@ export class User extends AbstractTypeORMEntity {
   @Column({ nullable: true })
   profilePictureURI?: string;
 
-  @Column()
-  type: UserTypes;
+  readonly type: UserTypes;
 
-  @ManyToOne(() => Address, { nullable: true })
-  addresses?: Address[];
+  constructor(props: ExcludeMethods<User>) {
+    super(props);
+    this.name = props?.name;
+    this.birthday = props?.birthday;
+    this.cpf = props?.cpf;
+    this.email = props?.email;
+    this.password = props?.password;
+    this.profilePictureURI = props?.profilePictureURI;
+    this.type = props?.type;
+  }
+
+  present() {
+    return new UserResponse(this);
+  }
 }

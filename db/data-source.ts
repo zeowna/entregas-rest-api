@@ -14,6 +14,14 @@ export const dataSourceOptions: DataSourceOptions = {
   namingStrategy: new SnakeNamingStrategy(),
 };
 
+export const dataSourceTestOptions: DataSourceOptions = {
+  ...dataSourceOptions,
+  entities: ['src/**/*.entity.ts'],
+  migrationsRun: false,
+  migrationsTransactionMode: 'each',
+  logging: true,
+};
+
 const dataSource = new DataSource(dataSourceOptions);
 
 export default dataSource;
