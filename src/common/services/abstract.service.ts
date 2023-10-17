@@ -2,7 +2,7 @@ import { ServiceInterface } from './service.interface';
 import { LoggerInterface } from '../logger';
 
 export abstract class AbstractService<R> implements ServiceInterface<R> {
-  constructor(protected readonly loggerImp: LoggerInterface) {}
+  constructor(private readonly loggerImp: LoggerInterface) {}
 
   protected logBefore(...args: any[]) {
     this.loggerImp.info(`${this.logLabel} before`, ...args);

@@ -5,11 +5,15 @@ import { Repository } from 'typeorm';
 import { AbstractTypeORMRepository } from '../../common';
 
 @Injectable()
-export class ProductCategoryTypeORMRepository extends AbstractTypeORMRepository<ProductCategory> {
+export class ProductCategoriesTypeORMRepository extends AbstractTypeORMRepository<ProductCategory> {
   constructor(
     @InjectRepository(ProductCategory)
-    productCategorySizeRepository: Repository<ProductCategory>,
+    private readonly productCategorySizeRepository: Repository<ProductCategory>,
   ) {
     super(productCategorySizeRepository);
+  }
+
+  async findByName(name: string) {
+    return this.productCategorySizeRepository.findOneBy({ name });
   }
 }

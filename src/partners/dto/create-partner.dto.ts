@@ -1,9 +1,9 @@
 import { IsDefined, IsOptional, IsString } from 'class-validator';
-import { AbstractDto, ID } from '../../common';
+import { AbstractEntityDto, ID } from '../../common';
 import { Partner } from '../entities/partner.entity';
 import { Address } from '../../addresses/entities/address.entity';
 
-export class CreatePartnerDto extends AbstractDto<Partner> {
+export class CreatePartnerDto extends AbstractEntityDto<Partner> {
   @IsString()
   name: string;
 

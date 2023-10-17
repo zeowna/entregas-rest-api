@@ -1,8 +1,8 @@
-import { AbstractDto } from './abstract.dto';
+import { AbstractEntityDto } from './abstract-entity.dto';
 import { MockedEntity } from '../entities/mocks';
 import { ID } from '../entities';
 
-export class MockedEntityDto extends AbstractDto<MockedEntity> {
+export class MockedEntityDto extends AbstractEntityDto<MockedEntity> {
   id: ID;
 
   mutableProp: string;

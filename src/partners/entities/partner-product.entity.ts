@@ -19,12 +19,16 @@ export class PartnerProduct extends AbstractTypeORMEntity {
   @Column()
   status: PartnerProductStatus;
 
+  @Column({ default: 0 })
+  inStockQuantity: number;
+
   constructor(props: ExcludeMethods<PartnerProduct>) {
     super(props);
     this.partner = props?.partner;
     this.product = props?.product;
     this.value = props?.value;
     this.status = props?.status;
+    this.inStockQuantity = props?.inStockQuantity;
   }
 
   present() {

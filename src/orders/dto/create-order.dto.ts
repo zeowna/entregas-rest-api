@@ -1,22 +1,25 @@
-import { IsDefined, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { CreateCartProductDto } from './create-cart-product.dto';
+import { IsDefined } from 'class-validator';
+import { AbstractEntityDto, ID } from '../../common';
+import { Order } from '../entities/order.entity';
+import { CustomerUser } from '../../users/entities/customer-user.entity';
+import { Partner } from '../../partners/entities/partner.entity';
+import { Address } from '../../addresses/entities/address.entity';
 
-export class CreateOrderDto {
+export class CreateOrderDto extends AbstractEntityDto<Order> {
   @IsDefined()
-  customer: number;
-
-  @IsDefined()
-  partner: number;
-
-  @IsDefined()
-  @ValidateNested({ each: true })
-  @Type(() => CreateCartProductDto)
-  cart: CreateCartProductDto[];
+  customerId: ID;
 
   @IsDefined()
-  address: number;
+  partnerId: ID;
 
   @IsDefined()
-  totalValue: number;
+  addressId: ID;
+
+  toEntity(): Order {
+    return new Order({
+      customer: new CustomerUser({ id: this.customerId }),
+      partner: new Partner({ id: this.partnerId }),
+      address: new Address({ id: this.addressId }),
+    });
+  }
 }

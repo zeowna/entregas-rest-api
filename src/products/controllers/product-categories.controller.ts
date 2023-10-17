@@ -1,59 +1,73 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
+import { CustomRequest } from '../../common';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { CreateProductCategoryService } from '../services/create-product-category.service';
+import { FindProductCategoriesService } from '../services/find-product-categories.service';
+import { FindProductCategoryByIdService } from '../services/find-product-category-by-id.service';
+import { UpdateProductCategoryService } from '../services/update-product-category.service';
+import { UpdateProductCategoryDto } from '../dto/update-product-category.dto';
+import { ProductCategoryPagingDto } from '../dto/product-category-paging.dto';
+import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
 
-@Controller('products')
+@Controller('product-categories')
 export class ProductCategoriesController {
-  // constructor(
-  //   private readonly productCategoriesService: ProductCategoriesService,
-  // ) {}
-  //
-  // @Post('categories')
-  // create(
-  //   @Req() request: CustomRequest,
-  //   @Body() createProductCategoryDto: CreateProductCategoryDto,
-  // ) {
-  //   return this.productCategoriesService.create(
-  //     createProductCategoryDto,
-  //     request?.correlationId,
-  //   );
-  // }
-  //
-  // @Get('categories')
-  // findAll(
-  //   @Req() request: CustomRequest,
-  //   @Query('conditions') conditions: string,
-  //   @Query('skip') skip: string,
-  //   @Query('limit') limit: string,
-  //   @Query('sort') sort: string,
-  // ) {
-  //   return this.productCategoriesService.find(
-  //     JSON.parse(conditions ?? null),
-  //     skip ? +skip : undefined,
-  //     limit ? +limit : undefined,
-  //     sort ? JSON.parse(sort) : undefined,
-  //     request?.correlationId,
-  //   );
-  // }
-  //
-  // @Get('categories/:id')
-  // findOne(@Req() request: CustomRequest, @Param('id') id: string) {
-  //   return this.productCategoriesService.findById(+id, request?.correlationId);
-  // }
-  //
-  // @Patch('categories/:id')
-  // update(
-  //   @Req() request: CustomRequest,
-  //   @Param('id') id: string,
-  //   @Body() updateProductCategoryDto: UpdateProductCategoryDto,
-  // ) {
-  //   return this.productCategoriesService.update(
-  //     +id,
-  //     updateProductCategoryDto,
-  //     request?.correlationId,
-  //   );
-  // }
-  //
-  // @Delete('categories/:id')
-  // remove(@Req() request: CustomRequest, @Param('id') id: string) {
-  //   return this.productCategoriesService.remove(+id, request?.correlationId);
-  // }
+  constructor(
+    private readonly findProductCategoriesService: FindProductCategoriesService,
+    private readonly findProductCategoryById: FindProductCategoryByIdService,
+    private readonly createProductCategoryService: CreateProductCategoryService,
+    private readonly updateProductCategoryService: UpdateProductCategoryService,
+  ) {}
+
+  @Get()
+  private find(
+    @Req() request: CustomRequest,
+    @Query() productCategoryPagingDto: ProductCategoryPagingDto,
+  ) {
+    return this.findProductCategoriesService.execute(
+      productCategoryPagingDto,
+      request.correlationId,
+    );
+  }
+
+  @Get(':id')
+  private findById(
+    @Req() request: CustomRequest,
+    @Param('id') id: string,
+    @I18n() i18n: I18nContext,
+  ) {
+    return this.findProductCategoryById.execute(+id, request?.correlationId);
+  }
+
+  @Post()
+  private create(
+    @Req() request: CustomRequest,
+    @Body() updateProductCategoryDto: CreateProductCategoryDto,
+  ) {
+    return this.createProductCategoryService.execute(
+      updateProductCategoryDto,
+      request?.correlationId,
+    );
+  }
+
+  @Patch(':id')
+  private update(
+    @Req() request: CustomRequest,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateProductCategoryDto,
+  ) {
+    return this.updateProductCategoryService.execute(
+      +id,
+      updateUserDto,
+      request?.correlationId,
+    );
+  }
 }

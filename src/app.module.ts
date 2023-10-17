@@ -8,7 +8,6 @@ import { AddressesHttpModule } from './addresses/addresses-http.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PartnersHttpModule } from './partners/partners-http.module';
-import { DbModule } from './db/db.module';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'path';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -45,7 +44,6 @@ import { AuthModule } from './auth/auth.module';
     OrdersHttpModule,
     PartnersHttpModule,
     AddressesHttpModule,
-    DbModule,
   ],
   controllers: [AppController],
   providers: [

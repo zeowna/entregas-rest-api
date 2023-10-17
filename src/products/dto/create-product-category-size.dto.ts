@@ -1,9 +1,9 @@
 import { IsDefined, IsString } from 'class-validator';
-import { AbstractDto } from '../../common';
+import { AbstractEntityDto } from '../../common';
 import { ProductCategorySize } from '../entities/product-category-size.entity';
 import { ProductCategory } from '../entities/product-category.entity';
 
-export class CreateProductCategorySizeDto extends AbstractDto<ProductCategorySize> {
+export class CreateProductCategorySizeDto extends AbstractEntityDto<ProductCategorySize> {
   @IsDefined()
   @IsString()
   name: string;

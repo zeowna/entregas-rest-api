@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { AbstractTypeORMEntity } from '../../common';
+import { AbstractTypeORMEntity, ExcludeMethods } from '../../common';
 import { User } from '../../users/entities/user.entity';
 import { OrderStatuses } from './order-statuses.enum';
 import { Partner } from '../../partners/entities/partner.entity';
@@ -35,6 +35,18 @@ export class Order extends AbstractTypeORMEntity {
 
   @Column({ nullable: true })
   externalServiceId: string;
+
+  constructor(props: ExcludeMethods<Order>) {
+    super(props);
+    this.customer = props?.customer;
+    this.partner = props?.partner;
+    this.cart = props?.cart;
+    this.address = props?.address;
+    this.totalValue = props?.totalValue;
+    this.status = props?.status;
+    this.statusUpdatedAt = props?.statusUpdatedAt;
+    this.externalServiceId = props?.externalServiceId;
+  }
 
   present() {
     return new OrderResponse(this);

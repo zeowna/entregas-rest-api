@@ -11,6 +11,9 @@ import { CreatePartnerProductService } from './services/create-partner-product.s
 import { PartnerProductsTypeORMRepository } from './repositores/partner-products-typeorm.repository';
 import { CountPartnerProductsService } from './services/count-partner-products.service';
 import { FindPartnerProductsService } from './services/find-partner-products.service';
+import { FindPartnerByIdService } from './services/find-partner-by-id.service';
+import { FindPartnerProductByIdService } from './services/find-partner-product-by-id.service';
+import { UpdatePartnerProductService } from './services/update-partner-product.service';
 
 @Module({
   imports: [PartnersModule, AddressesHttpModule],
@@ -20,11 +23,20 @@ import { FindPartnerProductsService } from './services/find-partner-products.ser
     PartnerProductsTypeORMRepository,
     CountPartnersService,
     FindPartnersService,
+    FindPartnerByIdService,
     CreatePartnerService,
     CreatePartnerProductService,
     CountPartnerProductsService,
     FindPartnerProductsService,
+    FindPartnerProductByIdService,
+    UpdatePartnerProductService,
   ],
-  exports: [CreatePartnerService, CreatePartnerProductService],
+  exports: [
+    CreatePartnerService,
+    CreatePartnerProductService,
+    FindPartnerByIdService,
+    FindPartnerProductByIdService,
+    UpdatePartnerProductService,
+  ],
 })
 export class PartnersHttpModule {}

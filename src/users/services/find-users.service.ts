@@ -3,7 +3,7 @@ import { AbstractFindEntitiesService, NestLoggerService } from '../../common';
 import { User } from '../entities/user.entity';
 import { UsersTypeORMRepository } from '../repositores/users-typeorm-repository.service';
 import { CountUsersService } from './count-users.service';
-import { FindUsersResponse } from '../responses/find-users.reponse';
+import { FindUsersResponse } from '../responses/find-users.response';
 
 @Injectable()
 export class FindUsersService extends AbstractFindEntitiesService<

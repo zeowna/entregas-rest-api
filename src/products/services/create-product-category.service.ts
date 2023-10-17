@@ -1,14 +1,35 @@
-import { Injectable } from '@nestjs/common';
 import { AbstractCreateEntityService, NestLoggerService } from '../../common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { ProductCategory } from '../entities/product-category.entity';
-import { ProductCategoryTypeORMRepository } from '../repositories/product-category-typeorm-repository';
+import { ProductCategoriesTypeORMRepository } from '../repositories/product-categories-typeorm.repository';
+import { FindProductCategoryByNameService } from './find-product-category-by-name.service';
+import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
 
 @Injectable()
 export class CreateProductCategoryService extends AbstractCreateEntityService<ProductCategory> {
   constructor(
-    private readonly productsCategoriesRepository: ProductCategoryTypeORMRepository,
-    private readonly logger: NestLoggerService,
+    protected readonly productCategoriesRepository: ProductCategoriesTypeORMRepository,
+    private readonly findProductCategoryByNameService: FindProductCategoryByNameService,
+    protected readonly logger: NestLoggerService,
   ) {
-    super(productsCategoriesRepository, logger);
+    super(productCategoriesRepository, logger);
+  }
+
+  protected async beforeCreate(
+    createEntityDto: CreateProductCategoryDto,
+    correlationId: string,
+  ) {
+    const existing = await this.findProductCategoryByNameService.execute(
+      createEntityDto.name,
+      correlationId,
+    );
+
+    if (existing) {
+      throw new ConflictException(
+        `${this.productCategoriesRepository.entityName} already exist with name: ${createEntityDto.name}`,
+      );
+    }
+
+    return super.beforeCreate(createEntityDto, correlationId);
   }
 }

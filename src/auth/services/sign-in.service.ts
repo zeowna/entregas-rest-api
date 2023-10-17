@@ -56,7 +56,10 @@ export class SignInService extends AbstractSignInService {
 
     const signed = await this.signPayload(payload, jwtConstants.secret);
 
-    const response = new SignInResponse({ authorization_token: signed });
+    const response = new SignInResponse({
+      user: user.present(),
+      authorization_token: signed,
+    });
 
     this.logAfter({ success: true, correlationId });
 

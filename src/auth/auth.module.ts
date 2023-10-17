@@ -5,6 +5,7 @@ import { ZeownaAuthModule } from '../common/auth';
 import { jwtConstants } from '../common/auth/constants';
 import { UsersHttpModule } from '../users/users-http.module';
 import { HashModule } from '../hash/hash.module';
+import { ForgotPasswordService } from './services/forgot-password.service';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { HashModule } from '../hash/hash.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [SignInService],
+  providers: [SignInService, ForgotPasswordService],
 })
 export class AuthModule {}

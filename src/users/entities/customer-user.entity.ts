@@ -7,8 +7,6 @@ import { CustomerResponse } from '../responses/customer.response';
 
 @ChildEntity(UserTypes.Customer)
 export class CustomerUser extends User {
-  readonly type: UserTypes.Customer;
-
   @OneToMany(() => Address, (address) => address.user, { eager: true })
   addresses?: Address[];
 

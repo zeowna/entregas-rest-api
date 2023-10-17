@@ -1,8 +1,8 @@
 import { IsOptional, IsString } from 'class-validator';
-import { AbstractDto } from '../../common';
+import { AbstractEntityDto } from '../../common';
 import { Address } from '../entities/address.entity';
 
-export class CreateAddressDto extends AbstractDto<Address> {
+export class CreateAddressDto extends AbstractEntityDto<Address> {
   @IsString()
   cep: string;
 

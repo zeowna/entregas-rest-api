@@ -4,14 +4,14 @@ import { dataSourceTestOptions } from '../../../db/data-source';
 import { Product } from '../entities/product.entity';
 import { MockedTypeORMModuleFactory } from '../../common';
 import { ProductStatus } from '../entities/product-status.enum';
-import { ProductCategoryTypeORMRepository } from './product-category-typeorm-repository';
+import { ProductCategoriesTypeORMRepository } from './product-categories-typeorm.repository';
 import { ProductCategory } from '../entities/product-category.entity';
 
 describe('ProductsTypeORMRepository', () => {
   const MockedTypeORMModule = MockedTypeORMModuleFactory.usePgMem();
 
   let repository: ProductsTypeORMRepository;
-  let productCategoriesRepository: ProductCategoryTypeORMRepository;
+  let productCategoriesRepository: ProductCategoriesTypeORMRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -19,15 +19,19 @@ describe('ProductsTypeORMRepository', () => {
         MockedTypeORMModule.forRoot(dataSourceTestOptions),
         MockedTypeORMModule.forFeature([Product, ProductCategory]),
       ],
-      providers: [ProductsTypeORMRepository, ProductCategoryTypeORMRepository],
+      providers: [
+        ProductsTypeORMRepository,
+        ProductCategoriesTypeORMRepository,
+      ],
     }).compile();
 
     repository = module.get<ProductsTypeORMRepository>(
       ProductsTypeORMRepository,
     );
-    productCategoriesRepository = module.get<ProductCategoryTypeORMRepository>(
-      ProductCategoryTypeORMRepository,
-    );
+    productCategoriesRepository =
+      module.get<ProductCategoriesTypeORMRepository>(
+        ProductCategoriesTypeORMRepository,
+      );
   });
 
   it('should be defined', () => {

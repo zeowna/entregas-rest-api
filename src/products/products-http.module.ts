@@ -3,12 +3,13 @@ import { ProductsController } from './controllers/products.controller';
 import { ProductsModule } from './products.module';
 import { ProductCategoriesController } from './controllers/product-categories.controller';
 import { ProductCategorySizesController } from './controllers/product-category-sizes.controller';
-import { ProductsTypeORMRepository } from './repositories/products-typeorm.repository';
-import { ProductCategoryTypeORMRepository } from './repositories/product-category-typeorm-repository';
-import { ProductCategorySizesTypeORMRepository } from './repositories/product-category-sizes-typeorm.repository';
-import { CreateProductService } from './services/create-product.service';
+import { ProductCategoriesTypeORMRepository } from './repositories/product-categories-typeorm.repository';
 import { CreateProductCategoryService } from './services/create-product-category.service';
-import { CreateProductCategorySizeService } from './services/create-product-category-size.service';
+import { CountProductCategoriesService } from './services/count-product-categories.service';
+import { FindProductCategoriesService } from './services/find-product-categories.service';
+import { FindProductCategoryByIdService } from './services/find-product-category-by-id.service';
+import { UpdateProductCategoryService } from './services/update-product-category.service';
+import { FindProductCategoryByNameService } from './services/find-product-category-by-name.service';
 
 @Module({
   imports: [ProductsModule],
@@ -18,17 +19,13 @@ import { CreateProductCategorySizeService } from './services/create-product-cate
     ProductCategorySizesController,
   ],
   providers: [
-    ProductsTypeORMRepository,
-    ProductCategoryTypeORMRepository,
-    ProductCategorySizesTypeORMRepository,
-    CreateProductService,
+    ProductCategoriesTypeORMRepository,
+    CountProductCategoriesService,
+    FindProductCategoriesService,
+    FindProductCategoryByIdService,
     CreateProductCategoryService,
-    CreateProductCategorySizeService,
-  ],
-  exports: [
-    CreateProductService,
-    CreateProductCategoryService,
-    CreateProductCategorySizeService,
+    UpdateProductCategoryService,
+    FindProductCategoryByNameService,
   ],
 })
 export class ProductsHttpModule {}

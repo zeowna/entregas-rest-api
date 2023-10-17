@@ -1,27 +1,27 @@
 import { AbstractEntity } from '../entities';
 import { RepositoryInterface } from '../repositories';
 import { LoggerInterface } from '../logger';
-import { AbstractDto } from '../dto';
+import { AbstractEntityDto } from '../dto';
 import { AbstractService } from './abstract.service';
 
 export abstract class AbstractCreateEntityService<
   T extends AbstractEntity,
 > extends AbstractService<T> {
   constructor(
-    protected readonly repositoryImpl: RepositoryInterface<T>,
-    protected readonly loggerImpl: LoggerInterface,
+    private readonly repositoryImpl: RepositoryInterface<T>,
+    private readonly loggerImpl: LoggerInterface,
   ) {
     super(loggerImpl);
   }
 
   protected async beforeCreate(
-    createEntityDto: AbstractDto<T>,
-    ...args: any[]
+    createEntityDto: AbstractEntityDto<T>,
+    correlationId: string,
   ) {
     return createEntityDto.toEntity();
   }
 
-  protected async afterCreate(entity: T) {
+  protected async afterCreate(entity: T, correlationId: string) {
     return;
   }
 
@@ -29,15 +29,15 @@ export abstract class AbstractCreateEntityService<
     return this.repositoryImpl.create(entity);
   }
 
-  async execute(createEntityDto: AbstractDto<T>, correlationId: string) {
+  async execute(createEntityDto: AbstractEntityDto<T>, correlationId: string) {
     try {
       this.logBefore({ createEntityDto, correlationId });
 
       const created = await this.createEntity(
-        await this.beforeCreate(createEntityDto),
+        await this.beforeCreate(createEntityDto, correlationId),
       );
 
-      await this.afterCreate(created);
+      await this.afterCreate(created, correlationId);
 
       this.logBefore({
         success: true,

@@ -1,11 +1,10 @@
 import { IsDateString, IsDefined, IsEmail, IsString } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { IsCPF } from 'brazilian-class-validator';
-import { AbstractDto } from '../../common';
+import { AbstractEntityDto } from '../../common';
 import { User } from '../entities/user.entity';
-import { CustomerUser } from '../entities/customer-user.entity';
 
-export class CreateUserDto extends AbstractDto<User> {
+export abstract class CreateUserDto extends AbstractEntityDto<User> {
   @IsDefined({
     message: i18nValidationMessage('validation.user.name.required'),
   })
@@ -53,14 +52,4 @@ export class CreateUserDto extends AbstractDto<User> {
     message: i18nValidationMessage('validation.user.password.isString'),
   })
   password: string;
-
-  toEntity() {
-    return new CustomerUser({
-      name: this.name,
-      birthday: this.birthday,
-      cpf: this.cpf,
-      email: this.email,
-      password: this.password,
-    });
-  }
 }

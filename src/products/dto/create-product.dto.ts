@@ -1,10 +1,10 @@
 import { ProductCategory } from '../entities/product-category.entity';
 import { IsDefined, IsOptional, IsString } from 'class-validator';
-import { AbstractDto } from '../../common';
+import { AbstractEntityDto } from '../../common';
 import { Product } from '../entities/product.entity';
 import { ProductStatus } from '../entities/product-status.enum';
 
-export class CreateProductDto extends AbstractDto<Product> {
+export class CreateProductDto extends AbstractEntityDto<Product> {
   @IsDefined()
   @IsString()
   name: string;

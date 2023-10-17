@@ -1,6 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { IntersectionType, PartialType, PickType } from '@nestjs/mapped-types';
 import { CreatePartnerProductDto } from './create-partner-product.dto';
 
-export class UpdatePartnerProductDto extends PartialType(
-  CreatePartnerProductDto,
+export class UpdatePartnerProductDto extends IntersectionType(
+  PartialType(CreatePartnerProductDto),
+  PickType(CreatePartnerProductDto, ['toEntity']),
 ) {}

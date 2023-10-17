@@ -18,7 +18,11 @@ export class CreateCustomerDto extends CreateUserDto {
 
   toEntity() {
     return new CustomerUser({
-      ...super.toEntity(),
+      name: this.name,
+      birthday: this.birthday,
+      cpf: this.cpf,
+      email: this.email,
+      password: this.password,
       addresses: this.addresses,
       type: UserTypes.Customer,
     });

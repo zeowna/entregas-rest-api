@@ -13,11 +13,14 @@ export class PartnerProductResponse extends AbstractEntityPresenter<PartnerProdu
 
   status: PartnerProductStatus;
 
+  inStockQuantity: number;
+
   constructor(props: PartnerProduct) {
     super(props);
     this.partner = props?.partner?.present();
     this.product = props?.product?.present();
     this.value = props?.value;
     this.status = props?.status;
+    this.inStockQuantity = props?.inStockQuantity;
   }
 }

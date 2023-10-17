@@ -1,7 +1,7 @@
 import { AbstractEntity } from '../entities';
 import { RepositoryInterface } from '../repositories';
 import { LoggerInterface } from '../logger';
-import { AbstractDto } from '../dto';
+import { AbstractEntityDto } from '../dto';
 import { AbstractService } from './abstract.service';
 
 export abstract class AbstractCreateOrUpdateEntityService<
@@ -18,7 +18,7 @@ export abstract class AbstractCreateOrUpdateEntityService<
     return this.repositoryImpl.createOrUpdate(entity);
   }
 
-  async execute(createEntityDto: AbstractDto<T>, correlationId: string) {
+  async execute(createEntityDto: AbstractEntityDto<T>, correlationId: string) {
     try {
       this.logBefore({ createEntityDto, correlationId });
 

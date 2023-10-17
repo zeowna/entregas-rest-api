@@ -2,7 +2,7 @@ import { AbstractEntity, ID } from '../entities';
 import { RepositoryInterface } from '../repositories';
 import { AbstractFindEntityByIdService } from './abstract-find-entity-by-id.service';
 import { LoggerInterface } from '../logger';
-import { AbstractDto } from '../dto';
+import { AbstractEntityDto } from '../dto';
 import { AbstractService } from './abstract.service';
 
 export abstract class AbstractUpdateEntityService<
@@ -16,11 +16,15 @@ export abstract class AbstractUpdateEntityService<
     super(loggerImpl);
   }
 
-  protected async beforeUpdate(updateEntityDto: AbstractDto<T>) {
+  protected async beforeUpdate(
+    id: ID,
+    updateEntityDto: AbstractEntityDto<T>,
+    correlationId: string,
+  ) {
     return updateEntityDto.toEntity();
   }
 
-  protected async afterUpdate(entity: T) {
+  protected async afterUpdate(id: ID, entity: T, correlationId: string) {
     return;
   }
 
@@ -30,7 +34,7 @@ export abstract class AbstractUpdateEntityService<
 
   async execute(
     id: ID,
-    updateEntityDto: AbstractDto<T>,
+    updateEntityDto: AbstractEntityDto<T>,
     correlationId: string,
   ) {
     try {
@@ -43,10 +47,10 @@ export abstract class AbstractUpdateEntityService<
       const existing = await this.findById(id, correlationId);
       const updated = await this.repositoryImpl.update(
         (existing as AbstractEntity).id,
-        await this.beforeUpdate(updateEntityDto),
+        await this.beforeUpdate(id, updateEntityDto, correlationId),
       );
 
-      await this.afterUpdate(updated);
+      await this.afterUpdate(id, updated, correlationId);
 
       this.logAfter({
         success: true,

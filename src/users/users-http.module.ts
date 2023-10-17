@@ -12,10 +12,15 @@ import { CountUsersService } from './services/count-users.service';
 import { UpdateUserService } from './services/update-user.service';
 import { UsersTypeORMRepository } from './repositores/users-typeorm-repository.service';
 import { CreateUserService } from './services/create-user.service';
+import { AdminUsersController } from './controllers/admin-users.controller';
 
 @Module({
   imports: [UsersModule, AddressesHttpModule, HashModule],
-  controllers: [CustomersController, CustomerAddressesController],
+  controllers: [
+    AdminUsersController,
+    CustomersController,
+    CustomerAddressesController,
+  ],
   providers: [
     UsersTypeORMRepository,
     FindUserByEmailService,
@@ -26,6 +31,11 @@ import { CreateUserService } from './services/create-user.service';
     CreateUserService,
     UpdateUserService,
   ],
-  exports: [FindUserByEmailService, CreateUserService],
+  exports: [
+    FindUserByEmailService,
+    FindUserByIdService,
+    CreateUserService,
+    UpdateUserService,
+  ],
 })
 export class UsersHttpModule {}

@@ -1,7 +1,7 @@
 import { AbstractEntity, ID } from '../entities';
 import { PlainQueryConditions } from '../inputs';
 import { SortParams } from '../repositories';
-import { AbstractDto } from '../dto';
+import { AbstractEntityDto } from '../dto';
 
 export interface EntityServiceInterface<T extends AbstractEntity> {
   find(
@@ -14,18 +14,21 @@ export interface EntityServiceInterface<T extends AbstractEntity> {
 
   findById(id: ID, correlationId: string): Promise<T>;
 
-  create(createEntityDto: AbstractDto<T>, correlationId: string): Promise<T>;
+  create(
+    createEntityDto: AbstractEntityDto<T>,
+    correlationId: string,
+  ): Promise<T>;
 
   update(
     id: any,
-    updateEntityDto: AbstractDto<T>,
+    updateEntityDto: AbstractEntityDto<T>,
     correlationId: string,
   ): Promise<T>;
 
   remove(id: ID, correlationId: string): Promise<T>;
 
   createOrUpdate(
-    createEntityDto: AbstractDto<T>,
+    createEntityDto: AbstractEntityDto<T>,
     correlationId: string,
   ): Promise<T>;
 }

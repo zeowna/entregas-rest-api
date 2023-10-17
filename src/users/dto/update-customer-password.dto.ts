@@ -1,8 +1,8 @@
-import { AbstractDto } from '../../common';
+import { AbstractEntityDto } from '../../common';
 import { IsDefined, IsString } from 'class-validator';
 import { CustomerUser } from '../entities/customer-user.entity';
 
-export class UpdateCustomerPasswordDto extends AbstractDto<CustomerUser> {
+export class UpdateCustomerPasswordDto extends AbstractEntityDto<CustomerUser> {
   @IsString()
   @IsDefined()
   password: string;
