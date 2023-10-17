@@ -9,4 +9,10 @@ export class NestJwtService implements JwtServiceInterface {
   async sign(payload: Record<string, any>, secret: string) {
     return this.jwtService.signAsync(payload, { secret });
   }
+
+  async verify<T>(token: string, secret: string) {
+    const decoded = await this.jwtService.verify(token, { secret });
+
+    return decoded as T;
+  }
 }

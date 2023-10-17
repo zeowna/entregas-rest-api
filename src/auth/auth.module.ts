@@ -6,6 +6,7 @@ import { jwtConstants } from '../common/auth/constants';
 import { UsersHttpModule } from '../users/users-http.module';
 import { HashModule } from '../hash/hash.module';
 import { ForgotPasswordService } from './services/forgot-password.service';
+import { RefreshTokenService } from './services/refresh-token.service';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { ForgotPasswordService } from './services/forgot-password.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [SignInService, ForgotPasswordService],
+  providers: [SignInService, ForgotPasswordService, RefreshTokenService],
 })
 export class AuthModule {}

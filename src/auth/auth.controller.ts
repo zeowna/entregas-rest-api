@@ -1,20 +1,36 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { SignInService } from './services/sign-in.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { CustomRequest } from '../common';
 import { ForgotPasswordService } from './services/forgot-password.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { AuthGuard } from '../common/auth';
+import { RefreshTokenService } from './services/refresh-token.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private signInService: SignInService,
-    private forgotPasswordService: ForgotPasswordService,
+    private readonly signInService: SignInService,
+    private readonly forgotPasswordService: ForgotPasswordService,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   @Post()
   signIn(@Req() request: CustomRequest, @Body() signInDto: SignInDto) {
     return this.signInService.execute(signInDto, request.correlationId);
+  }
+
+  @Post('refresh-token')
+  @UseGuards(AuthGuard)
+  async refreshToken(@Req() request: CustomRequest) {
+    console.log({
+      headers: request.headers,
+    });
+
+    return this.refreshTokenService.execute(
+      request.headers['authorization'] as string,
+      request.correlationId,
+    );
   }
 
   @Post('forgot-password')
