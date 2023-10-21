@@ -150,7 +150,6 @@ describe('MockedTypeORMRepository', () => {
       const id = expected.id;
 
       const result = await repository.remove(id);
-      console.log({ expected, result });
 
       assertMockedTypeORMEntity(result, expected);
     });

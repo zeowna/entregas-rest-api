@@ -54,7 +54,7 @@ export abstract class AbstractTypeORMRepository<T extends AbstractTypeORMEntity>
     );
   }
 
-  async remove(id: number) {
+  async remove(id: ID) {
     const entity = await this.findById(id);
 
     if (!entity) {

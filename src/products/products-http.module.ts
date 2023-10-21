@@ -10,6 +10,13 @@ import { FindProductCategoriesService } from './services/find-product-categories
 import { FindProductCategoryByIdService } from './services/find-product-category-by-id.service';
 import { UpdateProductCategoryService } from './services/update-product-category.service';
 import { FindProductCategoryByNameService } from './services/find-product-category-by-name.service';
+import { FindProductCategorySizesService } from './services/find-product-category-sizes.service';
+import { ProductCategorySizesTypeORMRepository } from './repositories/product-category-sizes-typeorm.repository';
+import { CountProductCategorySizesService } from './services/count-product-category-sizes.service';
+import { FindProductCategorySizeByCategoryIdAndNameService } from './services/find-product-category-size-by-category-id-and-name.service';
+import { CreateProductCategorySizeService } from './services/create-product-category-sizes.service';
+import { FindProductCategorySizeByIdService } from './services/find-product-category-size-by-id.service';
+import { UpdateProductCategorySizeService } from './services/update-product-category-size.service';
 
 @Module({
   imports: [ProductsModule],
@@ -25,7 +32,14 @@ import { FindProductCategoryByNameService } from './services/find-product-catego
     FindProductCategoryByIdService,
     CreateProductCategoryService,
     UpdateProductCategoryService,
+    ProductCategorySizesTypeORMRepository,
+    CountProductCategorySizesService,
     FindProductCategoryByNameService,
+    FindProductCategorySizesService,
+    FindProductCategorySizeByIdService,
+    FindProductCategorySizeByCategoryIdAndNameService,
+    CreateProductCategorySizeService,
+    UpdateProductCategorySizeService,
   ],
 })
 export class ProductsHttpModule {}

@@ -19,7 +19,7 @@ export abstract class AbstractPagingDto<T extends AbstractEntity> {
       conditions: JSON.parse(this.conditions ?? null),
       skip: this.skip ? +this.skip : 0,
       limit: this.limit ? +this.limit : 15,
-      sort: this.sort ? JSON.parse(null) : { createdAt: -1 },
+      sort: this.sort ? JSON.parse(this.sort) : { createdAt: -1 },
     };
   }
 }

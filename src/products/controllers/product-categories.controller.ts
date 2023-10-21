@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-  Req,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { CustomRequest } from '../../common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { CreateProductCategoryService } from '../services/create-product-category.service';
@@ -18,7 +9,7 @@ import { UpdateProductCategoryDto } from '../dto/update-product-category.dto';
 import { ProductCategoryPagingDto } from '../dto/product-category-paging.dto';
 import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
 
-@Controller('product-categories')
+@Controller('products/categories')
 export class ProductCategoriesController {
   constructor(
     private readonly findProductCategoriesService: FindProductCategoriesService,
@@ -28,12 +19,9 @@ export class ProductCategoriesController {
   ) {}
 
   @Get()
-  private find(
-    @Req() request: CustomRequest,
-    @Query() productCategoryPagingDto: ProductCategoryPagingDto,
-  ) {
+  private find(@Req() request: CustomRequest) {
     return this.findProductCategoriesService.execute(
-      productCategoryPagingDto,
+      new ProductCategoryPagingDto(request.query),
       request.correlationId,
     );
   }

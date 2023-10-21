@@ -23,10 +23,6 @@ export class AuthController {
   @Post('refresh-token')
   @UseGuards(AuthGuard)
   async refreshToken(@Req() request: CustomRequest) {
-    console.log({
-      headers: request.headers,
-    });
-
     return this.refreshTokenService.execute(
       request.headers['authorization'] as string,
       request.correlationId,

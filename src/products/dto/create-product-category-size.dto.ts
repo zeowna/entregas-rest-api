@@ -8,7 +8,6 @@ export class CreateProductCategorySizeDto extends AbstractEntityDto<ProductCateg
   @IsString()
   name: string;
 
-  @IsDefined()
   categoryId: number;
 
   toEntity() {
