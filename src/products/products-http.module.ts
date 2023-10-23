@@ -17,6 +17,14 @@ import { FindProductCategorySizeByCategoryIdAndNameService } from './services/fi
 import { CreateProductCategorySizeService } from './services/create-product-category-sizes.service';
 import { FindProductCategorySizeByIdService } from './services/find-product-category-size-by-id.service';
 import { UpdateProductCategorySizeService } from './services/update-product-category-size.service';
+import { CreateProductService } from './services/create-product.service';
+import { FindProductByNameService } from './services/find-product-by-name.service';
+import { ProductsTypeORMRepository } from './repositories/products-typeorm.repository';
+import { FindProductsService } from './services/find-products.service';
+import { CountProductsService } from './services/count-products.service';
+import { FindProductByIdService } from './services/find-product-id.service';
+import { UpdateProductService } from './services/update-product.service';
+import { UploadProductPictureService } from './services/upload-product-picture.service';
 
 @Module({
   imports: [ProductsModule],
@@ -40,6 +48,14 @@ import { UpdateProductCategorySizeService } from './services/update-product-cate
     FindProductCategorySizeByCategoryIdAndNameService,
     CreateProductCategorySizeService,
     UpdateProductCategorySizeService,
+    ProductsTypeORMRepository,
+    FindProductByNameService,
+    FindProductByIdService,
+    CountProductsService,
+    FindProductsService,
+    CreateProductService,
+    UpdateProductService,
+    UploadProductPictureService,
   ],
 })
 export class ProductsHttpModule {}

@@ -6,30 +6,30 @@ import { User } from '../entities/user.entity';
 
 export abstract class CreateUserDto extends AbstractEntityDto<User> {
   @IsDefined({
-    message: i18nValidationMessage('validation.user.name.required'),
+    message: i18nValidationMessage('validation.User.name.required'),
   })
   @IsString({
-    message: i18nValidationMessage('validation.user.name.isString'),
+    message: i18nValidationMessage('validation.User.name.isString'),
   })
   name: string;
 
   @IsDefined({
-    message: i18nValidationMessage('validation.user.birthday.required'),
+    message: i18nValidationMessage('validation.User.birthday.required'),
   })
   @IsDateString(
     {},
-    { message: i18nValidationMessage('validation.user.birthday.isDate') },
+    { message: i18nValidationMessage('validation.User.birthday.isDate') },
   )
   birthday: Date;
 
   @IsDefined({
-    message: i18nValidationMessage('validation.user.cpf.required'),
+    message: i18nValidationMessage('validation.User.cpf.required'),
   })
   @IsCPF({
-    message: i18nValidationMessage('validation.user.cpf.invalid'),
+    message: i18nValidationMessage('validation.User.cpf.invalid'),
   })
   // @Validate(IsUserCpfAlreadyInUse, {
-  //   message: i18nValidationMessage('validation.user.cpf.exists'),
+  //   message: i18nValidationMessage('validation.User.cpf.exists'),
   // })
   cpf: string;
 
@@ -38,18 +38,18 @@ export abstract class CreateUserDto extends AbstractEntityDto<User> {
   })
   @IsEmail(
     {},
-    { message: i18nValidationMessage('validation.user.email.isEmail') },
+    { message: i18nValidationMessage('validation.User.email.isEmail') },
   )
   // @Validate(IsUserEmailAlreadyInUse, {
-  //   message: i18nValidationMessage('validation.user.email.exists'),
+  //   message: i18nValidationMessage('validation.User.email.exists'),
   // })
   email: string;
 
   @IsDefined({
-    message: i18nValidationMessage('validation.user.password.required'),
+    message: i18nValidationMessage('validation.User.password.required'),
   })
   @IsString({
-    message: i18nValidationMessage('validation.user.password.isString'),
+    message: i18nValidationMessage('validation.User.password.isString'),
   })
   password: string;
 }

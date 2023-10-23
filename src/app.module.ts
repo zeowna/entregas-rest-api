@@ -18,6 +18,7 @@ import {
 } from './common';
 import { ZeownaAuthModule } from './common/auth';
 import { AuthModule } from './auth/auth.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { AuthModule } from './auth/auth.module';
     OrdersHttpModule,
     PartnersHttpModule,
     AddressesHttpModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [

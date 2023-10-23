@@ -12,4 +12,8 @@ export class ProductsTypeORMRepository extends AbstractTypeORMRepository<Product
   ) {
     super(productRepo);
   }
+
+  async findByName(name: string) {
+    return this.productRepo.findOneBy({ name });
+  }
 }

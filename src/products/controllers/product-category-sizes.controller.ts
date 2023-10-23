@@ -14,7 +14,7 @@ export class ProductCategorySizesController {
     private readonly updateProductCategorySizesService: UpdateProductCategorySizeService,
   ) {}
 
-  @Post(':productCategoryId/sizes')
+  @Post(':productCategoryId([0-9]+)/sizes')
   create(
     @Req() request: CustomRequest,
     @Param('productCategoryId') productCategoryId: string,
@@ -28,7 +28,7 @@ export class ProductCategorySizesController {
     );
   }
 
-  @Get(':productCategoryId/sizes')
+  @Get(':productCategoryId([0-9]+)/sizes')
   find(
     @Req() request: CustomRequest,
     @Param('productCategoryId') productCategoryId: string,
@@ -39,7 +39,7 @@ export class ProductCategorySizesController {
     );
   }
 
-  @Patch(':productCategoryId/sizes/:id')
+  @Patch(':productCategoryId([0-9]+)/sizes/:id')
   update(
     @Req() request: CustomRequest,
     @Param('id') id: string,

@@ -1,6 +1,6 @@
 {
   "common": {
-    "id": "id",
+    "id": "ID",
     "createdAt": "criado em",
     "updatedAt": "atualizado em"
   },
@@ -32,6 +32,15 @@
     "entityName": "Pedido",
     "properties": {
       "id": "$t(entity.common.id)",
+      "createdAt": "$t(entity.common.createdAt)",
+      "updatedAt": "$t(entity.common.updatedAt)"
+    }
+  },
+  "Partner": {
+    "entityName": "Parceiro",
+    "properties": {
+      "id": "$t(entity.common.id)",
+      "cnpj": "CNPJ",
       "createdAt": "$t(entity.common.createdAt)",
       "updatedAt": "$t(entity.common.updatedAt)"
     }
