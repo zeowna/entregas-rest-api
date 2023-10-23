@@ -14,6 +14,7 @@ import { FindPartnerProductsService } from './services/find-partner-products.ser
 import { FindPartnerByIdService } from './services/find-partner-by-id.service';
 import { FindPartnerProductByIdService } from './services/find-partner-product-by-id.service';
 import { UpdatePartnerProductService } from './services/update-partner-product.service';
+import { FindPartnerByCNPJService } from './services/find-partner-by-cnpj.service';
 
 @Module({
   imports: [PartnersModule, AddressesHttpModule],
@@ -30,6 +31,7 @@ import { UpdatePartnerProductService } from './services/update-partner-product.s
     FindPartnerProductsService,
     FindPartnerProductByIdService,
     UpdatePartnerProductService,
+    FindPartnerByCNPJService,
   ],
   exports: [
     CreatePartnerService,

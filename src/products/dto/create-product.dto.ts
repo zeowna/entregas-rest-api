@@ -1,8 +1,8 @@
-import { ProductCategory } from '../entities/product-category.entity';
-import { IsDefined, IsOptional, IsString } from 'class-validator';
+import { IsDefined, IsNumber, IsOptional, IsString } from 'class-validator';
 import { AbstractEntityDto } from '../../common';
 import { Product } from '../entities/product.entity';
 import { ProductStatus } from '../entities/product-status.enum';
+import { ProductCategory } from '../entities/product-category.entity';
 
 export class CreateProductDto extends AbstractEntityDto<Product> {
   @IsDefined()
@@ -10,8 +10,8 @@ export class CreateProductDto extends AbstractEntityDto<Product> {
   name: string;
 
   @IsDefined()
-  @IsString()
-  category: ProductCategory;
+  @IsNumber()
+  categoryId: number;
 
   @IsDefined()
   @IsString()
@@ -28,7 +28,7 @@ export class CreateProductDto extends AbstractEntityDto<Product> {
   toEntity() {
     return new Product({
       name: this.name,
-      category: this.category,
+      category: new ProductCategory({ id: this.categoryId }),
       size: this.size,
       status: this.status,
       pictureURI: this.pictureURI,

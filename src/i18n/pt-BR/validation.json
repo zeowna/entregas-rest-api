@@ -12,7 +12,7 @@
   "auth": {
     "password": "$t(entity.User.entityName) $t(entity.User.properties.password) não corresponde"
   },
-  "user": {
+  "User": {
     "name": {
       "required": "$t(entity.User.properties.name) $t(validation.required)",
       "isString": "$t(entity.User.properties.name) $t(validation.isString)"
@@ -42,6 +42,16 @@
     "type": {
       "required": "$t(entity.User.properties.type) $t(validation.required)",
       "isString": "$t(entity.User.properties.type) $t(validation.isString)"
+    }
+  },
+  "Partner": {
+    "name": {
+      "required": "$t(entity.User.properties.name) $t(validation.required)",
+      "isString": "$t(entity.User.properties.name) $t(validation.isString)"
+    },
+    "cnpj": {
+      "required": "$t(entity.Partner.properties.name) $t(validation.required)",
+      "isCNPJ": "$t(entity.Partner.properties.cnpj) precisa ser um CNPJ valido"
     }
   }
 }

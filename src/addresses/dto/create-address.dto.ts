@@ -1,27 +1,33 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsDefined, IsNumber, IsOptional, IsString } from 'class-validator';
 import { AbstractEntityDto } from '../../common';
 import { Address } from '../entities/address.entity';
 
 export class CreateAddressDto extends AbstractEntityDto<Address> {
+  @IsDefined()
   @IsString()
   cep: string;
 
+  @IsDefined()
   @IsString()
   street: string;
 
+  @IsDefined()
   @IsString()
   neighbourhood: string;
 
-  @IsString()
+  @IsDefined()
+  @IsNumber()
   number: number;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   complement?: string;
 
+  @IsDefined()
   @IsString()
   city: string;
 
+  @IsDefined()
   @IsString()
   state: string;
 

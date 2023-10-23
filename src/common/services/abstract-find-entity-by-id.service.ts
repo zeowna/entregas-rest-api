@@ -3,6 +3,7 @@ import { RepositoryInterface } from '../repositories';
 import { LoggerInterface } from '../logger';
 import { NotFoundException } from '@nestjs/common';
 import { AbstractService } from './abstract.service';
+import { I18nContext } from 'nestjs-i18n';
 
 export class AbstractFindEntityByIdService<
   T extends AbstractEntity,
@@ -20,7 +21,7 @@ export class AbstractFindEntityByIdService<
     return this.repositoryImpl.findById(id);
   }
 
-  async execute(id: ID, correlationId: string) {
+  async execute(id: ID, correlationId: string, i18n?: I18nContext) {
     try {
       this.logBefore({ id, correlationId });
 
@@ -28,7 +29,18 @@ export class AbstractFindEntityByIdService<
 
       if (!found) {
         throw new NotFoundException(
-          `${this.repositoryImpl.entityName} not found with id: ${id}`,
+          i18n.translate('validation.entity.notFound', {
+            args: {
+              entityName: i18n.translate(
+                `entity.${this.repositoryImpl.entityName}.entityName`,
+              ),
+              param: i18n.translate(
+                `entity.${this.repositoryImpl.entityName}.properties.id`,
+              ),
+              value: id,
+            },
+          }),
+          //`${this.repositoryImpl.entityName} not found with id: ${id}`,
         );
       }
 

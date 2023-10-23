@@ -12,4 +12,8 @@ export class PartnersTypeORMRepository extends AbstractTypeORMRepository<Partner
   ) {
     super(partnerRepository);
   }
+
+  async findByCnpj(cnpj: string) {
+    return this.partnerRepository.findOneBy({ cnpj });
+  }
 }

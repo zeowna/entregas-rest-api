@@ -19,15 +19,15 @@ export class ProductCategoriesController {
   ) {}
 
   @Get()
-  private find(@Req() request: CustomRequest) {
+  async find(@Req() request: CustomRequest) {
     return this.findProductCategoriesService.execute(
       new ProductCategoryPagingDto(request.query),
       request.correlationId,
     );
   }
 
-  @Get(':id')
-  private findById(
+  @Get(':id([0-9]+)')
+  async findById(
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @I18n() i18n: I18nContext,
@@ -36,7 +36,7 @@ export class ProductCategoriesController {
   }
 
   @Post()
-  private create(
+  async create(
     @Req() request: CustomRequest,
     @Body() updateProductCategoryDto: CreateProductCategoryDto,
   ) {
@@ -46,8 +46,8 @@ export class ProductCategoriesController {
     );
   }
 
-  @Patch(':id')
-  private update(
+  @Patch(':id([0-9]+)')
+  async update(
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @Body() updateUserDto: UpdateProductCategoryDto,
