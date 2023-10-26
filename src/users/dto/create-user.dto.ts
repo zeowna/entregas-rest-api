@@ -28,9 +28,6 @@ export abstract class CreateUserDto extends AbstractEntityDto<User> {
   @IsCPF({
     message: i18nValidationMessage('validation.User.cpf.invalid'),
   })
-  // @Validate(IsUserCpfAlreadyInUse, {
-  //   message: i18nValidationMessage('validation.User.cpf.exists'),
-  // })
   cpf: string;
 
   @IsDefined({
@@ -40,9 +37,6 @@ export abstract class CreateUserDto extends AbstractEntityDto<User> {
     {},
     { message: i18nValidationMessage('validation.User.email.isEmail') },
   )
-  // @Validate(IsUserEmailAlreadyInUse, {
-  //   message: i18nValidationMessage('validation.User.email.exists'),
-  // })
   email: string;
 
   @IsDefined({

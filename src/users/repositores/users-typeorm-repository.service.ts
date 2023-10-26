@@ -13,14 +13,14 @@ export class UsersTypeORMRepository<
   }
 
   async findByEmail(email: string) {
-    return (this.usersRepository as Repository<User>).findOne({
-      where: { email },
+    return (this.usersRepository as Repository<User>).findOneBy({
+      email,
     });
   }
 
   async findByCpf(cpf: string) {
-    return (this.usersRepository as Repository<User>).findOne({
-      where: { cpf },
+    return (this.usersRepository as Repository<User>).findOneBy({
+      cpf,
     });
   }
 }

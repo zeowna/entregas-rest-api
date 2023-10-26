@@ -47,10 +47,10 @@ export class AdminUsersController {
   @Post()
   private create(
     @Req() request: CustomRequest,
-    @Body() createCustomerDto: CreateAdminUserDto,
+    @Body() createAdminUserDto: CreateAdminUserDto,
   ) {
     return this.createUserService.execute(
-      createCustomerDto,
+      createAdminUserDto,
       request?.correlationId,
     );
   }

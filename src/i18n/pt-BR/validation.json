@@ -52,6 +52,9 @@
     "cnpj": {
       "required": "$t(entity.Partner.properties.name) $t(validation.required)",
       "isCNPJ": "$t(entity.Partner.properties.cnpj) precisa ser um CNPJ valido"
+    },
+    "pictureURI": {
+      "isString": "$t(entity.User.properties.pictureURI) $t(validation.isString)"
     }
   }
 }

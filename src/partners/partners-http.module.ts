@@ -15,10 +15,23 @@ import { FindPartnerByIdService } from './services/find-partner-by-id.service';
 import { FindPartnerProductByIdService } from './services/find-partner-product-by-id.service';
 import { UpdatePartnerProductService } from './services/update-partner-product.service';
 import { FindPartnerByCNPJService } from './services/find-partner-by-cnpj.service';
+import { UpdatePartnerService } from './services/update-partner.service';
+import { UploadPartnerPictureService } from './services/upload-partner-picture.service';
+import {
+  FindPartnerUserByPartnerId,
+  PartnerUsersController,
+} from './controllers/partner-users.controller';
+import { UsersHttpModule } from '../users/users-http.module';
+import { PartnerUsersTypeORMRepository } from './repositores/partner-users-typeorm.repository';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [PartnersModule, AddressesHttpModule],
-  controllers: [PartnersController, PartnerProductsController],
+  imports: [PartnersModule, UsersModule, UsersHttpModule, AddressesHttpModule],
+  controllers: [
+    PartnersController,
+    PartnerUsersController,
+    PartnerProductsController,
+  ],
   providers: [
     PartnersTypeORMRepository,
     PartnerProductsTypeORMRepository,
@@ -32,6 +45,10 @@ import { FindPartnerByCNPJService } from './services/find-partner-by-cnpj.servic
     FindPartnerProductByIdService,
     UpdatePartnerProductService,
     FindPartnerByCNPJService,
+    UpdatePartnerService,
+    UploadPartnerPictureService,
+    PartnerUsersTypeORMRepository,
+    FindPartnerUserByPartnerId,
   ],
   exports: [
     CreatePartnerService,

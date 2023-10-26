@@ -40,7 +40,6 @@ export class AbstractFindEntityByIdService<
               value: id,
             },
           }),
-          //`${this.repositoryImpl.entityName} not found with id: ${id}`,
         );
       }
 

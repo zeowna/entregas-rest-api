@@ -32,6 +32,7 @@ import { AdminUsersController } from './controllers/admin-users.controller';
     UpdateUserService,
   ],
   exports: [
+    UsersTypeORMRepository,
     FindUserByEmailService,
     FindUserByIdService,
     CreateUserService,

@@ -1,11 +1,26 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FindPartnersService } from '../services/find-partners.service';
 import { FindPartnersDto } from '../dto/find-partiners.dto';
-import { CustomRequest } from '../../common';
+import { CustomRequest, ID } from '../../common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { FindPartnerByIdService } from '../services/find-partner-by-id.service';
 import { CreatePartnerDto } from '../dto/create-partner.dto';
 import { CreatePartnerService } from '../services/create-partner.service';
+import { UpdatePartnerDto } from '../dto/update-partner.dto';
+import { UpdatePartnerService } from '../services/update-partner.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadPartnerPictureService } from '../services/upload-partner-picture.service';
 
 @Controller('partners')
 export class PartnersController {
@@ -13,6 +28,8 @@ export class PartnersController {
     private readonly findPartnersService: FindPartnersService,
     private readonly findPartnerById: FindPartnerByIdService,
     private readonly createPartnerService: CreatePartnerService,
+    private readonly updatePartnerService: UpdatePartnerService,
+    private readonly uploadPartnerPictureService: UploadPartnerPictureService,
   ) {}
 
   @Get()
@@ -43,6 +60,33 @@ export class PartnersController {
     return this.createPartnerService.execute(
       updateProductCategoryDto,
       request?.correlationId,
+    );
+  }
+
+  @Patch(':id([0-9]+)')
+  async update(
+    @Req() request: CustomRequest,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdatePartnerDto,
+  ) {
+    return this.updatePartnerService.execute(
+      +id,
+      updateUserDto,
+      request?.correlationId,
+    );
+  }
+
+  @Post(':id([0-9]+)/pictures')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @Req() request: CustomRequest,
+    @Param('id') id: ID,
+    @UploadedFile('file') file: Express.Multer.File,
+  ) {
+    return this.uploadPartnerPictureService.execute(
+      +id,
+      file,
+      request.correlationId,
     );
   }
 }

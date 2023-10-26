@@ -12,6 +12,7 @@ import { CreateAddressDto } from '../../addresses/dto/create-address.dto';
 import { Type } from 'class-transformer';
 import { IsCNPJ } from 'brazilian-class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
+import { PartnerStatus } from '../entities/partner.status';
 
 export class CreatePartnerDto extends AbstractEntityDto<Partner> {
   @IsDefined({
@@ -32,8 +33,16 @@ export class CreatePartnerDto extends AbstractEntityDto<Partner> {
   cnpj: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({
+    message: i18nValidationMessage('validation.Partner.pictureURI.isString'),
+  })
   pictureURI?: string;
+
+  @IsDefined()
+  @IsString({
+    message: i18nValidationMessage('validation.Partner.status.isString'),
+  })
+  status?: PartnerStatus;
 
   @ValidateNested({ each: true })
   @Type(() => CreateAddressDto)

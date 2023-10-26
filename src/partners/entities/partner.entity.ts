@@ -3,6 +3,7 @@ import { Address } from '../../addresses/entities/address.entity';
 import { PartnerOpenHours } from './partner-open-hours.entity';
 import { AbstractTypeORMEntity, ExcludeMethods } from '../../common';
 import { PartnerResponse } from '../responses/partner.reponse';
+import { PartnerStatus } from './partner.status';
 
 @Entity()
 export class Partner extends AbstractTypeORMEntity {
@@ -14,6 +15,9 @@ export class Partner extends AbstractTypeORMEntity {
 
   @Column({ nullable: true })
   pictureURI?: string;
+
+  @Column({ default: PartnerStatus.Active })
+  status: PartnerStatus;
 
   @OneToOne(() => Address, { eager: true })
   @JoinColumn()

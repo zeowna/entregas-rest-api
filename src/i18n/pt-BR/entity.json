@@ -40,7 +40,10 @@
     "entityName": "Parceiro",
     "properties": {
       "id": "$t(entity.common.id)",
+      "name": "Nome",
       "cnpj": "CNPJ",
+      "pictureURI": "Foto",
+      "status": "Status",
       "createdAt": "$t(entity.common.createdAt)",
       "updatedAt": "$t(entity.common.updatedAt)"
     }
