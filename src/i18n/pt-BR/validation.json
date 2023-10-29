@@ -55,6 +55,12 @@
     },
     "pictureURI": {
       "isString": "$t(entity.User.properties.pictureURI) $t(validation.isString)"
+    },
+    "openingHour": {
+      "isString": "$t(entity.User.properties.closingHour) $t(validation.isString)"
+    },
+    "closingHour": {
+      "isString": "$t(entity.User.properties.closingHour) $t(validation.isString)"
     }
   }
 }

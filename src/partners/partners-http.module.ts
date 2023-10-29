@@ -24,11 +24,14 @@ import {
 import { UsersHttpModule } from '../users/users-http.module';
 import { PartnerUsersTypeORMRepository } from './repositores/partner-users-typeorm.repository';
 import { UsersModule } from '../users/users.module';
+import { CreatePartnerAddressService } from './services/create-partner-address.service';
+import { PartnerAddressesController } from './controllers/partner-addresses.controller';
 
 @Module({
   imports: [PartnersModule, UsersModule, UsersHttpModule, AddressesHttpModule],
   controllers: [
     PartnersController,
+    PartnerAddressesController,
     PartnerUsersController,
     PartnerProductsController,
   ],
@@ -49,6 +52,7 @@ import { UsersModule } from '../users/users.module';
     UploadPartnerPictureService,
     PartnerUsersTypeORMRepository,
     FindPartnerUserByPartnerId,
+    CreatePartnerAddressService,
   ],
   exports: [
     CreatePartnerService,

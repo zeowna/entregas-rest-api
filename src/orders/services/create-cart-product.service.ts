@@ -51,7 +51,11 @@ export class CreateCartProductService extends AbstractCreateEntityService<CartPr
     });
   }
 
-  protected async afterCreate(cartProduct: CartProduct, correlationId: string) {
+  protected async afterCreate(
+    createCartProductDto: CreateCartProductDto,
+    cartProduct: CartProduct,
+    correlationId: string,
+  ) {
     await this.updatePartnerProductService.execute(
       cartProduct.partnerProduct.id,
       new UpdatePartnerProductDto({

@@ -1,7 +1,6 @@
 import { AbstractEntityPresenter } from '../../common';
 import { Partner } from '../entities/partner.entity';
 import { Address } from '../../addresses/entities/address.entity';
-import { PartnerOpenHoursResponse } from './partner-open-hours.reponse';
 import { PartnerStatus } from '../entities/partner.status';
 
 export class PartnerResponse extends AbstractEntityPresenter<Partner> {
@@ -15,7 +14,9 @@ export class PartnerResponse extends AbstractEntityPresenter<Partner> {
 
   address: Address;
 
-  openHours: PartnerOpenHoursResponse[];
+  openingHours: string;
+
+  closingHours: string;
 
   constructor(props: Partner) {
     super(props);
@@ -24,8 +25,7 @@ export class PartnerResponse extends AbstractEntityPresenter<Partner> {
     this.pictureURI = props?.pictureURI;
     this.status = props?.status;
     this.address = props?.address;
-    this.openHours = (props?.openHours ?? []).map((openHours) =>
-      openHours.present(),
-    );
+    this.openingHours = props?.openingHours;
+    this.closingHours = props?.closingHours;
   }
 }

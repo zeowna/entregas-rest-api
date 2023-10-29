@@ -44,6 +44,8 @@
       "cnpj": "CNPJ",
       "pictureURI": "Foto",
       "status": "Status",
+      "openingHour": "Horário de abertura",
+      "closingHour": "Horário de encerramento",
       "createdAt": "$t(entity.common.createdAt)",
       "updatedAt": "$t(entity.common.updatedAt)"
     }

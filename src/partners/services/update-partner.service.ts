@@ -28,6 +28,10 @@ export class UpdatePartnerService extends AbstractUpdateEntityService<Partner> {
     updateEntityDto: UpdatePartnerDto,
     correlationId: string,
   ) {
+    if (!updateEntityDto.cnpj) {
+      return updateEntityDto.toEntity();
+    }
+
     const existing = await this.findPartnerByCNPJ.execute(
       updateEntityDto.cnpj,
       correlationId,
@@ -38,14 +42,6 @@ export class UpdatePartnerService extends AbstractUpdateEntityService<Partner> {
         `${this.partnersRepository.entityName} already exist with cnpj: ${updateEntityDto.cnpj}`,
       );
     }
-
-    const address = await this.updateAddressService.execute(
-      existing.address.id,
-      updateEntityDto.address,
-      correlationId,
-    );
-
-    updateEntityDto.addressId = address.id;
 
     return updateEntityDto.toEntity();
   }

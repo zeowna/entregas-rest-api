@@ -1,18 +1,10 @@
-import {
-  IsDefined,
-  IsOptional,
-  IsString,
-  MaxLength,
-  ValidateNested,
-} from 'class-validator';
+import { IsDefined, IsOptional, IsString, MaxLength } from 'class-validator';
 import { AbstractEntityDto, ID } from '../../common';
 import { Partner } from '../entities/partner.entity';
-import { Address } from '../../addresses/entities/address.entity';
-import { CreateAddressDto } from '../../addresses/dto/create-address.dto';
-import { Type } from 'class-transformer';
 import { IsCNPJ } from 'brazilian-class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { PartnerStatus } from '../entities/partner.status';
+import { Address } from '../../addresses/entities/address.entity';
 
 export class CreatePartnerDto extends AbstractEntityDto<Partner> {
   @IsDefined({
@@ -44,9 +36,17 @@ export class CreatePartnerDto extends AbstractEntityDto<Partner> {
   })
   status?: PartnerStatus;
 
-  @ValidateNested({ each: true })
-  @Type(() => CreateAddressDto)
-  address: CreateAddressDto;
+  @IsDefined()
+  @IsString({
+    message: i18nValidationMessage('validation.Partner.openingHour.isString'),
+  })
+  openingHours: string;
+
+  @IsDefined()
+  @IsString({
+    message: i18nValidationMessage('validation.Partner.closingHour.isString'),
+  })
+  closingHours: string;
 
   addressId: ID;
 
@@ -55,6 +55,8 @@ export class CreatePartnerDto extends AbstractEntityDto<Partner> {
       name: this.name,
       cnpj: this.cnpj,
       pictureURI: this.pictureURI,
+      openingHours: this.openingHours,
+      closingHours: this.closingHours,
       address: new Address({ id: this.addressId }),
     });
   }

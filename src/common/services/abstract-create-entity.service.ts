@@ -21,7 +21,11 @@ export abstract class AbstractCreateEntityService<
     return createEntityDto.toEntity();
   }
 
-  protected async afterCreate(entity: T, correlationId: string) {
+  protected async afterCreate(
+    createEntityDto: AbstractEntityDto<T>,
+    entity: T,
+    correlationId: string,
+  ) {
     return;
   }
 
@@ -37,9 +41,9 @@ export abstract class AbstractCreateEntityService<
         await this.beforeCreate(createEntityDto, correlationId),
       );
 
-      await this.afterCreate(created, correlationId);
+      await this.afterCreate(createEntityDto, created, correlationId);
 
-      this.logBefore({
+      this.logAfter({
         success: true,
         created,
         createEntityDto,

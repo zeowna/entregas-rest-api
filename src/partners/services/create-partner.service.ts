@@ -32,13 +32,6 @@ export class CreatePartnerService extends AbstractCreateEntityService<Partner> {
       );
     }
 
-    const address = await this.createAddressService.execute(
-      createEntityDto.address,
-      correlationId,
-    );
-
-    createEntityDto.addressId = address.id;
-
     return super.beforeCreate(createEntityDto, correlationId);
   }
 }

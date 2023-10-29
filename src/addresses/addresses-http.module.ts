@@ -17,6 +17,11 @@ import { UpdateAddressService } from './services/update-address.service';
     UpdateAddressService,
     ViaCepService,
   ],
-  exports: [CreateAddressService, UpdateAddressService, FindAddressByIdService],
+  exports: [
+    AddressesTypeORMRepository,
+    CreateAddressService,
+    UpdateAddressService,
+    FindAddressByIdService,
+  ],
 })
 export class AddressesHttpModule {}
