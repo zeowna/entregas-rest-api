@@ -95,7 +95,7 @@ export class QueryTypeormConditions<T extends AbstractTypeORMEntity>
 
     const typeormConditions = this.reduceQueryParams(this.plainConditions);
 
-    if (Object.values(typeormConditions) && !or?.length) {
+    if (!Object.values(typeormConditions).length && !or?.length) {
       return null;
     }
 

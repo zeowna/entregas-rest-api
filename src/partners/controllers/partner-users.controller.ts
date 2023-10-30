@@ -2,104 +2,48 @@ import {
   Body,
   Controller,
   Get,
-  Injectable,
-  NotFoundException,
   Param,
+  Patch,
   Post,
   Req,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { CreateUserService } from '../../users/services/create-user.service';
-import {
-  AbstractService,
-  CustomRequest,
-  ID,
-  NestLoggerService,
-} from '../../common';
+import { CustomRequest, ID } from '../../common';
 import { CreatePartnerUserDto } from '../dto/create-partner-user.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { FindUserByIdService } from '../../users/services/find-user-by-id.service';
-import { PartnerUser } from '../../users/entities/partner-user.entity';
-import { PartnerUsersTypeORMRepository } from '../repositores/partner-users-typeorm.repository';
-import { randomUUID } from 'crypto';
-
-@Injectable()
-export class FindPartnerUserByPartnerId extends AbstractService<PartnerUser> {
-  constructor(
-    private readonly usersRepository: PartnerUsersTypeORMRepository,
-    private readonly logger: NestLoggerService,
-  ) {
-    super(logger);
-  }
-
-  async execute(partnerId: ID, correlationId: string, i18n: I18nContext) {
-    try {
-      this.logBefore({
-        partnerId,
-        correlationId,
-      });
-
-      const found = await this.usersRepository.findByPartnerId(partnerId);
-
-      if (!found) {
-        throw new NotFoundException(
-          i18n.translate('validation.entity.notFound', {
-            args: {
-              entityName: i18n.translate(
-                `entity.${this.usersRepository.entityName}.entityName`,
-              ),
-              param: i18n.translate(`partnerId`),
-              value: partnerId,
-            },
-          }),
-        );
-      }
-
-      this.logAfter({
-        success: true,
-        correlationId,
-        found,
-      });
-
-      return found;
-    } catch (err) {
-      this.logAfter({ success: false, correlationId, err });
-      throw err;
-    }
-  }
-}
-
-@Injectable()
-export class CreatePartnerUserService extends CreateUserService {
-  protected async beforeCreate(createUserDto: CreatePartnerUserDto) {
-    const newPassword = randomUUID();
-
-    createUserDto.password = newPassword;
-
-    console.log({ newPassword });
-
-    return super.beforeCreate(createUserDto);
-  }
-}
+import { FindUsersService } from '../../users/services/find-users.service';
+import { UserPagingDto } from '../../users/dto/user-paging.dto';
+import { CreatePartnerUserService } from '../services/create-partner-user.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadPartnerUserPictureService } from '../services/upload-partner-user-picture.service';
+import { UpdateUserService } from '../../users/services/update-user.service';
+import { UpdatePartnerUserDto } from '../dto/update-partner-user.dto';
 
 @Controller('partners')
 export class PartnerUsersController {
   constructor(
-    private readonly findPartnerUserByPartnerId: FindPartnerUserByPartnerId,
-    private readonly findUserById: FindUserByIdService,
-    private readonly createPartnerUser: CreateUserService,
+    private readonly findUsersService: FindUsersService,
+    private readonly findUserByIdService: FindUserByIdService,
+    private readonly createPartnerUser: CreatePartnerUserService,
+    private readonly updateUserService: UpdateUserService,
+    private readonly uploadPartnerUserPictureService: UploadPartnerUserPictureService,
   ) {}
 
   @Get(':partnerId([0-9]+)/users')
   private findByPartnerId(
     @Req() request: CustomRequest,
     @Param('partnerId') partnerId: string,
-    @I18n() i18n: I18nContext,
   ) {
-    return this.findPartnerUserByPartnerId.execute(
-      +partnerId,
-      request?.correlationId,
-      i18n,
-    );
+    const userPagingDto = new UserPagingDto(request.query);
+    const conditions = JSON.parse(userPagingDto.conditions);
+    conditions.partner = {
+      eq: +partnerId,
+    };
+    userPagingDto.conditions = JSON.stringify(conditions);
+
+    return this.findUsersService.execute(userPagingDto, request.correlationId);
   }
 
   @Get(':partnerId([0-9]+)/users/:id([0-9]+)')
@@ -108,11 +52,11 @@ export class PartnerUsersController {
     @Param('id') id: string,
     @I18n() i18n: I18nContext,
   ) {
-    return this.findUserById.execute(+id, request?.correlationId, i18n);
+    return this.findUserByIdService.execute(+id, request?.correlationId, i18n);
   }
 
   @Post(':partnerId([0-9]+)/users')
-  private create(
+  async create(
     @Req() request: CustomRequest,
     @Param('partnerId') partnerId: string,
     @Body() createPartnerUserDto: CreatePartnerUserDto,
@@ -122,6 +66,33 @@ export class PartnerUsersController {
     return this.createPartnerUser.execute(
       createPartnerUserDto,
       request?.correlationId,
+    );
+  }
+
+  @Patch(':partnerId([0-9]+)/users/:id([0-9]+)')
+  async update(
+    @Req() request: CustomRequest,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdatePartnerUserDto,
+  ) {
+    return this.updateUserService.execute(
+      +id,
+      updateUserDto,
+      request?.correlationId,
+    );
+  }
+
+  @Post(':partnerId([0-9]+)/users/:id([0-9]+)/pictures')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @Req() request: CustomRequest,
+    @Param('id') id: ID,
+    @UploadedFile('file') file: Express.Multer.File,
+  ) {
+    return this.uploadPartnerUserPictureService.execute(
+      +id,
+      file,
+      request.correlationId,
     );
   }
 }

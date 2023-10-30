@@ -33,10 +33,12 @@ import { AdminUsersController } from './controllers/admin-users.controller';
   ],
   exports: [
     UsersTypeORMRepository,
+    FindUsersService,
     FindUserByEmailService,
     FindUserByIdService,
     CreateUserService,
     UpdateUserService,
+    FindUserByCpfService,
   ],
 })
 export class UsersHttpModule {}

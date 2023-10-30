@@ -17,18 +17,24 @@ import { UpdatePartnerProductService } from './services/update-partner-product.s
 import { FindPartnerByCNPJService } from './services/find-partner-by-cnpj.service';
 import { UpdatePartnerService } from './services/update-partner.service';
 import { UploadPartnerPictureService } from './services/upload-partner-picture.service';
-import {
-  FindPartnerUserByPartnerId,
-  PartnerUsersController,
-} from './controllers/partner-users.controller';
+import { PartnerUsersController } from './controllers/partner-users.controller';
 import { UsersHttpModule } from '../users/users-http.module';
 import { PartnerUsersTypeORMRepository } from './repositores/partner-users-typeorm.repository';
 import { UsersModule } from '../users/users.module';
 import { CreatePartnerAddressService } from './services/create-partner-address.service';
 import { PartnerAddressesController } from './controllers/partner-addresses.controller';
+import { CreatePartnerUserService } from './services/create-partner-user.service';
+import { HashModule } from '../hash/hash.module';
+import { UploadPartnerUserPictureService } from './services/upload-partner-user-picture.service';
 
 @Module({
-  imports: [PartnersModule, UsersModule, UsersHttpModule, AddressesHttpModule],
+  imports: [
+    HashModule,
+    PartnersModule,
+    UsersModule,
+    UsersHttpModule,
+    AddressesHttpModule,
+  ],
   controllers: [
     PartnersController,
     PartnerAddressesController,
@@ -51,8 +57,9 @@ import { PartnerAddressesController } from './controllers/partner-addresses.cont
     UpdatePartnerService,
     UploadPartnerPictureService,
     PartnerUsersTypeORMRepository,
-    FindPartnerUserByPartnerId,
     CreatePartnerAddressService,
+    CreatePartnerUserService,
+    UploadPartnerUserPictureService,
   ],
   exports: [
     CreatePartnerService,

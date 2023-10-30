@@ -45,13 +45,15 @@ export abstract class AbstractTypeORMRepository<T extends AbstractTypeORMEntity>
       return null;
     }
 
-    return this.typeORMRepositoryImpl.save(
+    await this.typeORMRepositoryImpl.save(
       this.typeORMRepositoryImpl.create({
         ...found,
         ...entity,
         id,
       }),
     );
+
+    return this.findById(id);
   }
 
   async remove(id: ID) {

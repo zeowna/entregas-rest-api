@@ -6,7 +6,7 @@ import {
   AbstractFindEntitiesResponse,
   AbstractFindEntitiesResponseProps,
 } from './abstract-find-entities.response';
-import { PlainQueryConditions } from '../inputs';
+import { Paging, PlainQueryConditions } from '../inputs';
 import { AbstractService } from './abstract.service';
 import { AbstractPagingDto } from '../dto';
 
@@ -44,9 +44,13 @@ export abstract class AbstractFindEntitiesService<
     return this.repositoryImpl.find(plainConditions, skip, limit, sort);
   }
 
+  beforeFind(paging: Paging<T>, correlationId: string) {
+    return paging;
+  }
+
   async execute(pagingDto: AbstractPagingDto<T>, correlationId: string) {
     try {
-      const paging = pagingDto.toPaging();
+      const paging = this.beforeFind(pagingDto.toPaging(), correlationId);
 
       this.logBefore({
         paging,

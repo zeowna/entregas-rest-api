@@ -28,7 +28,7 @@ export class CustomersController {
   ) {}
 
   @Get()
-  private find(
+  async find(
     @Req() request: CustomRequest,
     @Query() userPagingDto: UserPagingDto,
   ) {
@@ -36,7 +36,7 @@ export class CustomersController {
   }
 
   @Get(':id')
-  private findById(
+  async findById(
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @I18n() i18n: I18nContext,
@@ -45,7 +45,7 @@ export class CustomersController {
   }
 
   @Post()
-  private create(
+  async create(
     @Req() request: CustomRequest,
     @Body() createCustomerDto: CreateCustomerDto,
   ) {
@@ -56,7 +56,7 @@ export class CustomersController {
   }
 
   @Patch(':id')
-  private update(
+  async update(
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @Body() updateUserDto: UpdateCustomerDto,
