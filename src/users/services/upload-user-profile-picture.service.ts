@@ -2,23 +2,19 @@ import { AbstractService, ID, NestLoggerService } from '../../common';
 import { randomUUID } from 'crypto';
 import { writeFile } from 'fs/promises';
 import { Injectable } from '@nestjs/common';
-import { PartnerUsersTypeORMRepository } from '../repositores/partner-users-typeorm.repository';
-import { PartnerUser } from '../../users/entities/partner-user.entity';
+import { User } from '../entities/user.entity';
+import { UsersTypeORMRepository } from '../repositores/users-typeorm-repository.service';
 
 @Injectable()
-export class UploadPartnerUserPictureService extends AbstractService<string> {
+export class UploadUserProfilePictureService extends AbstractService<string> {
   constructor(
-    private readonly partnerUsersTypeORMRepository: PartnerUsersTypeORMRepository,
+    private readonly usersTypeORMRepository: UsersTypeORMRepository,
     private readonly logger: NestLoggerService,
   ) {
     super(logger);
   }
 
-  async execute(
-    partnerId: ID,
-    file: Express.Multer.File,
-    correlationId: string,
-  ) {
+  async execute(userID: ID, file: Express.Multer.File, correlationId: string) {
     this.logBefore({
       file: file.originalname,
       correlationId,
@@ -33,9 +29,9 @@ export class UploadPartnerUserPictureService extends AbstractService<string> {
 
     await writeFile(`${process.cwd()}/${profilePictureURI}`, file.buffer);
 
-    const updated = await this.partnerUsersTypeORMRepository.update(
-      partnerId,
-      new PartnerUser({ profilePictureURI }),
+    const updated = await this.usersTypeORMRepository.update(
+      userID,
+      new User({ profilePictureURI }),
     );
 
     this.logAfter({

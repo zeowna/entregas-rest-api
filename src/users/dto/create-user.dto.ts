@@ -31,7 +31,7 @@ export abstract class CreateUserDto extends AbstractEntityDto<User> {
   cpf: string;
 
   @IsDefined({
-    message: i18nValidationMessage('validation.required'),
+    message: i18nValidationMessage('validation.User.email.required'),
   })
   @IsEmail(
     {},

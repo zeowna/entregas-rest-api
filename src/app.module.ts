@@ -19,6 +19,8 @@ import {
 import { ZeownaAuthModule } from './common/auth';
 import { AuthModule } from './auth/auth.module';
 import { MediaModule } from './media/media.module';
+import { MeHttpModule } from './me/me-http.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -40,12 +42,14 @@ import { MediaModule } from './media/media.module';
     ZeownaAuthModule.register({ global: true }),
     TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
+    AdminModule,
     UsersHttpModule,
     ProductsHttpModule,
     OrdersHttpModule,
     PartnersHttpModule,
     AddressesHttpModule,
     MediaModule,
+    MeHttpModule,
   ],
   controllers: [AppController],
   providers: [

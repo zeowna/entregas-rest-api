@@ -10,84 +10,78 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { CustomRequest, ID } from '../../common';
-import { CreatePartnerUserDto } from '../dto/create-partner-user.dto';
-import { I18n, I18nContext } from 'nestjs-i18n';
-import { FindUserByIdService } from '../../users/services/find-user-by-id.service';
 import { FindUsersService } from '../../users/services/find-users.service';
+import { FindUserByIdService } from '../../users/services/find-user-by-id.service';
+import { CreateUserService } from '../../users/services/create-user.service';
+import { UpdateUserService } from '../../users/services/update-user.service';
+import { CustomRequest, ID } from '../../common';
 import { UserPagingDto } from '../../users/dto/user-paging.dto';
-import { CreatePartnerUserService } from '../services/create-partner-user.service';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { CreateAdminUserDto } from '../dto/create-admin-user.dto';
+import { UpdateAdminUserDto } from '../dto/update-admin-user.dto';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { AuthGuard } from '../../common/auth';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadUserProfilePictureService } from '../../users/services/upload-user-profile-picture.service';
-import { UpdateUserService } from '../../users/services/update-user.service';
-import { UpdatePartnerUserDto } from '../dto/update-partner-user.dto';
-import { AuthGuard } from '../../common/auth';
 
-@Controller('partners')
-export class PartnerUsersController {
+@Controller('admin/users')
+export class AdminUsersController {
   constructor(
     private readonly findUsersService: FindUsersService,
-    private readonly findUserByIdService: FindUserByIdService,
-    private readonly createPartnerUser: CreatePartnerUserService,
+    private readonly findUserById: FindUserByIdService,
+    private readonly createUserService: CreateUserService,
     private readonly updateUserService: UpdateUserService,
     private readonly uploadUserProfilePictureService: UploadUserProfilePictureService,
   ) {}
 
-  @Get(':partnerId([0-9]+)/users')
+  @Get()
   @UseGuards(AuthGuard)
-  private findByPartnerId(
-    @Req() request: CustomRequest,
-    @Param('partnerId') partnerId: string,
-  ) {
+  async find(@Req() request: CustomRequest) {
     const userPagingDto = new UserPagingDto(request.query);
     const conditions = JSON.parse(userPagingDto.conditions);
-    conditions.partner = {
-      eq: +partnerId,
-    };
+    conditions.type = { eq: UserTypes.Admin };
     userPagingDto.conditions = JSON.stringify(conditions);
 
     return this.findUsersService.execute(userPagingDto, request.correlationId);
   }
 
-  @Get(':partnerId([0-9]+)/users/:id([0-9]+)')
+  @Get(':id')
   @UseGuards(AuthGuard)
-  private findById(
+  async findById(
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @I18n() i18n: I18nContext,
   ) {
-    return this.findUserByIdService.execute(+id, request?.correlationId, i18n);
+    return this.findUserById.execute(+id, request?.correlationId, i18n);
   }
 
-  @Post(':partnerId([0-9]+)/users')
+  @Post()
+  @UseGuards(AuthGuard)
   async create(
     @Req() request: CustomRequest,
-    @Param('partnerId') partnerId: string,
-    @Body() createPartnerUserDto: CreatePartnerUserDto,
+    @Body() createAdminUserDto: CreateAdminUserDto,
   ) {
-    createPartnerUserDto.partnerId = +partnerId;
-
-    return this.createPartnerUser.execute(
-      createPartnerUserDto,
+    return this.createUserService.execute(
+      createAdminUserDto,
       request?.correlationId,
     );
   }
 
-  @Patch(':partnerId([0-9]+)/users/:id([0-9]+)')
+  @Patch(':id')
   @UseGuards(AuthGuard)
   async update(
     @Req() request: CustomRequest,
     @Param('id') id: string,
-    @Body() updateUserDto: UpdatePartnerUserDto,
+    @Body() updateAdminUserDto: UpdateAdminUserDto,
   ) {
     return this.updateUserService.execute(
       +id,
-      updateUserDto,
+      updateAdminUserDto,
       request?.correlationId,
     );
   }
 
-  @Post(':partnerId([0-9]+)/users/:id([0-9]+)/pictures')
+  @Post(':id([0-9]+)/pictures')
   @UseInterceptors(FileInterceptor('file'))
   @UseGuards(AuthGuard)
   async uploadFile(

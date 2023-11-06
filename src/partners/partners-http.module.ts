@@ -25,7 +25,6 @@ import { CreatePartnerAddressService } from './services/create-partner-address.s
 import { PartnerAddressesController } from './controllers/partner-addresses.controller';
 import { CreatePartnerUserService } from './services/create-partner-user.service';
 import { HashModule } from '../hash/hash.module';
-import { UploadPartnerUserPictureService } from './services/upload-partner-user-picture.service';
 
 @Module({
   imports: [
@@ -59,7 +58,6 @@ import { UploadPartnerUserPictureService } from './services/upload-partner-user-
     PartnerUsersTypeORMRepository,
     CreatePartnerAddressService,
     CreatePartnerUserService,
-    UploadPartnerUserPictureService,
   ],
   exports: [
     CreatePartnerService,

@@ -1,6 +1,5 @@
-import { CreateUserDto } from './create-user.dto';
-import { AdminUser } from '../entities/admin-user.entity';
-import { UserTypes } from '../entities/user-types.enum';
+import { CreateUserDto } from '../../users/dto/create-user.dto';
+import { AdminUser } from '../../users/entities/admin-user.entity';
 
 export class CreateAdminUserDto extends CreateUserDto {
   toEntity() {
@@ -10,7 +9,6 @@ export class CreateAdminUserDto extends CreateUserDto {
       cpf: this.cpf,
       email: this.email,
       password: this.password,
-      type: UserTypes.Admin,
     });
   }
 }
