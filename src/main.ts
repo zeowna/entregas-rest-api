@@ -10,10 +10,11 @@ async function bootstrap() {
     new I18nValidationPipe({ whitelist: true, transform: true }),
   );
   app.useGlobalFilters(new I18nValidationExceptionFilter());
+  app.enableCors();
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 
 bootstrap();
