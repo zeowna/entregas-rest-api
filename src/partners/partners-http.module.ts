@@ -25,6 +25,7 @@ import { CreatePartnerAddressService } from './services/create-partner-address.s
 import { PartnerAddressesController } from './controllers/partner-addresses.controller';
 import { CreatePartnerUserService } from './services/create-partner-user.service';
 import { HashModule } from '../hash/hash.module';
+import { UpdateAllPartnerProductsStatusByProductService } from './services/update-all-partner-products-status-by-product.service';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { HashModule } from '../hash/hash.module';
     PartnerUsersTypeORMRepository,
     CreatePartnerAddressService,
     CreatePartnerUserService,
+    UpdateAllPartnerProductsStatusByProductService,
   ],
   exports: [
     CreatePartnerService,
@@ -65,6 +67,7 @@ import { HashModule } from '../hash/hash.module';
     FindPartnerByIdService,
     FindPartnerProductByIdService,
     UpdatePartnerProductService,
+    UpdateAllPartnerProductsStatusByProductService,
   ],
 })
 export class PartnersHttpModule {}

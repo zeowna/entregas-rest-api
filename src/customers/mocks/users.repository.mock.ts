@@ -1,6 +1,6 @@
 import { AbstractMockedRepository } from '../../common';
-import { User } from '../entities/user.entity';
-import { CustomerUser } from '../entities/customer-user.entity';
+import { User } from '../../users/entities/user.entity';
+import { CustomerUser } from '../../users/entities/customer-user.entity';
 
 export class UsersRepositoryMock extends AbstractMockedRepository<User> {
   constructor() {

@@ -3,11 +3,11 @@ import { Address } from '../../addresses/entities/address.entity';
 import { Type } from 'class-transformer';
 import { CreateAddressDto } from '../../addresses/dto/create-address.dto';
 import { i18nValidationMessage } from 'nestjs-i18n';
-import { UserTypes } from '../entities/user-types.enum';
-import { CreateUserDto } from './create-user.dto';
-import { CustomerUser } from '../entities/customer-user.entity';
+import { CreateUserDto } from '../../users/dto/create-user.dto';
+import { CustomerUser } from '../../users/entities/customer-user.entity';
+import { UserTypes } from '../../users/entities/user-types.enum';
 
-export class CreateCustomerDto extends CreateUserDto {
+export class CreateCustomerUserDto extends CreateUserDto {
   @IsOptional()
   @IsString({
     message: i18nValidationMessage('validation.isString'),

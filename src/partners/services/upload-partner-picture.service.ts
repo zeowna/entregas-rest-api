@@ -1,12 +1,15 @@
 import { AbstractService, ID, NestLoggerService } from '../../common';
 import { randomUUID } from 'crypto';
-import { writeFile } from 'fs/promises';
 import { Partner } from '../entities/partner.entity';
 import { PartnersTypeORMRepository } from '../repositores/partners-typeorm.repository';
 import { Injectable } from '@nestjs/common';
+import { Storage } from '@google-cloud/storage';
+import { unlink, writeFile } from 'fs/promises';
 
 @Injectable()
 export class UploadPartnerPictureService extends AbstractService<Partner> {
+  private readonly storage = new Storage();
+
   constructor(
     private readonly partnersRepository: PartnersTypeORMRepository,
     private readonly logger: NestLoggerService,
@@ -29,9 +32,20 @@ export class UploadPartnerPictureService extends AbstractService<Partner> {
       file.originalname.length,
     );
 
-    const pictureURI = `media/pictures/${randomUUID()}.${extension}`;
+    const pictureName = `${randomUUID()}.${extension}`;
+    const localPath = `/tmp/${pictureName}`;
+    const remotePath = `pictures/${pictureName}`;
+    const pictureURI = `https://storage.googleapis.com/entregas-media/${remotePath}`;
 
-    await writeFile(`${process.cwd()}/${pictureURI}`, file.buffer);
+    const bucket = this.storage.bucket('entregas-media');
+
+    await writeFile(localPath, file.buffer);
+
+    await bucket.upload(localPath, {
+      destination: remotePath,
+    });
+
+    await unlink(localPath);
 
     const updated = await this.partnersRepository.update(
       partnerId,

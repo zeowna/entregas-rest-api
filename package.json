@@ -22,9 +22,13 @@
     "migration:generate": "yarn typeorm migration:generate",
     "migration:run": "yarn typeorm migration:run",
     "migration:revert": "yarn typeorm migration:revert",
-    "seed": "ts-node ./src/seed.ts"
+    "gcp:build": "gcloud builds submit --region=us-central1 --tag us-central1-docker.pkg.dev/entregas-404517/entregas-rest-api/entregas-rest-api:latest",
+    "gcp:deploy": "gcloud run deploy entregas-rest-api --region=us-central1 --image=us-central1-docker.pkg.dev/entregas-404517/entregas-rest-api/entregas-rest-api:latest",
+    "deploy": "yarn gcp:build && yarn gcp:deploy"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.6.0",
+    "@googlemaps/google-maps-services-js": "^3.3.41",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.3",

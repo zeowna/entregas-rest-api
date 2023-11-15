@@ -1,12 +1,15 @@
 import { AbstractService, ID, NestLoggerService } from '../../common';
 import { randomUUID } from 'crypto';
-import { writeFile } from 'fs/promises';
+import { unlink, writeFile } from 'fs/promises';
 import { Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { UsersTypeORMRepository } from '../repositores/users-typeorm-repository.service';
+import { Storage } from '@google-cloud/storage';
 
 @Injectable()
 export class UploadUserProfilePictureService extends AbstractService<string> {
+  private readonly storage = new Storage();
+
   constructor(
     private readonly usersTypeORMRepository: UsersTypeORMRepository,
     private readonly logger: NestLoggerService,
@@ -25,9 +28,20 @@ export class UploadUserProfilePictureService extends AbstractService<string> {
       file.originalname.length,
     );
 
-    const profilePictureURI = `media/pictures/${randomUUID()}.${extension}`;
+    const bucket = this.storage.bucket('entregas-media');
 
-    await writeFile(`${process.cwd()}/${profilePictureURI}`, file.buffer);
+    const pictureName = `${randomUUID()}.${extension}`;
+    const localPath = `/tmp/${pictureName}`;
+    const remotePath = `pictures/${pictureName}`;
+    const profilePictureURI = `https://storage.googleapis.com/entregas-media/${remotePath}`;
+
+    await writeFile(localPath, file.buffer);
+
+    await bucket.upload(localPath, {
+      destination: remotePath,
+    });
+
+    await unlink(localPath);
 
     const updated = await this.usersTypeORMRepository.update(
       userID,

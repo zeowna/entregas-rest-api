@@ -5,7 +5,7 @@ import { AdminResponse } from '../responses/admin.response';
 
 @ChildEntity(UserTypes.Admin)
 export class AdminUser extends User {
-  readonly type = UserTypes.Admin;
+  type = UserTypes.Admin;
 
   present() {
     return new AdminResponse(this);

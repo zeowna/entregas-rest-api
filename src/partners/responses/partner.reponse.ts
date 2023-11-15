@@ -1,7 +1,7 @@
 import { AbstractEntityPresenter } from '../../common';
 import { Partner } from '../entities/partner.entity';
-import { Address } from '../../addresses/entities/address.entity';
 import { PartnerStatus } from '../entities/partner.status';
+import { AddressResponse } from '../../addresses/responses/address.response';
 
 export class PartnerResponse extends AbstractEntityPresenter<Partner> {
   name: string;
@@ -12,7 +12,7 @@ export class PartnerResponse extends AbstractEntityPresenter<Partner> {
 
   status: PartnerStatus;
 
-  address: Address;
+  address: AddressResponse;
 
   openingHours: string;
 
@@ -24,7 +24,7 @@ export class PartnerResponse extends AbstractEntityPresenter<Partner> {
     this.cnpj = props?.cnpj;
     this.pictureURI = props?.pictureURI;
     this.status = props?.status;
-    this.address = props?.address;
+    this.address = props?.address?.present();
     this.openingHours = props?.openingHours;
     this.closingHours = props?.closingHours;
   }

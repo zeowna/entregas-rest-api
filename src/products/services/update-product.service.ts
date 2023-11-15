@@ -9,6 +9,7 @@ import { ProductsTypeORMRepository } from '../repositories/products-typeorm.repo
 import { FindProductByIdService } from './find-product-id.service';
 import { FindProductByNameService } from './find-product-by-name.service';
 import { UpdateProductDto } from '../dto/update-product.dto';
+import { UpdateAllPartnerProductsStatusByProductService } from '../../partners/services/update-all-partner-products-status-by-product.service';
 
 @Injectable()
 export class UpdateProductService extends AbstractUpdateEntityService<Product> {
@@ -16,6 +17,7 @@ export class UpdateProductService extends AbstractUpdateEntityService<Product> {
     private readonly productsRepository: ProductsTypeORMRepository,
     private readonly findProductByIdService: FindProductByIdService,
     private readonly findProductByNameService: FindProductByNameService,
+    private readonly updateAllPartnerProductsStatusByProductService: UpdateAllPartnerProductsStatusByProductService,
     private readonly logger: NestLoggerService,
   ) {
     super(productsRepository, findProductByIdService, logger);
@@ -38,5 +40,18 @@ export class UpdateProductService extends AbstractUpdateEntityService<Product> {
     }
 
     return super.beforeUpdate(id, updateEntityDto, correlationId);
+  }
+
+  protected async afterUpdate(
+    id: ID,
+    entity: Product,
+    correlationId: string,
+  ): Promise<void> {
+    await this.updateAllPartnerProductsStatusByProductService.execute(
+      entity,
+      correlationId,
+    );
+
+    return super.afterUpdate(id, entity, correlationId);
   }
 }

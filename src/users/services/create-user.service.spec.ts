@@ -2,7 +2,10 @@ import { Test } from '@nestjs/testing';
 import { NestLoggerService, ZeownaLoggerModule } from '../../common';
 import { UsersTypeORMRepository } from '../repositores/users-typeorm-repository.service';
 import { BcryptHashService } from '../../hash/services/bcrypt-hash.service';
-import { generateCustomerDto, UsersRepositoryMock } from '../mocks';
+import {
+  generateCustomerDto,
+  UsersRepositoryMock,
+} from '../../customers/mocks';
 import { CreateUserService } from './create-user.service';
 
 describe('CreateUserService.ts', () => {

@@ -9,14 +9,15 @@ import {
   Req,
 } from '@nestjs/common';
 import { CustomRequest } from '../../common';
-import { FindUserByIdService } from '../services/find-user-by-id.service';
+import { FindUsersService } from '../../users/services/find-users.service';
+import { FindUserByIdService } from '../../users/services/find-user-by-id.service';
+import { CreateUserService } from '../../users/services/create-user.service';
+import { UpdateUserService } from '../../users/services/update-user.service';
+import { UserPagingDto } from '../../users/dto/user-paging.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { FindUsersService } from '../services/find-users.service';
-import { UserPagingDto } from '../dto/user-paging.dto';
-import { UpdateUserService } from '../services/update-user.service';
-import { UpdateCustomerDto } from '../dto/update-customer.dto';
-import { CreateCustomerDto } from '../dto/create-customer.dto';
-import { CreateUserService } from '../services/create-user.service';
+import { CreateCustomerUserDto } from '../dto/create-customer-user.dto';
+import { UpdateCustomerUserDto } from '../dto/update-customer-user.dto';
+import { CustomerUser } from '../../users/entities/customer-user.entity';
 
 @Controller('customers')
 export class CustomersController {
@@ -30,7 +31,7 @@ export class CustomersController {
   @Get()
   async find(
     @Req() request: CustomRequest,
-    @Query() userPagingDto: UserPagingDto,
+    @Query() userPagingDto: UserPagingDto<CustomerUser>,
   ) {
     return this.findUsersService.execute(userPagingDto, request.correlationId);
   }
@@ -47,7 +48,7 @@ export class CustomersController {
   @Post()
   async create(
     @Req() request: CustomRequest,
-    @Body() createCustomerDto: CreateCustomerDto,
+    @Body() createCustomerDto: CreateCustomerUserDto,
   ) {
     return this.createUserService.execute(
       createCustomerDto,
@@ -59,7 +60,7 @@ export class CustomersController {
   async update(
     @Req() request: CustomRequest,
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateCustomerDto,
+    @Body() updateUserDto: UpdateCustomerUserDto,
   ) {
     return this.updateUserService.execute(
       +id,

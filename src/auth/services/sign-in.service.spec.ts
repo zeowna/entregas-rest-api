@@ -7,7 +7,10 @@ import { ZeownaAuthModule } from '../../common/auth';
 import { FindUserByEmailService } from '../../users/services/find-user-by-email.service';
 import { BcryptHashService } from '../../hash/services/bcrypt-hash.service';
 import { UsersTypeORMRepository } from '../../users/repositores/users-typeorm-repository.service';
-import { generateCustomerDto, UsersRepositoryMock } from '../../users/mocks';
+import {
+  generateCustomerDto,
+  UsersRepositoryMock,
+} from '../../customers/mocks';
 
 describe('SignInService', () => {
   const correlationId = 'any_string';

@@ -2,18 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { Address } from '../../addresses/entities/address.entity';
 import { CreatePartnerAddressDto } from '../dto/create-partner-address.dto';
 import { AddressesTypeORMRepository } from '../../addresses/repositories/addresses-typeorm-repository';
-import { AbstractCreateEntityService, NestLoggerService } from '../../common';
+import { NestLoggerService } from '../../common';
 import { UpdatePartnerDto } from '../dto/update-partner.dto';
 import { UpdatePartnerService } from './update-partner.service';
+import { CreateAddressService } from '../../addresses/services/create-address.service';
+import { GeocodingService } from '../../addresses/services/geocoding.service';
 
 @Injectable()
-export class CreatePartnerAddressService extends AbstractCreateEntityService<Address> {
+export class CreatePartnerAddressService extends CreateAddressService {
   constructor(
-    readonly addressesRepository: AddressesTypeORMRepository,
+    protected readonly addressesRepository: AddressesTypeORMRepository,
+    protected readonly geocodingService: GeocodingService,
     private readonly updatePartnerService: UpdatePartnerService,
-    private readonly logger: NestLoggerService,
+    protected readonly logger: NestLoggerService,
   ) {
-    super(addressesRepository, logger);
+    super(addressesRepository, geocodingService, logger);
   }
 
   protected async afterCreate(

@@ -16,6 +16,10 @@ export class AddressResponse extends AbstractEntityPresenter<Address> {
 
   state: string;
 
+  lat: number;
+
+  lng: number;
+
   constructor(props: Address) {
     super(props);
     this.cep = props?.cep;
@@ -25,5 +29,7 @@ export class AddressResponse extends AbstractEntityPresenter<Address> {
     this.complement = props?.complement;
     this.city = props?.city;
     this.state = props?.state;
+    this.lat = props?.lat;
+    this.lng = props?.lng;
   }
 }

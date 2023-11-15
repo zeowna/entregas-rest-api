@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CustomersController } from './controllers/customers.controller';
 import { UsersModule } from './users.module';
 import { AddressesHttpModule } from '../addresses/addresses-http.module';
-import { CustomerAddressesController } from './controllers/customer-addresses.controller';
 import { FindUserByEmailService } from './services/find-user-by-email.service';
 import { FindUserByCpfService } from './services/find-user-by-cpf.service';
 import { HashModule } from '../hash/hash.module';
@@ -16,7 +14,7 @@ import { UploadUserProfilePictureService } from './services/upload-user-profile-
 
 @Module({
   imports: [UsersModule, AddressesHttpModule, HashModule],
-  controllers: [CustomersController, CustomerAddressesController],
+  controllers: [],
   providers: [
     UsersTypeORMRepository,
     FindUserByEmailService,

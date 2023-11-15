@@ -4,7 +4,10 @@ import { CreateUserService } from './create-user.service';
 import { ZeownaLoggerModule } from '../../common';
 import { BcryptHashService } from '../../hash/services/bcrypt-hash.service';
 import { UsersTypeORMRepository } from '../repositores/users-typeorm-repository.service';
-import { generateCustomerDto, UsersRepositoryMock } from '../mocks';
+import {
+  generateCustomerDto,
+  UsersRepositoryMock,
+} from '../../customers/mocks';
 
 describe('FindUserByCpfService', () => {
   const correlationId = 'any_string';

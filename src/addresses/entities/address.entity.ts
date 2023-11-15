@@ -29,6 +29,12 @@ export class Address extends AbstractTypeORMEntity {
   @ManyToOne(() => User, { nullable: true })
   user: User;
 
+  @Column('float', { default: 0 })
+  lat: number;
+
+  @Column('float', { default: 0 })
+  lng: number;
+
   constructor(props: ExcludeMethods<Address>) {
     super(props);
     this.cep = props?.cep;
@@ -38,6 +44,8 @@ export class Address extends AbstractTypeORMEntity {
     this.complement = props?.complement;
     this.city = props?.city;
     this.state = props?.state;
+    this.lat = props?.lat;
+    this.lng = props?.lng;
   }
 
   present() {

@@ -15,7 +15,7 @@ export class PartnerUser extends User {
   @ManyToOne(() => Partner, { eager: true })
   partner: Partner;
 
-  readonly type = UserTypes.Partner;
+  type = UserTypes.Partner;
 
   present() {
     return new PartnerUserResponse(this);

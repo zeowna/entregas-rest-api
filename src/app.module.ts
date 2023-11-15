@@ -18,9 +18,9 @@ import {
 } from './common';
 import { ZeownaAuthModule } from './common/auth';
 import { AuthModule } from './auth/auth.module';
-import { MediaModule } from './media/media.module';
 import { MeHttpModule } from './me/me-http.module';
 import { AdminModule } from './admin/admin.module';
+import { CustomersModule } from './customers/customers.module';
 
 @Module({
   imports: [
@@ -43,12 +43,12 @@ import { AdminModule } from './admin/admin.module';
     TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
     AdminModule,
+    CustomersModule,
     UsersHttpModule,
     ProductsHttpModule,
     OrdersHttpModule,
     PartnersHttpModule,
     AddressesHttpModule,
-    MediaModule,
     MeHttpModule,
   ],
   controllers: [AppController],

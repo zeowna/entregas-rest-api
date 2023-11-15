@@ -23,6 +23,7 @@ import { UserTypes } from '../../users/entities/user-types.enum';
 import { AuthGuard } from '../../common/auth';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadUserProfilePictureService } from '../../users/services/upload-user-profile-picture.service';
+import { AdminUser } from '../../users/entities/admin-user.entity';
 
 @Controller('admin/users')
 export class AdminUsersController {
@@ -37,10 +38,8 @@ export class AdminUsersController {
   @Get()
   @UseGuards(AuthGuard)
   async find(@Req() request: CustomRequest) {
-    const userPagingDto = new UserPagingDto(request.query);
-    const conditions = JSON.parse(userPagingDto.conditions);
-    conditions.type = { eq: UserTypes.Admin };
-    userPagingDto.conditions = JSON.stringify(conditions);
+    const userPagingDto = new UserPagingDto<AdminUser>(request.query);
+    userPagingDto.conditions.type = { eq: UserTypes.Admin };
 
     return this.findUsersService.execute(userPagingDto, request.correlationId);
   }

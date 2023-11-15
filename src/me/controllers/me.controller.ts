@@ -14,11 +14,11 @@ import { FindUserByIdService } from '../../users/services/find-user-by-id.servic
 import { AuthGuard } from '../../common/auth';
 import { CustomRequest } from '../../common';
 import { UpdateUserService } from '../../users/services/update-user.service';
-import { UpdateAdminUserDto } from '../../admin/dto/update-admin-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadUserProfilePictureService } from '../../users/services/upload-user-profile-picture.service';
 import { UpdateUserPasswordService } from '../services/update-user-password.service';
 import { UpdateUserPasswordDto } from '../../users/dto/update-user-password.dto';
+import { UpdateUserDto } from '../../users/dto/update-user.dto';
 
 @Controller('me')
 export class MeController {
@@ -42,7 +42,7 @@ export class MeController {
   @UseGuards(AuthGuard)
   async updateMe(
     @Req() request: CustomRequest,
-    @Body() updateUserDto: UpdateAdminUserDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.updateUserService.execute(
       request.user.sub,

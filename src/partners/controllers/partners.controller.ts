@@ -35,8 +35,10 @@ export class PartnersController {
   @Get()
   find(
     @Req() request: CustomRequest,
-    @Query() findPartnersDto: FindPartnersDto,
+    @Query() queryParams: Record<string, string>,
   ) {
+    const findPartnersDto = new FindPartnersDto(queryParams);
+
     return this.findPartnersService.execute(
       findPartnersDto,
       request?.correlationId,

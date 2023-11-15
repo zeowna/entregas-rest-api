@@ -1,20 +1,21 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-const { PG_HOST, PG_USER, PG_PASSWORD, PG_DATABASE } = process.env;
+const { ENV, PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE } =
+  process.env;
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: PG_HOST || 'db',
-  port: 5432,
-  username: PG_USER || 'postgres',
-  password: PG_PASSWORD || 'root',
-  database: PG_DATABASE || 'postgres',
+  host: PG_HOST,
+  port: Number.parseInt(PG_PORT),
+  username: PG_USER,
+  password: PG_PASSWORD,
+  database: PG_DATABASE,
   entities: ['dist/**/*.entity.js'],
   synchronize: false,
   migrations: ['dist/db/migrations/*.js'],
   namingStrategy: new SnakeNamingStrategy(),
-  ssl: PG_HOST ? { rejectUnauthorized: false } : undefined,
+  ssl: ENV === 'production' ? { rejectUnauthorized: false } : undefined,
 };
 
 export const dataSourceTestOptions: DataSourceOptions = {

@@ -31,6 +31,14 @@ export class CreateAddressDto extends AbstractEntityDto<Address> {
   @IsString()
   state: string;
 
+  @IsOptional()
+  @IsNumber()
+  lat: number;
+
+  @IsOptional()
+  @IsNumber()
+  lng: number;
+
   toEntity() {
     return new Address({
       cep: this.cep,
@@ -40,6 +48,8 @@ export class CreateAddressDto extends AbstractEntityDto<Address> {
       complement: this.complement,
       city: this.city,
       state: this.state,
+      lat: this.lat,
+      lng: this.lng,
     });
   }
 }

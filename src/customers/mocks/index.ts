@@ -1,9 +1,9 @@
-import { User } from '../entities/user.entity';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { User } from '../../users/entities/user.entity';
+import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { ExcludeMethods } from '../../common';
-import { UserTypes } from '../entities/user-types.enum';
-import { CreateCustomerDto } from '../dto/create-customer.dto';
-import { CustomerUser } from '../entities/customer-user.entity';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { CreateCustomerUserDto } from '../dto/create-customer-user.dto';
+import { CustomerUser } from '../../users/entities/customer-user.entity';
 
 export const assertUser = (
   received: User,
@@ -25,7 +25,7 @@ export const assertUser = (
 export const generateCustomerDto = (
   props: ExcludeMethods<CreateUserDto> = {},
 ) =>
-  new CreateCustomerDto({
+  new CreateCustomerUserDto({
     name: 'any_string',
     birthday: new Date(),
     cpf: 'any_string',

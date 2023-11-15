@@ -6,6 +6,7 @@ import {
   And,
   Equal,
   FindOperator,
+  ILike,
   In,
   LessThan,
   LessThanOrEqual,
@@ -36,6 +37,8 @@ export class QueryTypeormConditions<T extends AbstractTypeORMEntity>
         return MoreThanOrEqual(value);
       case 'lte':
         return LessThanOrEqual(value);
+      case 'contains':
+        return ILike(`%${value}%`);
       case 'in':
         return In(value as P[]);
       case 'nin':

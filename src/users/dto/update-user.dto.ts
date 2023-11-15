@@ -1,10 +1,17 @@
-import { IsDateString, IsDefined, IsEmail, IsString } from 'class-validator';
+import { User } from '../entities/user.entity';
+import {
+  IsDateString,
+  IsDefined,
+  IsEmail,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { IsCPF } from 'brazilian-class-validator';
 import { AbstractEntityDto } from '../../common';
-import { User } from '../entities/user.entity';
 
-export class CreateUserDto extends AbstractEntityDto<User> {
+export class UpdateUserDto extends AbstractEntityDto<User> {
+  @IsOptional()
   @IsDefined({
     message: i18nValidationMessage('validation.User.name.required'),
   })
@@ -13,6 +20,7 @@ export class CreateUserDto extends AbstractEntityDto<User> {
   })
   name: string;
 
+  @IsOptional()
   @IsDefined({
     message: i18nValidationMessage('validation.User.birthday.required'),
   })
@@ -22,6 +30,7 @@ export class CreateUserDto extends AbstractEntityDto<User> {
   )
   birthday: Date;
 
+  @IsOptional()
   @IsDefined({
     message: i18nValidationMessage('validation.User.cpf.required'),
   })
@@ -30,6 +39,7 @@ export class CreateUserDto extends AbstractEntityDto<User> {
   })
   cpf: string;
 
+  @IsOptional()
   @IsDefined({
     message: i18nValidationMessage('validation.User.email.required'),
   })
@@ -39,21 +49,12 @@ export class CreateUserDto extends AbstractEntityDto<User> {
   )
   email: string;
 
-  @IsDefined({
-    message: i18nValidationMessage('validation.User.password.required'),
-  })
-  @IsString({
-    message: i18nValidationMessage('validation.User.password.isString'),
-  })
-  password: string;
-
   toEntity() {
     return new User({
       name: this.name,
       birthday: this.birthday,
       cpf: this.cpf,
       email: this.email,
-      password: this.password,
     });
   }
 }

@@ -25,7 +25,7 @@ export class User extends AbstractTypeORMEntity {
   profilePictureURI?: string;
 
   @Column()
-  readonly type: UserTypes;
+  type: UserTypes;
 
   constructor(props: ExcludeMethods<User>) {
     super(props);

@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -22,6 +23,7 @@ import { UploadUserProfilePictureService } from '../../users/services/upload-use
 import { UpdateUserService } from '../../users/services/update-user.service';
 import { UpdatePartnerUserDto } from '../dto/update-partner-user.dto';
 import { AuthGuard } from '../../common/auth';
+import { PartnerUser } from '../../users/entities/partner-user.entity';
 
 @Controller('partners')
 export class PartnerUsersController {
@@ -38,13 +40,12 @@ export class PartnerUsersController {
   private findByPartnerId(
     @Req() request: CustomRequest,
     @Param('partnerId') partnerId: string,
+    @Query() queryParams: Record<string, string>,
   ) {
-    const userPagingDto = new UserPagingDto(request.query);
-    const conditions = JSON.parse(userPagingDto.conditions);
-    conditions.partner = {
+    const userPagingDto = new UserPagingDto<PartnerUser>(queryParams);
+    userPagingDto.conditions.partner = {
       eq: +partnerId,
     };
-    userPagingDto.conditions = JSON.stringify(conditions);
 
     return this.findUsersService.execute(userPagingDto, request.correlationId);
   }

@@ -25,9 +25,10 @@ import { CountProductsService } from './services/count-products.service';
 import { FindProductByIdService } from './services/find-product-id.service';
 import { UpdateProductService } from './services/update-product.service';
 import { UploadProductPictureService } from './services/upload-product-picture.service';
+import { PartnersHttpModule } from '../partners/partners-http.module';
 
 @Module({
-  imports: [ProductsModule],
+  imports: [ProductsModule, PartnersHttpModule],
   controllers: [
     ProductsController,
     ProductCategoriesController,

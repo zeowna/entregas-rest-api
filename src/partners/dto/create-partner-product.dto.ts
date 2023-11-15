@@ -6,7 +6,6 @@ import { Partner } from '../entities/partner.entity';
 import { Product } from '../../products/entities/product.entity';
 
 export class CreatePartnerProductDto extends AbstractEntityDto<PartnerProduct> {
-  @IsDefined()
   partnerId: ID;
 
   @IsDefined()
