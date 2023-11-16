@@ -34,5 +34,5 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-media
 .env.production
+google-application-credentials.json

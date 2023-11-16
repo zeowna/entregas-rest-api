@@ -8,8 +8,9 @@ import { BcryptHashService } from '../../hash/services/bcrypt-hash.service';
 import { DecodedJwt, NestLoggerService } from '../../common';
 import { SignInDto } from '../dto/sign-in.dto';
 import { jwtConstants } from '../../common/auth/constants';
-import { SignInResponse } from '../sign-in.response';
+import { SignInResponse } from '../responses/sign-in.response';
 import { FindUserByEmailService } from '../../users/services/find-user-by-email.service';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class SignInService extends AbstractSignInService {
@@ -22,7 +23,11 @@ export class SignInService extends AbstractSignInService {
     super(jwtService, logger);
   }
 
-  async execute(signInDto: SignInDto, correlationId: string) {
+  async execute(
+    signInDto: SignInDto,
+    correlationId: string,
+    i18n: I18nContext,
+  ) {
     const { email, password } = signInDto;
 
     this.logBefore({
@@ -36,7 +41,7 @@ export class SignInService extends AbstractSignInService {
     );
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(i18n.translate('validation.Auth.notFound'));
     }
 
     const isEqual = await this.hashService.comparePasswords(
@@ -46,7 +51,9 @@ export class SignInService extends AbstractSignInService {
 
     if (!isEqual) {
       this.logAfter({ success: false, isEqual, correlationId });
-      throw new UnauthorizedException("User password doesn't match");
+      throw new UnauthorizedException(
+        i18n.translate('validation.Auth.password'),
+      );
     }
 
     const payload = {

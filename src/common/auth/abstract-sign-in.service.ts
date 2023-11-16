@@ -3,6 +3,7 @@ import { AbstractService } from '../services';
 import { AbstractSignInResponse } from './abstract-sign-in.response';
 import { JwtServiceInterface } from './jwt-service.interface';
 import { AbstractSignInDto } from './abstract-sign-in.dto';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export abstract class AbstractSignInService extends AbstractService<AbstractSignInResponse> {
@@ -20,5 +21,6 @@ export abstract class AbstractSignInService extends AbstractService<AbstractSign
   abstract execute(
     signInDto: AbstractSignInDto,
     correlationId: string,
+    i18n?: I18nContext,
   ): Promise<AbstractSignInResponse>;
 }

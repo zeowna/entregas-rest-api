@@ -6,16 +6,16 @@ import { randomUUID } from 'crypto';
 import { UpdateUserService } from '../../users/services/update-user.service';
 import { UpdateUserPasswordDto } from '../../users/dto/update-user-password.dto';
 import { ForgotPasswordDto } from '../dto/forgot-password.dto';
+import { SendEmailService } from '../../mailer/services/send-email.service';
+import { readFile } from 'fs/promises';
 
-/**
- * @TODO: Send a noitification with the new Passwortd
- */
 @Injectable()
 export class ForgotPasswordService extends AbstractService<void> {
   constructor(
     private readonly findUserByEmailService: FindUserByEmailService,
     private readonly hashService: BcryptHashService,
     private readonly updateUserService: UpdateUserService,
+    private readonly sendEmailService: SendEmailService,
     private readonly logger: NestLoggerService,
   ) {
     super(logger);
@@ -37,9 +37,11 @@ export class ForgotPasswordService extends AbstractService<void> {
       throw new NotFoundException('User not found');
     }
 
-    const newPassword = randomUUID();
+    const uuid = randomUUID();
 
-    const updated = await this.updateUserService.execute(
+    const newPassword = uuid.substring(0, uuid.indexOf('-') - 1);
+
+    await this.updateUserService.execute(
       user.id,
       new UpdateUserPasswordDto({
         password: await this.hashService.hashPassword(newPassword),
@@ -47,7 +49,21 @@ export class ForgotPasswordService extends AbstractService<void> {
       correlationId,
     );
 
-    console.log({ newPassword });
+    const template = await readFile(
+      `${process.cwd()}/media/templates/forgot-password.html`,
+      'utf-8',
+    );
+
+    await this.sendEmailService.execute(
+      user.email,
+      'Nova senha',
+      template,
+      {
+        userName: user.name,
+        newPassword: newPassword,
+      },
+      correlationId,
+    );
 
     this.logAfter({ success: true, correlationId });
   }

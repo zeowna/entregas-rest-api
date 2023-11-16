@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractService, DecodedJwt, NestLoggerService } from '../../common';
-import { SignInResponse } from '../sign-in.response';
+import { SignInResponse } from '../responses/sign-in.response';
 import { jwtConstants } from '../../common/auth/constants';
 import { FindUserByIdService } from '../../users/services/find-user-by-id.service';
 import { NestJwtService } from '../../common/auth';

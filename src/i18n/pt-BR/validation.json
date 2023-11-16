@@ -9,8 +9,9 @@
   "entity": {
     "notFound": "{entityName} $t(validation.notFound) com o {param}: {value}"
   },
-  "auth": {
-    "password": "$t(entity.User.entityName) $t(entity.User.properties.password) não corresponde"
+  "Auth": {
+    "password": "E-mail e/ou Senha não correspondem",
+    "notFound": "Usuário não encontrado"
   },
   "User": {
     "name": {

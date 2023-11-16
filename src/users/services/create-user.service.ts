@@ -12,6 +12,8 @@ import { AdminUser } from '../entities/admin-user.entity';
 import { PartnerUser } from '../entities/partner-user.entity';
 import { CustomerUser } from '../entities/customer-user.entity';
 import { FindUserByCpfService } from './find-user-by-cpf.service';
+import { SendEmailService } from '../../mailer/services/send-email.service';
+import { readFile } from 'fs/promises';
 
 @Injectable()
 export class CreateUserService extends AbstractCreateEntityService<User> {
@@ -19,6 +21,7 @@ export class CreateUserService extends AbstractCreateEntityService<User> {
     protected readonly usersRepository: UsersTypeORMRepository,
     protected readonly findUserByCpfService: FindUserByCpfService,
     protected readonly hashService: BcryptHashService,
+    protected readonly sendEmailService: SendEmailService,
     protected readonly logger: NestLoggerService,
   ) {
     super(usersRepository, logger);
@@ -60,5 +63,26 @@ export class CreateUserService extends AbstractCreateEntityService<User> {
     return this.buildEntity(createUserDto.toEntity(), {
       password: await this.hashPassword(createUserDto.password),
     });
+  }
+
+  protected async afterCreate(
+    createEntityDto: CreateUserDto,
+    entity: User,
+    correlationId: string,
+  ) {
+    const template = await readFile(
+      `${process.cwd()}/media/templates/welcome-user.html`,
+      'utf-8',
+    );
+
+    await this.sendEmailService.execute(
+      entity.email,
+      'Bem-vindo ao Entregas',
+      template,
+      { userName: entity.name },
+      correlationId,
+    );
+
+    return super.afterCreate(createEntityDto, entity, correlationId);
   }
 }

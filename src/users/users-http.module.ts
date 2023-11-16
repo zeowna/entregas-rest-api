@@ -11,9 +11,10 @@ import { UpdateUserService } from './services/update-user.service';
 import { UsersTypeORMRepository } from './repositores/users-typeorm-repository.service';
 import { CreateUserService } from './services/create-user.service';
 import { UploadUserProfilePictureService } from './services/upload-user-profile-picture.service';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
-  imports: [UsersModule, AddressesHttpModule, HashModule],
+  imports: [UsersModule, AddressesHttpModule, HashModule, MailerModule],
   controllers: [],
   providers: [
     UsersTypeORMRepository,

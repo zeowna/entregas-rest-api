@@ -24,9 +24,7 @@ export class GeocodingService extends AbstractService<any> {
       const response = await this.client.geocode({
         params: {
           address: `${address.cep}, ${address.number}, ${address.street}, ${address.city}, ${address.neighbourhood}`,
-          key:
-            process.env.GOOGLE_MAPS_API_KEY ||
-            'AIzaSyBuzYmU9c19xWHZ6JObfuX4PgfMtUzRydo',
+          key: process.env.GOOGLE_MAPS_API_KEY,
         },
       });
 

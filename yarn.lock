@@ -920,6 +920,29 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
+"@sendgrid/client@^7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@sendgrid/client/-/client-7.7.0.tgz#f8f67abd604205a0d0b1af091b61517ef465fdbf"
+  integrity sha512-SxH+y8jeAQSnDavrTD0uGDXYIIkFylCo+eDofVmZLQ0f862nnqbC3Vd1ej6b7Le7lboyzQF6F7Fodv02rYspuA==
+  dependencies:
+    "@sendgrid/helpers" "^7.7.0"
+    axios "^0.26.0"
+
+"@sendgrid/helpers@^7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@sendgrid/helpers/-/helpers-7.7.0.tgz#93fb4b6e2f0dc65080440d6a784cc93e8e148757"
+  integrity sha512-3AsAxfN3GDBcXoZ/y1mzAAbKzTtUZ5+ZrHOmWQ279AuaFXUNCh9bPnRpN504bgveTqoW+11IzPg3I0WVgDINpw==
+  dependencies:
+    deepmerge "^4.2.2"
+
+"@sendgrid/mail@^7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@sendgrid/mail/-/mail-7.7.0.tgz#aba09f5ce2e9d8ceee92284c3ea8b4a90b0e38fe"
+  integrity sha512-5+nApPE9wINBvHSUxwOxkkQqM/IAAaBYoP9hw7WwgDNQPxraruVqHizeTitVtKGiqWCKm2mnjh4XGN3fvFLqaw==
+  dependencies:
+    "@sendgrid/client" "^7.7.0"
+    "@sendgrid/helpers" "^7.7.0"
+
 "@sinclair/typebox@^0.25.16":
   version "0.25.24"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.25.24.tgz#8c7688559979f7079aacaf31aa881c3aa410b718"
@@ -1740,6 +1763,13 @@ atob@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+
+axios@^0.26.0:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.1.tgz#1ede41c51fcf51bbbd6fd43669caaa4f0495aaa9"
+  integrity sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==
+  dependencies:
+    follow-redirects "^1.14.8"
 
 axios@^1.5.1:
   version "1.5.1"
@@ -3134,7 +3164,7 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
-follow-redirects@^1.15.0:
+follow-redirects@^1.14.8, follow-redirects@^1.15.0:
   version "1.15.3"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.3.tgz#fe2f3ef2690afce7e82ed0b44db08165b207123a"
   integrity sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==

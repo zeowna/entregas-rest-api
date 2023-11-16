@@ -6,6 +6,7 @@ import { ForgotPasswordService } from './services/forgot-password.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { AuthGuard } from '../common/auth';
 import { RefreshTokenService } from './services/refresh-token.service';
+import { I18n, I18nContext } from 'nestjs-i18n';
 
 @Controller('auth')
 export class AuthController {
@@ -16,8 +17,12 @@ export class AuthController {
   ) {}
 
   @Post()
-  signIn(@Req() request: CustomRequest, @Body() signInDto: SignInDto) {
-    return this.signInService.execute(signInDto, request.correlationId);
+  signIn(
+    @Req() request: CustomRequest,
+    @Body() signInDto: SignInDto,
+    @I18n() i18n: I18nContext,
+  ) {
+    return this.signInService.execute(signInDto, request.correlationId, i18n);
   }
 
   @Post('refresh-token')

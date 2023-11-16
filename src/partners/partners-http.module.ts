@@ -26,6 +26,7 @@ import { PartnerAddressesController } from './controllers/partner-addresses.cont
 import { CreatePartnerUserService } from './services/create-partner-user.service';
 import { HashModule } from '../hash/hash.module';
 import { UpdateAllPartnerProductsStatusByProductService } from './services/update-all-partner-products-status-by-product.service';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UpdateAllPartnerProductsStatusByProductService } from './services/updat
     UsersModule,
     UsersHttpModule,
     AddressesHttpModule,
+    MailerModule,
   ],
   controllers: [
     PartnersController,

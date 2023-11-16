@@ -7,6 +7,7 @@ import { UsersHttpModule } from '../users/users-http.module';
 import { HashModule } from '../hash/hash.module';
 import { ForgotPasswordService } from './services/forgot-password.service';
 import { RefreshTokenService } from './services/refresh-token.service';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RefreshTokenService } from './services/refresh-token.service';
       secret: jwtConstants.secret,
       // signOptions: { expiresIn: '60s' },
     }),
+    MailerModule,
   ],
   controllers: [AuthController],
   providers: [SignInService, ForgotPasswordService, RefreshTokenService],
