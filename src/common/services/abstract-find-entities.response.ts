@@ -27,6 +27,8 @@ export abstract class AbstractFindEntitiesResponse<T extends AbstractEntity> {
       return;
     }
 
-    this.pages = props.count < this.limit ? 1 : this.count / this.limit;
+    this.pages = Math.ceil(
+      props.count < this.limit ? 1 : this.count / this.limit,
+    );
   }
 }

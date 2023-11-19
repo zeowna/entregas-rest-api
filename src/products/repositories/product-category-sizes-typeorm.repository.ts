@@ -14,8 +14,9 @@ export class ProductCategorySizesTypeORMRepository extends AbstractTypeORMReposi
   }
 
   async findByCategoryId(categoryId: ID) {
-    return this.productCategorySizeRepository.findBy({
-      category: { id: categoryId },
+    return this.productCategorySizeRepository.find({
+      where: { category: { id: categoryId } },
+      order: { name: 1 },
     });
   }
 

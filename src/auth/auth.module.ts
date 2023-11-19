@@ -16,7 +16,7 @@ import { MailerModule } from '../mailer/mailer.module';
     ZeownaAuthModule.register({
       global: true,
       secret: jwtConstants.secret,
-      // signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1h' },
     }),
     MailerModule,
   ],

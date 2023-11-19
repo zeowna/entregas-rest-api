@@ -14,12 +14,16 @@ export class PartnerProductsTypeORMRepository extends AbstractTypeORMRepository<
     super(partnerProductRepository);
   }
 
-  async updateStatusByProductId(productId: ID, status: PartnerProductStatus) {
+  async updateStatusByProductId(
+    productId: ID,
+    name: string,
+    status: PartnerProductStatus,
+  ) {
     await this.partnerProductRepository.update(
       {
         product: { id: productId },
       },
-      { status },
+      { name, status },
     );
   }
 }

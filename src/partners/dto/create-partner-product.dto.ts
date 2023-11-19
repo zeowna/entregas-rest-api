@@ -9,6 +9,10 @@ export class CreatePartnerProductDto extends AbstractEntityDto<PartnerProduct> {
   partnerId: ID;
 
   @IsDefined()
+  @IsString()
+  name: string;
+
+  @IsDefined()
   productId: ID;
 
   @IsDefined()
@@ -26,6 +30,7 @@ export class CreatePartnerProductDto extends AbstractEntityDto<PartnerProduct> {
 
   toEntity() {
     return new PartnerProduct({
+      name: this.name.trim(),
       partner: new Partner({ id: this.partnerId }),
       product: new Product({ id: this.productId }),
       value: this.value,

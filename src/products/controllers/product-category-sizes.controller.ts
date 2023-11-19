@@ -1,10 +1,22 @@
-import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CustomRequest } from '../../common';
 import { FindProductCategorySizesService } from '../services/find-product-category-sizes.service';
 import { CreateProductCategorySizeDto } from '../dto/create-product-category-size.dto';
 import { CreateProductCategorySizeService } from '../services/create-product-category-sizes.service';
 import { UpdateProductCategorySizeDto } from '../dto/update-product-category-size.dto';
 import { UpdateProductCategorySizeService } from '../services/update-product-category-size.service';
+import { AuthGuard } from '../../common/auth';
+import { ProductCategorySizePagingDto } from '../dto/product-category-size-paging.dto';
 
 @Controller('products/categories')
 export class ProductCategorySizesController {
@@ -14,6 +26,28 @@ export class ProductCategorySizesController {
     private readonly updateProductCategorySizesService: UpdateProductCategorySizeService,
   ) {}
 
+  @UseGuards(AuthGuard)
+  @Get(':productCategoryId([0-9]+)/sizes')
+  find(
+    @Req() request: CustomRequest,
+    @Param('productCategoryId') productCategoryId: string,
+    @Query() queryParams: Record<string, string>,
+  ) {
+    const productCategorySizePagingDto = new ProductCategorySizePagingDto(
+      queryParams,
+    );
+    productCategorySizePagingDto.conditions = {
+      ...productCategorySizePagingDto.conditions,
+      category: { eq: +productCategoryId },
+    };
+
+    return this.findProductCategorySizesService.execute(
+      productCategorySizePagingDto,
+      request?.correlationId,
+    );
+  }
+
+  @UseGuards(AuthGuard)
   @Post(':productCategoryId([0-9]+)/sizes')
   create(
     @Req() request: CustomRequest,
@@ -28,17 +62,7 @@ export class ProductCategorySizesController {
     );
   }
 
-  @Get(':productCategoryId([0-9]+)/sizes')
-  find(
-    @Req() request: CustomRequest,
-    @Param('productCategoryId') productCategoryId: string,
-  ) {
-    return this.findProductCategorySizesService.execute(
-      +productCategoryId,
-      request?.correlationId,
-    );
-  }
-
+  @UseGuards(AuthGuard)
   @Patch(':productCategoryId([0-9]+)/sizes/:id')
   update(
     @Req() request: CustomRequest,

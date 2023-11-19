@@ -5,6 +5,8 @@ import { PartnerResponse } from '../responses/partner.reponse';
 import { ProductResponse } from '../../products/responses/product.response';
 
 export class PartnerProductResponse extends AbstractEntityPresenter<PartnerProduct> {
+  name: string;
+
   partner: PartnerResponse;
 
   product: ProductResponse;
@@ -17,6 +19,7 @@ export class PartnerProductResponse extends AbstractEntityPresenter<PartnerProdu
 
   constructor(props: PartnerProduct) {
     super(props);
+    this.name = props?.name;
     this.partner = props?.partner?.present();
     this.product = props?.product?.present();
     this.value = props?.value;

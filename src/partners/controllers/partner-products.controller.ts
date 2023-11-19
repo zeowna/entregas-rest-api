@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -29,15 +30,20 @@ export class PartnerProductsController {
 
   @UseGuards(AuthGuard)
   @Get(':partnerId([0-9]+)/products')
-  findAll(
+  find(
     @Req() request: CustomRequest,
+    @Query() queryParams: Record<string, string>,
     @Param('partnerId') partnerId: string,
   ) {
+    const partnerProductsPagingDto = new PartnerProductsPagingDto(queryParams);
+
+    partnerProductsPagingDto.conditions = {
+      ...partnerProductsPagingDto.conditions,
+      partner: { eq: +partnerId },
+    };
+
     return this.findPartnerProductsService.execute(
-      new PartnerProductsPagingDto({
-        conditions: `{ "partner": { "eq": ${partnerId} } }`,
-        sort: '{ "value": -1 }',
-      }),
+      partnerProductsPagingDto,
       request?.correlationId,
     );
   }

@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { CustomRequest } from '../../common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { CreateProductCategoryService } from '../services/create-product-category.service';
@@ -19,9 +28,12 @@ export class ProductCategoriesController {
   ) {}
 
   @Get()
-  async find(@Req() request: CustomRequest) {
+  async find(
+    @Req() request: CustomRequest,
+    @Query() queryParams: Record<string, string>,
+  ) {
     return this.findProductCategoriesService.execute(
-      new ProductCategoryPagingDto(request.query),
+      new ProductCategoryPagingDto(queryParams),
       request.correlationId,
     );
   }

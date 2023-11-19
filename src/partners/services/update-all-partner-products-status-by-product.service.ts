@@ -36,6 +36,7 @@ export class UpdateAllPartnerProductsStatusByProductService extends AbstractServ
     try {
       await this.partnerProductsRepository.updateStatusByProductId(
         product.id,
+        product.name,
         this.getStatusFromProduct(product),
       );
 

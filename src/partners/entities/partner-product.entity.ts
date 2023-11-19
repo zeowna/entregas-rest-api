@@ -7,6 +7,9 @@ import { PartnerProductResponse } from '../repositores/partner-product.response'
 
 @Entity()
 export class PartnerProduct extends AbstractTypeORMEntity {
+  @Column({ default: '' })
+  name: string;
+
   @ManyToOne(() => Partner, { eager: true })
   partner: Partner;
 
@@ -24,6 +27,7 @@ export class PartnerProduct extends AbstractTypeORMEntity {
 
   constructor(props: ExcludeMethods<PartnerProduct>) {
     super(props);
+    this.name = props?.name;
     this.partner = props?.partner;
     this.product = props?.product;
     this.value = props?.value;

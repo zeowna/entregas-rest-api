@@ -8,6 +8,10 @@ export class UpdatePartnerProductDto extends AbstractEntityDto<PartnerProduct> {
   partnerId: ID;
 
   @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
   @IsInt()
   value: number;
 
@@ -22,6 +26,7 @@ export class UpdatePartnerProductDto extends AbstractEntityDto<PartnerProduct> {
 
   toEntity() {
     return new PartnerProduct({
+      name: this.name,
       partner: new Partner({ id: this.partnerId }),
       value: this.value,
       status: this.status,
