@@ -44,6 +44,7 @@ export class Address extends AbstractTypeORMEntity {
     this.complement = props?.complement;
     this.city = props?.city;
     this.state = props?.state;
+    this.user = props?.user;
     this.lat = props?.lat;
     this.lng = props?.lng;
   }

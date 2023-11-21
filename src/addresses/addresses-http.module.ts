@@ -7,6 +7,7 @@ import { ViaCepService } from './services/via-cep-service';
 import { AddressesController } from './controllers/addresses.controller';
 import { UpdateAddressService } from './services/update-address.service';
 import { GeocodingService } from './services/geocoding.service';
+import { RemoveAddressService } from './services/remove-address.service';
 
 @Module({
   imports: [AddressesModule],
@@ -18,6 +19,7 @@ import { GeocodingService } from './services/geocoding.service';
     UpdateAddressService,
     ViaCepService,
     GeocodingService,
+    RemoveAddressService,
   ],
   exports: [
     AddressesTypeORMRepository,
@@ -25,6 +27,7 @@ import { GeocodingService } from './services/geocoding.service';
     UpdateAddressService,
     FindAddressByIdService,
     GeocodingService,
+    RemoveAddressService,
   ],
 })
 export class AddressesHttpModule {}

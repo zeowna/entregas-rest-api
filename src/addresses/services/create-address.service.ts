@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { AbstractCreateEntityService, NestLoggerService } from '../../common';
 import { Address } from '../entities/address.entity';
 import { AddressesTypeORMRepository } from '../repositories/addresses-typeorm-repository';
-import { CreateAddressDto } from '../dto/create-address.dto';
 import { GeocodingService } from './geocoding.service';
+import { CreateCustomerAddressDto } from '../../customers/dto/create-customer-address.dto';
 
 @Injectable()
 export class CreateAddressService extends AbstractCreateEntityService<Address> {
@@ -16,7 +16,7 @@ export class CreateAddressService extends AbstractCreateEntityService<Address> {
   }
 
   protected async beforeCreate(
-    createEntityDto: CreateAddressDto,
+    createEntityDto: CreateCustomerAddressDto,
     correlationId: string,
   ) {
     if (!createEntityDto.lat || !createEntityDto.lng) {

@@ -2,7 +2,7 @@
   "required": "é obrigatório",
   "isString": "precisa ser composto por palavras",
   "isDate": "precisa ser uma data",
-  "isEmail": "precisa ser uma e-mail",
+  "isEmail": "precisa ser um e-mail",
   "exists": "já existe",
   "invalid": "invalido",
   "notFound": "não encontrado",

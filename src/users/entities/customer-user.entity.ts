@@ -10,7 +10,7 @@ export class CustomerUser extends User {
   @OneToMany(() => Address, (address) => address.user, { eager: true })
   addresses?: Address[];
 
-  type = UserTypes.Partner;
+  type = UserTypes.Customer;
 
   constructor(props: ExcludeMethods<CustomerUser>) {
     super(props);
