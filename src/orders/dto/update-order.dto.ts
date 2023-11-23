@@ -22,6 +22,8 @@ export class UpdateOrderDto extends AbstractEntityDto<Order> {
   @IsString()
   status: OrderStatus;
 
+  statusUpdatedAt: Date;
+
   toEntity() {
     return new Order({
       address: new Address({ id: this.addressId }),
@@ -30,6 +32,7 @@ export class UpdateOrderDto extends AbstractEntityDto<Order> {
       ),
       totalValue: this.totalValue,
       status: this.status,
+      statusUpdatedAt: this.statusUpdatedAt,
     });
   }
 }
