@@ -1,6 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import {
-  AbstractEntityDto,
   AbstractUpdateEntityService,
   ID,
   NestLoggerService,
@@ -10,6 +9,7 @@ import { ProductCategorySize } from '../entities/product-category-size.entity';
 import { ProductCategorySizesTypeORMRepository } from '../repositories/product-category-sizes-typeorm.repository';
 import { FindProductCategorySizeByIdService } from './find-product-category-size-by-id.service';
 import { I18nContext } from 'nestjs-i18n';
+import { UpdateProductCategorySizeDto } from '../dto/update-product-category-size.dto';
 
 @Injectable()
 export class UpdateProductCategorySizeService extends AbstractUpdateEntityService<ProductCategorySize> {
@@ -28,7 +28,7 @@ export class UpdateProductCategorySizeService extends AbstractUpdateEntityServic
 
   protected async beforeUpdate(
     id: ID,
-    updateEntityDto: AbstractEntityDto<T>,
+    updateEntityDto: UpdateProductCategorySizeDto,
     correlationId: string,
     i18n: I18nContext,
   ) {

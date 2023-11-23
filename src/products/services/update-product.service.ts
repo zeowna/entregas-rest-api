@@ -23,7 +23,7 @@ export class UpdateProductService extends AbstractUpdateEntityService<Product> {
 
   protected async afterUpdate(
     id: ID,
-    entity: T,
+    entity: Product,
     correlationId: string,
     i18n: I18nContext,
   ) {

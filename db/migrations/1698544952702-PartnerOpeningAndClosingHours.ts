@@ -5,7 +5,7 @@ export class PartnerOpeningAndClosingHours1698544952702
 {
   name = 'PartnerOpeningAndClosingHours1698544952702';
 
-  public async up(queryRunner: QueryRunner): Promise<void> {
+  async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "partner" DROP COLUMN "opening_hour"`);
     await queryRunner.query(`ALTER TABLE "partner" DROP COLUMN "closing_hour"`);
     await queryRunner.query(
@@ -16,7 +16,7 @@ export class PartnerOpeningAndClosingHours1698544952702
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
+  async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `ALTER TABLE "partner" DROP COLUMN "closing_hours"`,
     );

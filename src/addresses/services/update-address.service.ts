@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {
-  AbstractEntityDto,
   AbstractUpdateEntityService,
   ID,
   NestLoggerService,
@@ -10,6 +9,7 @@ import { AddressesTypeORMRepository } from '../repositories/addresses-typeorm-re
 import { FindAddressByIdService } from './find-address-by-id.service';
 import { GeocodingService } from './geocoding.service';
 import { I18nContext } from 'nestjs-i18n';
+import { UpdateAddressDto } from '../dto/update-address.dto';
 
 @Injectable()
 export class UpdateAddressService extends AbstractUpdateEntityService<Address> {
@@ -24,7 +24,7 @@ export class UpdateAddressService extends AbstractUpdateEntityService<Address> {
 
   protected async beforeUpdate(
     id: ID,
-    updateEntityDto: AbstractEntityDto<T>,
+    updateEntityDto: UpdateAddressDto,
     correlationId: string,
     i18n: I18nContext,
   ) {

@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class PartnerStatus1698103820710 implements MigrationInterface {
   name = 'PartnerStatus1698103820710';
 
-  public async up(queryRunner: QueryRunner): Promise<void> {
+  async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `ALTER TABLE "partner" ADD "status" character varying NOT NULL DEFAULT 'active'`,
     );
@@ -15,7 +15,7 @@ export class PartnerStatus1698103820710 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
+  async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `ALTER TABLE "user" ALTER COLUMN "type" DROP NOT NULL`,
     );
