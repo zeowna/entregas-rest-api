@@ -8,8 +8,8 @@ import { Repository } from 'typeorm';
 export class OrdersTypeORMRepository extends AbstractTypeORMRepository<Order> {
   constructor(
     @InjectRepository(Order)
-    private readonly orderRepository: Repository<Order>,
+    private readonly ordersRepository: Repository<Order>,
   ) {
-    super(orderRepository);
+    super(ordersRepository);
   }
 }

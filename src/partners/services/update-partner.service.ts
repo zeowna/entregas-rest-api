@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import {
+  AbstractEntityDto,
   AbstractUpdateEntityService,
   ID,
   NestLoggerService,
@@ -7,9 +8,9 @@ import {
 import { Partner } from '../entities/partner.entity';
 import { PartnersTypeORMRepository } from '../repositores/partners-typeorm.repository';
 import { FindPartnerByIdService } from './find-partner-by-id.service';
-import { UpdatePartnerDto } from '../dto/update-partner.dto';
 import { FindPartnerByCNPJService } from './find-partner-by-cnpj.service';
 import { UpdateAddressService } from '../../addresses/services/update-address.service';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class UpdatePartnerService extends AbstractUpdateEntityService<Partner> {
@@ -25,8 +26,9 @@ export class UpdatePartnerService extends AbstractUpdateEntityService<Partner> {
 
   protected async beforeUpdate(
     id: ID,
-    updateEntityDto: UpdatePartnerDto,
+    updateEntityDto: AbstractEntityDto<T>,
     correlationId: string,
+    i18n: I18nContext,
   ) {
     if (!updateEntityDto.cnpj) {
       return updateEntityDto.toEntity();

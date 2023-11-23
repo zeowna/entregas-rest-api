@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FindPartnersService } from '../services/find-partners.service';
-import { FindPartnersDto } from '../dto/find-partiners.dto';
+import { PartnerPagingDto } from '../dto/find-partiners.dto';
 import { CustomRequest, ID } from '../../common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { FindPartnerByIdService } from '../services/find-partner-by-id.service';
@@ -37,7 +37,7 @@ export class PartnersController {
     @Req() request: CustomRequest,
     @Query() queryParams: Record<string, string>,
   ) {
-    const findPartnersDto = new FindPartnersDto(queryParams);
+    const findPartnersDto = new PartnerPagingDto(queryParams);
 
     return this.findPartnersService.execute(
       findPartnersDto,

@@ -14,12 +14,16 @@ import { CustomerUser } from '../entities/customer-user.entity';
 import { FindUserByCpfService } from './find-user-by-cpf.service';
 import { SendEmailService } from '../../mailer/services/send-email.service';
 import { readFile } from 'fs/promises';
+import { I18nContext } from 'nestjs-i18n';
+import { FindUserByEmailService } from './find-user-by-email.service';
+import { UserTypes } from '../entities/user-types.enum';
 
 @Injectable()
 export class CreateUserService extends AbstractCreateEntityService<User> {
   constructor(
     protected readonly usersRepository: UsersTypeORMRepository,
     protected readonly findUserByCpfService: FindUserByCpfService,
+    protected readonly findUserByEmailService: FindUserByEmailService,
     protected readonly hashService: BcryptHashService,
     protected readonly sendEmailService: SendEmailService,
     protected readonly logger: NestLoggerService,
@@ -45,20 +49,52 @@ export class CreateUserService extends AbstractCreateEntityService<User> {
     }
   }
 
-  protected async beforeCreate(
-    createUserDto: CreateUserDto,
+  private async checkExistingCpf(
+    cpf: string,
+    type: UserTypes,
     correlationId: string,
+    i18n: I18nContext,
   ) {
     const existing = await this.findUserByCpfService.execute(
-      createUserDto.cpf,
+      cpf,
+      correlationId,
+    );
+
+    if (existing && existing.type === type) {
+      throw new ConflictException(i18n.translate('validation.User.cpf.exists'));
+    }
+  }
+
+  private async checkExistingEmail(
+    cpf: string,
+    correlationId: string,
+    i18n: I18nContext,
+  ) {
+    const existing = await this.findUserByEmailService.execute(
+      cpf,
       correlationId,
     );
 
     if (existing) {
       throw new ConflictException(
-        `${this.usersRepository.entityName} already exist with cpf: ${createUserDto.cpf}`,
+        i18n.translate('validation.User.email.exists'),
       );
     }
+  }
+
+  protected async beforeCreate(
+    createUserDto: CreateUserDto,
+    correlationId: string,
+    i18n?: I18nContext,
+  ) {
+    await this.checkExistingCpf(
+      createUserDto.cpf,
+      createUserDto.toEntity().type,
+      correlationId,
+      i18n,
+    );
+
+    await this.checkExistingEmail(createUserDto.email, correlationId, i18n);
 
     return this.buildEntity(createUserDto.toEntity(), {
       password: await this.hashPassword(createUserDto.password),

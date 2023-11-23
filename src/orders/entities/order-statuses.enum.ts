@@ -1,6 +1,10 @@
-export enum OrderStatuses {
+export enum OrderStatus {
   Created = 'created',
-  Canceled = 'canceled',
+  CanceledByPartner = 'canceled_by_partner',
+  CanceledByCustomer = 'canceled_by_customer',
+  AcceptedByPartner = 'accepted_by_Partner',
+  RefusedByPartner = 'refused_by_Partner',
   AwaitingExecution = 'awaiting_execution',
+  InDelivery = 'in_delivery',
   Settled = 'Settled',
 }

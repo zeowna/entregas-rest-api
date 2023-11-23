@@ -8,6 +8,7 @@ import { Product } from '../entities/product.entity';
 import { ProductsTypeORMRepository } from '../repositories/products-typeorm.repository';
 import { FindProductByIdService } from './find-product-id.service';
 import { UpdateAllPartnerProductsStatusByProductService } from '../../partners/services/update-all-partner-products-status-by-product.service';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class UpdateProductService extends AbstractUpdateEntityService<Product> {
@@ -22,14 +23,15 @@ export class UpdateProductService extends AbstractUpdateEntityService<Product> {
 
   protected async afterUpdate(
     id: ID,
-    entity: Product,
+    entity: T,
     correlationId: string,
-  ): Promise<void> {
+    i18n: I18nContext,
+  ) {
     await this.updateAllPartnerProductsStatusByProductService.execute(
       entity,
       correlationId,
     );
 
-    return super.afterUpdate(id, entity, correlationId);
+    return super.afterUpdate(id, entity, correlationId, i18n);
   }
 }

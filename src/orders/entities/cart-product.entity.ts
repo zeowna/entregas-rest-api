@@ -10,7 +10,7 @@ export class CartProduct extends AbstractTypeORMEntity {
   @ManyToOne(() => CustomerUser)
   customer: CustomerUser;
 
-  @ManyToOne(() => PartnerProduct)
+  @ManyToOne(() => PartnerProduct, { eager: true })
   partnerProduct: PartnerProduct;
 
   @Column('integer')

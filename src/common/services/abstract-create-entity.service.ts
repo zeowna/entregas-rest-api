@@ -3,6 +3,7 @@ import { RepositoryInterface } from '../repositories';
 import { LoggerInterface } from '../logger';
 import { AbstractEntityDto } from '../dto';
 import { AbstractService } from './abstract.service';
+import { I18nContext } from 'nestjs-i18n';
 
 export abstract class AbstractCreateEntityService<
   T extends AbstractEntity,
@@ -17,6 +18,7 @@ export abstract class AbstractCreateEntityService<
   protected async beforeCreate(
     createEntityDto: AbstractEntityDto<T>,
     correlationId: string,
+    i18n?: I18nContext,
   ) {
     return createEntityDto.toEntity();
   }
@@ -25,23 +27,28 @@ export abstract class AbstractCreateEntityService<
     createEntityDto: AbstractEntityDto<T>,
     entity: T,
     correlationId: string,
+    i18n?: I18nContext,
   ) {
     return;
   }
 
-  private createEntity(entity: T) {
+  private createEntity(entity: T, i18n?: I18nContext) {
     return this.repositoryImpl.create(entity);
   }
 
-  async execute(createEntityDto: AbstractEntityDto<T>, correlationId: string) {
+  async execute(
+    createEntityDto: AbstractEntityDto<T>,
+    correlationId: string,
+    i18n?: I18nContext,
+  ) {
     try {
       this.logBefore({ createEntityDto, correlationId });
 
       const created = await this.createEntity(
-        await this.beforeCreate(createEntityDto, correlationId),
+        await this.beforeCreate(createEntityDto, correlationId, i18n),
       );
 
-      await this.afterCreate(createEntityDto, created, correlationId);
+      await this.afterCreate(createEntityDto, created, correlationId, i18n);
 
       this.logAfter({
         success: true,

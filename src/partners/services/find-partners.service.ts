@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractFindEntitiesService, NestLoggerService } from '../../common';
 import { Partner } from '../entities/partner.entity';
-import { FindPartnersResponse } from '../responses/find-partiners.response';
+import { FindPartnersResponse } from '../responses/find-partners.response';
 import { PartnersTypeORMRepository } from '../repositores/partners-typeorm.repository';
 import { CountPartnersService } from './count-partners.service';
 

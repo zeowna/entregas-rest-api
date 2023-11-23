@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PartnersController } from './controllers/partners.controller';
 import { PartnersModule } from './partners.module';
 import { PartnerProductsController } from './controllers/partner-products.controller';
@@ -27,6 +27,8 @@ import { CreatePartnerUserService } from './services/create-partner-user.service
 import { HashModule } from '../hash/hash.module';
 import { UpdateAllPartnerProductsStatusByProductService } from './services/update-all-partner-products-status-by-product.service';
 import { MailerModule } from '../mailer/mailer.module';
+import { PartnerOrdersController } from './controllers/partner-orders.controller';
+import { OrdersHttpModule } from '../orders/orders-http.module';
 
 @Module({
   imports: [
@@ -36,12 +38,14 @@ import { MailerModule } from '../mailer/mailer.module';
     UsersHttpModule,
     AddressesHttpModule,
     MailerModule,
+    forwardRef(() => OrdersHttpModule),
   ],
   controllers: [
     PartnersController,
     PartnerAddressesController,
     PartnerUsersController,
     PartnerProductsController,
+    PartnerOrdersController,
   ],
   providers: [
     PartnersTypeORMRepository,

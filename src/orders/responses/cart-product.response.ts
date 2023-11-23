@@ -21,6 +21,6 @@ export class CartProductResponse extends AbstractEntityPresenter<CartProduct> {
     this.partnerProduct = props?.partnerProduct;
     this.quantity = props?.quantity;
     this.totalValue = props?.totalValue;
-    this.order = props?.order.present();
+    this.order = props?.order?.present();
   }
 }

@@ -1,36 +1,45 @@
-import { Module } from '@nestjs/common';
-import { OrdersController } from './controllers/orders.controller';
+import { forwardRef, Module } from '@nestjs/common';
 import { OrdersModule } from './ordersModule';
-import { CartProductsController } from './controllers/cart-products.controller';
-import { OrdersTypeORMRepository } from './repositories/orders-typeorm-repository.service';
+import { OrdersTypeORMRepository } from './repositories/orders-typeorm.repository';
 import { CartProductsTypeORMRepository } from './repositories/cart-products-typeorm.repository';
 import { CreateOrderService } from './services/create-order.service';
 import { FindOrderByIdService } from './services/find-order-by-id.service';
-import { CreateCartProductService } from './services/create-cart-product.service';
 import { UsersHttpModule } from '../users/users-http.module';
 import { PartnersHttpModule } from '../partners/partners-http.module';
 import { AddressesHttpModule } from '../addresses/addresses-http.module';
-import { UpdateCartProductService } from './services/update-cart-product.service';
 import { FindCartProductByIdService } from './services/find-cart-product-by-id.service';
-import { RemoveCartProductService } from './services/remove-cart-product.service';
+import { UpdateOrderService } from './services/update-order.service';
+import { CreateCartProductsService } from './services/create-cart-products.service';
+import { FindOrdersService } from './services/find-orders.service';
+import { CountOrdersService } from './services/count-orders.service';
+import { CreateCartProductService } from './services/create-cart-product.service';
 
 @Module({
   imports: [
     OrdersModule,
     UsersHttpModule,
-    PartnersHttpModule,
+    forwardRef(() => PartnersHttpModule),
     AddressesHttpModule,
   ],
-  controllers: [OrdersController, CartProductsController],
+  controllers: [],
   providers: [
     OrdersTypeORMRepository,
     CartProductsTypeORMRepository,
     FindOrderByIdService,
     CreateOrderService,
+    UpdateOrderService,
     FindCartProductByIdService,
     CreateCartProductService,
-    UpdateCartProductService,
-    RemoveCartProductService,
+    CreateCartProductsService,
+    FindOrdersService,
+    CountOrdersService,
+  ],
+  exports: [
+    CreateOrderService,
+    UpdateOrderService,
+    CreateCartProductsService,
+    FindOrdersService,
+    FindOrderByIdService,
   ],
 })
 export class OrdersHttpModule {}

@@ -49,10 +49,12 @@ export class CustomersController {
   async create(
     @Req() request: CustomRequest,
     @Body() createCustomerDto: CreateCustomerUserDto,
+    @I18n() i18n: I18nContext,
   ) {
     return this.createUserService.execute(
       createCustomerDto,
       request?.correlationId,
+      i18n,
     );
   }
 

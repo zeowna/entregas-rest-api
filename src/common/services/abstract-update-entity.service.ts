@@ -4,6 +4,7 @@ import { AbstractFindEntityByIdService } from './abstract-find-entity-by-id.serv
 import { LoggerInterface } from '../logger';
 import { AbstractEntityDto } from '../dto';
 import { AbstractService } from './abstract.service';
+import { I18nContext } from 'nestjs-i18n';
 
 export abstract class AbstractUpdateEntityService<
   T extends AbstractEntity,
@@ -20,11 +21,17 @@ export abstract class AbstractUpdateEntityService<
     id: ID,
     updateEntityDto: AbstractEntityDto<T>,
     correlationId: string,
+    i18n?: I18nContext,
   ) {
     return updateEntityDto.toEntity();
   }
 
-  protected async afterUpdate(id: ID, entity: T, correlationId: string) {
+  protected async afterUpdate(
+    id: ID,
+    entity: T,
+    correlationId: string,
+    i18n?: I18nContext,
+  ) {
     return;
   }
 
@@ -36,6 +43,7 @@ export abstract class AbstractUpdateEntityService<
     id: ID,
     updateEntityDto: AbstractEntityDto<T>,
     correlationId: string,
+    i18n?: I18nContext,
   ) {
     try {
       this.logBefore({
@@ -47,10 +55,10 @@ export abstract class AbstractUpdateEntityService<
       const existing = await this.findById(id, correlationId);
       const updated = await this.repositoryImpl.update(
         (existing as AbstractEntity).id,
-        await this.beforeUpdate(id, updateEntityDto, correlationId),
+        await this.beforeUpdate(id, updateEntityDto, correlationId, i18n),
       );
 
-      await this.afterUpdate(id, updated, correlationId);
+      await this.afterUpdate(id, updated, correlationId, i18n);
 
       this.logAfter({
         success: true,

@@ -23,13 +23,13 @@
     },
     "cpf": {
       "required": "$t(entity.User.properties.cpf) $t(validation.required)",
-      "exists": "$t(entity.User.properties.cpf) $t(validation.exists)",
+      "exists": "CPF already exists",
       "invalid": "$t(entity.User.properties.cpf) $t(validation.invalid)"
     },
     "email": {
       "required": "$t(entity.User.properties.cpf) $t(validation.required)",
       "isEmail": "$t(entity.User.properties.name) $t(validation.isEmail)",
-      "exists": "$t(entity.User.properties.email) $t(validation.exists)",
+      "exists": "Email already exists",
       "invalid": "$t(entity.User.properties.email) $t(validation.invalid)"
     },
     "password": {

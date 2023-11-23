@@ -1,9 +1,10 @@
-import { Column, Entity, TableInheritance } from 'typeorm';
+import { Column, Entity, TableInheritance, Unique } from 'typeorm';
 import { AbstractTypeORMEntity, ExcludeMethods } from '../../common';
 import { UserTypes } from './user-types.enum';
 import { UserResponse } from '../responses/user.response';
 
 @Entity()
+@Unique('UQ_user_cpf_and_type', ['cpf', 'type'])
 @TableInheritance({ column: { type: String, name: 'type' } })
 export class User extends AbstractTypeORMEntity {
   @Column()
@@ -12,7 +13,7 @@ export class User extends AbstractTypeORMEntity {
   @Column()
   birthday: Date;
 
-  @Column({ unique: true })
+  @Column()
   cpf: string;
 
   @Column({ unique: true })

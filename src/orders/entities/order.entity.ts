@@ -1,12 +1,13 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractTypeORMEntity, ExcludeMethods } from '../../common';
 import { User } from '../../users/entities/user.entity';
-import { OrderStatuses } from './order-statuses.enum';
+import { OrderStatus } from './order-statuses.enum';
 import { Partner } from '../../partners/entities/partner.entity';
 import { Address } from '../../addresses/entities/address.entity';
 import { CartProduct } from './cart-product.entity';
 import { OrderResponse } from '../responses/order.response';
 import { CustomerUser } from '../../users/entities/customer-user.entity';
+import { OrderPaymentMethods } from './order-payment-methods.enum';
 
 @Entity()
 export class Order extends AbstractTypeORMEntity {
@@ -24,17 +25,23 @@ export class Order extends AbstractTypeORMEntity {
   @ManyToOne(() => Address, { eager: true })
   address: Address;
 
-  @Column('integer')
-  totalValue: number;
+  @Column('integer', { nullable: true })
+  totalValue?: number;
 
-  @Column({ default: OrderStatuses.Created })
-  status: OrderStatuses;
+  @Column({ default: OrderStatus.Created })
+  status: OrderStatus;
 
   @Column({ nullable: true })
   statusUpdatedAt: Date;
 
+  @Column()
+  paymentMethod: OrderPaymentMethods;
+
+  @Column('integer', { nullable: true })
+  changeValue?: number;
+
   @Column({ nullable: true })
-  externalServiceId: string;
+  externalServiceId?: string;
 
   constructor(props: ExcludeMethods<Order>) {
     super(props);
@@ -45,6 +52,8 @@ export class Order extends AbstractTypeORMEntity {
     this.totalValue = props?.totalValue;
     this.status = props?.status;
     this.statusUpdatedAt = props?.statusUpdatedAt;
+    this.paymentMethod = props?.paymentMethod;
+    this.changeValue = props?.changeValue;
     this.externalServiceId = props?.externalServiceId;
   }
 

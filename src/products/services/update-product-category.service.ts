@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import {
+  AbstractEntityDto,
   AbstractUpdateEntityService,
   ID,
   NestLoggerService,
@@ -8,7 +9,7 @@ import { FindProductCategoryByIdService } from './find-product-category-by-id.se
 import { ProductCategory } from '../entities/product-category.entity';
 import { ProductCategoriesTypeORMRepository } from '../repositories/product-categories-typeorm.repository';
 import { FindProductCategoryByNameService } from './find-product-category-by-name.service';
-import { UpdateProductCategoryDto } from '../dto/update-product-category.dto';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class UpdateProductCategoryService extends AbstractUpdateEntityService<ProductCategory> {
@@ -23,8 +24,9 @@ export class UpdateProductCategoryService extends AbstractUpdateEntityService<Pr
 
   protected async beforeUpdate(
     id: ID,
-    updateEntityDto: UpdateProductCategoryDto,
+    updateEntityDto: AbstractEntityDto<T>,
     correlationId: string,
+    i18n: I18nContext,
   ) {
     const existing = await this.findProductCategoryByNameService.execute(
       updateEntityDto.name,
@@ -37,6 +39,6 @@ export class UpdateProductCategoryService extends AbstractUpdateEntityService<Pr
       );
     }
 
-    return super.beforeUpdate(id, updateEntityDto, correlationId);
+    return super.beforeUpdate(id, updateEntityDto, correlationId, i18n);
   }
 }

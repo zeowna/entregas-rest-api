@@ -24,13 +24,13 @@
     },
     "cpf": {
       "required": "$t(entity.User.properties.cpf) $t(validation.required)",
-      "exists": "$t(entity.User.properties.cpf) $t(validation.exists)",
+      "exists": "CPF já existe",
       "invalid": "$t(entity.User.properties.cpf) $t(validation.invalid)"
     },
     "email": {
       "required": "$t(entity.User.properties.cpf) $t(validation.required)",
       "isEmail": "$t(entity.User.properties.name) $t(validation.isEmail)",
-      "exists": "$t(entity.User.properties.email) $t(validation.exists)",
+      "exists": "E-mail já existe",
       "invalid": "$t(entity.User.properties.email) $t(validation.invalid)"
     },
     "password": {
@@ -63,5 +63,8 @@
     "closingHour": {
       "isString": "$t(entity.User.properties.closingHour) $t(validation.isString)"
     }
+  },
+  "CartProduct": {
+    "productUnavailable": "Produto {productName} não está disponível em estoque"
   }
 }

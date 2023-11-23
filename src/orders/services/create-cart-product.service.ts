@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AbstractCreateEntityService, NestLoggerService } from '../../common';
 import { CartProduct } from '../entities/cart-product.entity';
 import { CartProductsTypeORMRepository } from '../repositories/cart-products-typeorm.repository';
@@ -9,6 +9,7 @@ import { FindOrderByIdService } from './find-order-by-id.service';
 import { CustomerUser } from '../../users/entities/customer-user.entity';
 import { UpdatePartnerProductService } from '../../partners/services/update-partner-product.service';
 import { UpdatePartnerProductDto } from '../../partners/dto/update-partner-product.dto';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class CreateCartProductService extends AbstractCreateEntityService<CartProduct> {
@@ -26,6 +27,7 @@ export class CreateCartProductService extends AbstractCreateEntityService<CartPr
   protected async beforeCreate(
     createCartProductDto: CreateCartProductDto,
     correlationId: string,
+    i18n: I18nContext,
   ) {
     const [customer, partnerProduct, order] = await Promise.all([
       this.findUserByIdService.execute(
@@ -42,12 +44,26 @@ export class CreateCartProductService extends AbstractCreateEntityService<CartPr
       ),
     ]);
 
+    const inStock =
+      partnerProduct.inStockQuantity - createCartProductDto.quantity;
+    const isProductAvailable = inStock > 0;
+
+    if (!isProductAvailable) {
+      throw new NotFoundException(
+        i18n.translate('validation.CartProduct.productUnavailable', {
+          args: {
+            productName: `${partnerProduct.product.name} ${partnerProduct.product.size}`,
+          },
+        }),
+      );
+    }
+
     return new CartProduct({
       ...createCartProductDto.toEntity(),
       customer: customer as CustomerUser,
       partnerProduct,
-      quantity: 1,
       order,
+      totalValue: createCartProductDto.quantity * partnerProduct.value,
     });
   }
 
