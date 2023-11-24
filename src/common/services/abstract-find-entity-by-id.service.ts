@@ -29,17 +29,19 @@ export class AbstractFindEntityByIdService<
 
       if (!found) {
         throw new NotFoundException(
-          i18n.translate('validation.entity.notFound', {
-            args: {
-              entityName: i18n.translate(
-                `entity.${this.repositoryImpl.entityName}.entityName`,
-              ),
-              param: i18n.translate(
-                `entity.${this.repositoryImpl.entityName}.properties.id`,
-              ),
-              value: id,
-            },
-          }),
+          i18n
+            ? i18n.translate('validation.entity.notFound', {
+                args: {
+                  entityName: i18n.translate(
+                    `entity.${this.repositoryImpl.entityName}.entityName`,
+                  ),
+                  param: i18n.translate(
+                    `entity.${this.repositoryImpl.entityName}.properties.id`,
+                  ),
+                  value: id,
+                },
+              })
+            : `${this.repositoryImpl.entityName} not found with id: ${id}`,
         );
       }
 

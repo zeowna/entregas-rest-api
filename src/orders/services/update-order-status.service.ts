@@ -9,6 +9,7 @@ import { OrderStatus } from '../entities/order-status.enum';
 import { I18nContext } from 'nestjs-i18n';
 import { UpdatePartnerProductService } from '../../partners/services/update-partner-product.service';
 import { UpdatePartnerProductDto } from '../../partners/dto/update-partner-product.dto';
+import { SocketGateway } from '../../sockets/socket.gateway';
 
 @Injectable()
 export class UpdateOrderStatusService extends AbstractService<Order> {
@@ -16,6 +17,7 @@ export class UpdateOrderStatusService extends AbstractService<Order> {
     private readonly ordersRepository: OrdersTypeORMRepository,
     private readonly findOrderByIdService: FindOrderByIdService,
     private readonly updatePartnerProductService: UpdatePartnerProductService,
+    private readonly socket: SocketGateway,
     private readonly logger: NestLoggerService,
   ) {
     super(logger);
@@ -68,7 +70,7 @@ export class UpdateOrderStatusService extends AbstractService<Order> {
       if (isCancelationStatus.includes(updated.status)) {
         for (const cartProduct of updated.cart) {
           await this.updatePartnerProductService.execute(
-            cartProduct.id,
+            cartProduct.partnerProduct.id,
             new UpdatePartnerProductDto({
               inStockQuantity:
                 cartProduct.quantity +
@@ -86,14 +88,23 @@ export class UpdateOrderStatusService extends AbstractService<Order> {
         success: true,
       });
 
+      this.socket.emit(`partner-order-updated-${updated.partner.id}`, updated);
+      this.socket.emit(
+        `customer-order-customer-${updated.customer.id}`,
+        updated,
+      );
+
       return updated;
     } catch (err) {
       this.logAfter({
+        errJSON: JSON.stringify(err),
         err,
         updateOrderStatusDto,
         correlationId,
         success: false,
       });
+
+      throw err;
     }
   }
 }

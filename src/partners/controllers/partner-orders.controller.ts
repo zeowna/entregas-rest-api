@@ -57,9 +57,10 @@ export class PartnerOrdersController {
 
   @UseGuards(AuthGuard)
   @Patch(':partnerId([0-9]+)/orders/:id([0-9]+)/status')
-  async update(
+  async updateStatus(
     @Req() request: CustomRequest,
     @Param('id') id: string,
+    @Param('partnerId') partnerId: string,
     @Body() updateOrderStatusDto: UpdateOrderStatusDto,
     @I18n() i18n: I18nContext,
   ) {

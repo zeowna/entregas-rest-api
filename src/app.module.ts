@@ -23,6 +23,7 @@ import { AdminModule } from './admin/admin.module';
 import { CustomersModule } from './customers/customers.module';
 import { MailerModule } from './mailer/mailer.module';
 import { DbModule } from './db/db.module';
+import { SocketsModule } from './sockets/sockets.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { DbModule } from './db/db.module';
         AcceptLanguageResolver,
       ],
     }),
+    SocketsModule,
     DbModule,
     ZeownaLoggerModule.register({ global: true }),
     ZeownaAuthModule.register({ global: true }),
@@ -54,6 +56,7 @@ import { DbModule } from './db/db.module';
     AddressesHttpModule,
     MeHttpModule,
     MailerModule,
+    SocketsModule,
   ],
   controllers: [AppController],
   providers: [
