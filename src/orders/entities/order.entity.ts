@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractTypeORMEntity, ExcludeMethods } from '../../common';
 import { User } from '../../users/entities/user.entity';
-import { OrderStatus } from './order-statuses.enum';
+import { OrderStatus } from './order-status.enum';
 import { Partner } from '../../partners/entities/partner.entity';
 import { Address } from '../../addresses/entities/address.entity';
 import { CartProduct } from './cart-product.entity';
@@ -31,7 +31,7 @@ export class Order extends AbstractTypeORMEntity {
   @Column({ default: OrderStatus.Created })
   status: OrderStatus;
 
-  @Column({ nullable: true })
+  @Column('timestamptz', { nullable: true, default: () => 'CURRENT_TIMESTAMP' })
   statusUpdatedAt: Date;
 
   @Column()

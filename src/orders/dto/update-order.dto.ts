@@ -4,7 +4,7 @@ import { IsInt, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { OrderPaymentMethods } from '../entities/order-payment-methods.enum';
 import { Address } from '../../addresses/entities/address.entity';
 import { CreateCartProductDto } from './create-cart-product.dto';
-import { OrderStatus } from '../entities/order-statuses.enum';
+import { OrderStatus } from '../entities/order-status.enum';
 
 export class UpdateOrderDto extends AbstractEntityDto<Order> {
   @IsOptional()

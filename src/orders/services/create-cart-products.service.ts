@@ -6,10 +6,12 @@ import { UpdateOrderService } from './update-order.service';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { CreateCartProductsDto } from '../dto/create-cart-products.dto';
 import { CreateCartProductService } from './create-cart-product.service';
+import { TypeORMTransactionFactory } from '../../db/transaction/typeorm-transaction.factory';
 
 @Injectable()
 export class CreateCartProductsService extends AbstractService<CartProduct[]> {
   constructor(
+    private readonly transactionFactory: TypeORMTransactionFactory,
     private readonly createCartProductService: CreateCartProductService,
     private readonly updateOrderService: UpdateOrderService,
     private readonly logger: NestLoggerService,
@@ -27,18 +29,25 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
       correlationId,
     });
 
-    const result = await Promise.all(
-      createCartProductsDto.cart.map(async (createCartProductDto) => {
-        createCartProductDto.orderId = createCartProductsDto.orderId;
-        createCartProductDto.customerId = createCartProductsDto.customerId;
+    const transactionRunner = await this.transactionFactory.getRunner();
 
-        return this.createCartProductService.execute(
+    await transactionRunner.start();
+
+    const result: CartProduct[] = [];
+
+    for (const createCartProductDto of createCartProductsDto.cart) {
+      createCartProductDto.orderId = createCartProductsDto.orderId;
+      createCartProductDto.customerId = createCartProductsDto.customerId;
+
+      result.push(
+        await this.createCartProductService.execute(
           createCartProductDto,
           correlationId,
           i18n,
-        );
-      }),
-    );
+          transactionRunner,
+        ),
+      );
+    }
 
     await this.updateOrderService.execute(
       createCartProductsDto.cart[0].orderId,
@@ -49,7 +58,11 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
         ),
       }),
       correlationId,
+      i18n,
+      transactionRunner,
     );
+
+    await transactionRunner.commit();
 
     try {
       this.logAfter({
@@ -61,12 +74,16 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
 
       return result;
     } catch (err) {
+      await transactionRunner.rollback();
+
       this.logAfter({
         err,
         createCartProductsDto,
         correlationId,
         success: false,
       });
+    } finally {
+      await transactionRunner.release();
     }
   }
 }

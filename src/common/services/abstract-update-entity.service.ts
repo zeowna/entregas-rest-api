@@ -5,6 +5,7 @@ import { LoggerInterface } from '../logger';
 import { AbstractEntityDto } from '../dto';
 import { AbstractService } from './abstract.service';
 import { I18nContext } from 'nestjs-i18n';
+import { DatabaseTransactionRunnerInterface } from '../database-transactions';
 
 export abstract class AbstractUpdateEntityService<
   T extends AbstractEntity,
@@ -44,6 +45,7 @@ export abstract class AbstractUpdateEntityService<
     updateEntityDto: AbstractEntityDto<T>,
     correlationId: string,
     i18n?: I18nContext,
+    transactionRunner?: DatabaseTransactionRunnerInterface,
   ) {
     try {
       this.logBefore({
@@ -56,6 +58,7 @@ export abstract class AbstractUpdateEntityService<
       const updated = await this.repositoryImpl.update(
         (existing as AbstractEntity).id,
         await this.beforeUpdate(id, updateEntityDto, correlationId, i18n),
+        transactionRunner,
       );
 
       await this.afterUpdate(id, updated, correlationId, i18n);

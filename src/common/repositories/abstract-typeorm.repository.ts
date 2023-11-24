@@ -4,13 +4,20 @@ import { RepositoryInterface, SortParams } from './repository.interface';
 import { PlainQueryConditions } from '../inputs';
 import { FindOptionsOrder } from 'typeorm/find-options/FindOptionsOrder';
 import { QueryTypeormConditions } from './query-typeorm-conditions';
+import { TypeORMTransactionRunner } from '../database-transactions';
 
 export abstract class AbstractTypeORMRepository<T extends AbstractTypeORMEntity>
   implements RepositoryInterface<T>
 {
   constructor(private readonly typeORMRepositoryImpl: Repository<T>) {}
 
-  async create(entity: T) {
+  async create(entity: T, transactionRunner?: TypeORMTransactionRunner) {
+    if (transactionRunner) {
+      return transactionRunner.runner.manager.save(
+        this.typeORMRepositoryImpl.create(entity),
+      );
+    }
+
     return this.typeORMRepositoryImpl.save(
       this.typeORMRepositoryImpl.create(entity),
     );
@@ -38,11 +45,25 @@ export abstract class AbstractTypeORMRepository<T extends AbstractTypeORMEntity>
     return this.typeORMRepositoryImpl.findOneBy({ id } as any);
   }
 
-  async update(id: ID, entity: T) {
+  async update(
+    id: ID,
+    entity: T,
+    transactionRunner?: TypeORMTransactionRunner,
+  ) {
     const found = await this.findById(id);
 
     if (!found) {
       return null;
+    }
+
+    if (transactionRunner) {
+      return transactionRunner.runner.manager.save(
+        this.typeORMRepositoryImpl.create({
+          ...found,
+          ...entity,
+          id,
+        }),
+      );
     }
 
     await this.typeORMRepositoryImpl.save(

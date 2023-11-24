@@ -66,5 +66,10 @@
   },
   "CartProduct": {
     "productUnavailable": "Produto {productName} não está disponível em estoque"
+  },
+  "Order": {
+    "status": {
+      "isAlreadySettled": "O Status do Pedido não pode mais ser alterado"
+    }
   }
 }

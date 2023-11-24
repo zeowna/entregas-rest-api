@@ -24,8 +24,7 @@
     "migration:revert": "yarn typeorm migration:revert",
     "gcp:build": "gcloud builds submit --region=us-central1 --tag us-central1-docker.pkg.dev/entregas-404517/entregas-rest-api/entregas-rest-api:latest",
     "gcp:deploy": "gcloud run deploy entregas-rest-api --region=us-central1 --image=us-central1-docker.pkg.dev/entregas-404517/entregas-rest-api/entregas-rest-api:latest",
-    "gcp:config": "gsutil setmeta -h \"Cache-Control: public, max-age=300\" gs://entregas-web-app/*.html",
-    "deploy": "yarn gcp:build && yarn gcp:deploy && yarn gcp:config"
+    "deploy": "yarn gcp:build && yarn gcp:deploy"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.6.0",

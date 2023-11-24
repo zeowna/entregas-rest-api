@@ -22,6 +22,7 @@ import { MeHttpModule } from './me/me-http.module';
 import { AdminModule } from './admin/admin.module';
 import { CustomersModule } from './customers/customers.module';
 import { MailerModule } from './mailer/mailer.module';
+import { DbModule } from './db/db.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { MailerModule } from './mailer/mailer.module';
         AcceptLanguageResolver,
       ],
     }),
+    DbModule,
     ZeownaLoggerModule.register({ global: true }),
     ZeownaAuthModule.register({ global: true }),
     TypeOrmModule.forRoot(dataSourceOptions),

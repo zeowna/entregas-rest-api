@@ -4,6 +4,7 @@ import { LoggerInterface } from '../logger';
 import { AbstractEntityDto } from '../dto';
 import { AbstractService } from './abstract.service';
 import { I18nContext } from 'nestjs-i18n';
+import { DatabaseTransactionRunnerInterface } from '../database-transactions';
 
 export abstract class AbstractCreateEntityService<
   T extends AbstractEntity,
@@ -32,20 +33,27 @@ export abstract class AbstractCreateEntityService<
     return;
   }
 
-  private createEntity(entity: T, i18n?: I18nContext) {
-    return this.repositoryImpl.create(entity);
+  private createEntity(
+    entity: T,
+    i18n?: I18nContext,
+    transactionRunnerImpl?: DatabaseTransactionRunnerInterface,
+  ) {
+    return this.repositoryImpl.create(entity, transactionRunnerImpl);
   }
 
   async execute(
     createEntityDto: AbstractEntityDto<T>,
     correlationId: string,
     i18n?: I18nContext,
+    transactionRunnerImpl?: DatabaseTransactionRunnerInterface,
   ) {
     try {
       this.logBefore({ createEntityDto, correlationId });
 
       const created = await this.createEntity(
         await this.beforeCreate(createEntityDto, correlationId, i18n),
+        i18n,
+        transactionRunnerImpl,
       );
 
       await this.afterCreate(createEntityDto, created, correlationId, i18n);
@@ -60,6 +68,7 @@ export abstract class AbstractCreateEntityService<
       return created;
     } catch (err) {
       this.logAfter({ success: false, correlationId, err });
+
       throw err;
     }
   }

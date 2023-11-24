@@ -1,6 +1,6 @@
 import { AbstractEntityPresenter } from '../../common';
 import { Order } from '../entities/order.entity';
-import { OrderStatus } from '../entities/order-statuses.enum';
+import { OrderStatus } from '../entities/order-status.enum';
 import { PartnerResponse } from '../../partners/responses/partner.reponse';
 import { CartProductResponse } from './cart-product.response';
 import { AddressResponse } from '../../addresses/responses/address.response';

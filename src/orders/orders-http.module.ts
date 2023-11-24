@@ -13,6 +13,7 @@ import { CreateCartProductsService } from './services/create-cart-products.servi
 import { FindOrdersService } from './services/find-orders.service';
 import { CountOrdersService } from './services/count-orders.service';
 import { CreateCartProductService } from './services/create-cart-product.service';
+import { UpdateOrderStatusService } from './services/update-order-status.service';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CreateCartProductService } from './services/create-cart-product.service
     CreateCartProductsService,
     FindOrdersService,
     CountOrdersService,
+    UpdateOrderStatusService,
   ],
   exports: [
     CreateOrderService,
@@ -40,6 +42,7 @@ import { CreateCartProductService } from './services/create-cart-product.service
     CreateCartProductsService,
     FindOrdersService,
     FindOrderByIdService,
+    UpdateOrderStatusService,
   ],
 })
 export class OrdersHttpModule {}

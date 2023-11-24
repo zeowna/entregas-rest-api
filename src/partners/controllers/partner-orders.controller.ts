@@ -14,15 +14,15 @@ import { FindOrdersService } from '../../orders/services/find-orders.service';
 import { OrderPagingDto } from '../dto/order-paging.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { FindOrderByIdService } from '../../orders/services/find-order-by-id.service';
-import { UpdateOrderService } from '../../orders/services/update-order.service';
-import { UpdateOrderDto } from '../../orders/dto/update-order.dto';
+import { UpdateOrderStatusDto } from '../../orders/dto/update-order-status.dto';
+import { UpdateOrderStatusService } from '../../orders/services/update-order-status.service';
 
 @Controller('partners')
 export class PartnerOrdersController {
   constructor(
     private readonly findOrdersService: FindOrdersService,
     private readonly findOrderByIdService: FindOrderByIdService,
-    private readonly updateOrderService: UpdateOrderService,
+    private readonly updateOrderStatusService: UpdateOrderStatusService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -56,16 +56,16 @@ export class PartnerOrdersController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':partnerId([0-9]+)/orders/:id([0-9]+)')
+  @Patch(':partnerId([0-9]+)/orders/:id([0-9]+)/status')
   async update(
     @Req() request: CustomRequest,
     @Param('id') id: string,
-    @Body() updateOrderDto: UpdateOrderDto,
+    @Body() updateOrderStatusDto: UpdateOrderStatusDto,
     @I18n() i18n: I18nContext,
   ) {
-    return this.updateOrderService.execute(
+    return this.updateOrderStatusService.execute(
       +id,
-      updateOrderDto,
+      updateOrderStatusDto,
       request?.correlationId,
       i18n,
     );
