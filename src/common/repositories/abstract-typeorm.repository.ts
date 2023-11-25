@@ -12,7 +12,7 @@ export abstract class AbstractTypeORMRepository<T extends AbstractTypeORMEntity>
   constructor(private readonly typeORMRepositoryImpl: Repository<T>) {}
 
   async create(entity: T, transactionRunner?: TypeORMTransactionRunner) {
-    if (transactionRunner) {
+    if (transactionRunner && transactionRunner.runner.isTransactionActive) {
       return transactionRunner.runner.manager.save(
         this.typeORMRepositoryImpl.create(entity),
       );
@@ -56,7 +56,7 @@ export abstract class AbstractTypeORMRepository<T extends AbstractTypeORMEntity>
       return null;
     }
 
-    if (transactionRunner) {
+    if (transactionRunner && transactionRunner.runner.isTransactionActive) {
       return transactionRunner.runner.manager.save(
         this.typeORMRepositoryImpl.create({
           ...found,

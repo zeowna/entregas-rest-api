@@ -1,5 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AbstractCreateEntityService, NestLoggerService } from '../../common';
+import {
+  AbstractCreateEntityService,
+  DatabaseTransactionRunnerInterface,
+  NestLoggerService,
+} from '../../common';
 import { CartProduct } from '../entities/cart-product.entity';
 import { CartProductsTypeORMRepository } from '../repositories/cart-products-typeorm.repository';
 import { CreateCartProductDto } from '../dto/create-cart-product.dto';
@@ -71,6 +75,8 @@ export class CreateCartProductService extends AbstractCreateEntityService<CartPr
     createCartProductDto: CreateCartProductDto,
     cartProduct: CartProduct,
     correlationId: string,
+    i18n: I18nContext,
+    transactionRunner: DatabaseTransactionRunnerInterface,
   ) {
     await this.updatePartnerProductService.execute(
       cartProduct.partnerProduct.id,
@@ -78,6 +84,8 @@ export class CreateCartProductService extends AbstractCreateEntityService<CartPr
         inStockQuantity: cartProduct.partnerProduct.inStockQuantity - 1,
       }),
       correlationId,
+      i18n,
+      transactionRunner,
     );
   }
 }

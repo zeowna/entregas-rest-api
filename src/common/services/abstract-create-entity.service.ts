@@ -20,6 +20,7 @@ export abstract class AbstractCreateEntityService<
     createEntityDto: AbstractEntityDto<T>,
     correlationId: string,
     i18n?: I18nContext,
+    transactionRunnerImpl?: DatabaseTransactionRunnerInterface,
   ) {
     return createEntityDto.toEntity();
   }
@@ -29,6 +30,7 @@ export abstract class AbstractCreateEntityService<
     entity: T,
     correlationId: string,
     i18n?: I18nContext,
+    transactionRunnerImpl?: DatabaseTransactionRunnerInterface,
   ) {
     return;
   }
