@@ -35,8 +35,8 @@ export class SocketGateway
     this.server.emit(pattern, args);
   }
 
-  afterInit(server: Server) {
-    this.logger.log('Init');
+  afterInit() {
+    this.logger.log('WebSocket initalized');
   }
 
   handleDisconnect(client: Socket) {
