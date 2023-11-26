@@ -24,6 +24,9 @@ export class Partner extends AbstractTypeORMEntity {
   @Column({ default: '21:00' })
   closingHours: string;
 
+  @Column({ default: false })
+  isOnline: boolean;
+
   @OneToOne(() => Address, { nullable: true, eager: true })
   @JoinColumn()
   address: Address;
@@ -35,6 +38,7 @@ export class Partner extends AbstractTypeORMEntity {
     this.pictureURI = props?.pictureURI;
     this.openingHours = props?.openingHours;
     this.closingHours = props?.closingHours;
+    this.isOnline = props?.isOnline;
     this.address = props?.address;
   }
 

@@ -18,6 +18,8 @@ export class PartnerResponse extends AbstractEntityPresenter<Partner> {
 
   closingHours: string;
 
+  isOnline: boolean;
+
   constructor(props: Partner) {
     super(props);
     this.name = props?.name;
@@ -27,5 +29,6 @@ export class PartnerResponse extends AbstractEntityPresenter<Partner> {
     this.address = props?.address?.present();
     this.openingHours = props?.openingHours;
     this.closingHours = props?.closingHours;
+    this.isOnline = props?.isOnline;
   }
 }

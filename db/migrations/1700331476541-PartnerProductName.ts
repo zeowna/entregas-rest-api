@@ -5,7 +5,7 @@ export class PartnerProductName1700331476541 implements MigrationInterface {
 
   async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "partner_product" ADD "name" character varying NOT`,
+      `ALTER TABLE "partner_product" ADD "name" character varying NOT NULL`,
     );
   }
 
