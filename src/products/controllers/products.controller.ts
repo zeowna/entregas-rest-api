@@ -7,6 +7,7 @@ import {
   Post,
   Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CustomRequest, ID } from '../../common';
@@ -20,6 +21,10 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { UpdateProductService } from '../services/update-product.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadProductPictureService } from '../services/upload-product-picture.service';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { AuthGuard } from '../../common/auth';
+import { RolesGuard } from '../../auth/guards/routes.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -31,6 +36,8 @@ export class ProductsController {
     private readonly uploadProductPictureService: UploadProductPictureService,
   ) {}
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async find(@Req() request: CustomRequest) {
     return this.findProductsService.execute(
@@ -39,6 +46,8 @@ export class ProductsController {
     );
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id([0-9]+)')
   async findById(
     @Req() request: CustomRequest,
@@ -48,6 +57,8 @@ export class ProductsController {
     return this.findProductById.execute(+id, request?.correlationId);
   }
 
+  @Roles([UserTypes.Admin])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post()
   async create(
     @Req() request: CustomRequest,
@@ -59,6 +70,8 @@ export class ProductsController {
     );
   }
 
+  @Roles([UserTypes.Admin])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id([0-9]+)')
   async update(
     @Req() request: CustomRequest,
@@ -72,8 +85,10 @@ export class ProductsController {
     );
   }
 
-  @Post(':id([0-9]+)/pictures')
+  @Roles([UserTypes.Admin])
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file'))
+  @Post(':id([0-9]+)/pictures')
   async uploadFile(
     @Req() request: CustomRequest,
     @Param('id') id: ID,

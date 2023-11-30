@@ -24,6 +24,9 @@ import { UpdateUserService } from '../../users/services/update-user.service';
 import { UpdatePartnerUserDto } from '../dto/update-partner-user.dto';
 import { AuthGuard } from '../../common/auth';
 import { PartnerUser } from '../../users/entities/partner-user.entity';
+import { RolesGuard } from '../../auth/guards/routes.guard';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
 
 @Controller('partners')
 export class PartnerUsersController {
@@ -35,24 +38,26 @@ export class PartnerUsersController {
     private readonly uploadUserProfilePictureService: UploadUserProfilePictureService,
   ) {}
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':partnerId([0-9]+)/users')
-  @UseGuards(AuthGuard)
-  private findByPartnerId(
+  findByPartnerId(
     @Req() request: CustomRequest,
     @Param('partnerId') partnerId: string,
     @Query() queryParams: Record<string, string>,
   ) {
     const userPagingDto = new UserPagingDto<PartnerUser>(queryParams);
     userPagingDto.conditions.partner = {
-      eq: +partnerId,
+      eq: request.user.partnerId || +partnerId,
     };
 
     return this.findUsersService.execute(userPagingDto, request.correlationId);
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':partnerId([0-9]+)/users/:id([0-9]+)')
-  @UseGuards(AuthGuard)
-  private findById(
+  findById(
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @I18n() i18n: I18nContext,
@@ -60,13 +65,16 @@ export class PartnerUsersController {
     return this.findUserByIdService.execute(+id, request?.correlationId, i18n);
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post(':partnerId([0-9]+)/users')
   async create(
     @Req() request: CustomRequest,
     @Param('partnerId') partnerId: string,
     @Body() createPartnerUserDto: CreatePartnerUserDto,
   ) {
-    createPartnerUserDto.partnerId = +partnerId;
+    createPartnerUserDto.partnerId =
+      (request.user.partnerId as number) || +partnerId;
 
     return this.createPartnerUser.execute(
       createPartnerUserDto,

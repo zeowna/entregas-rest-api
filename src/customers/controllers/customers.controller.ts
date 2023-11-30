@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { CustomRequest } from '../../common';
 import { FindUsersService } from '../../users/services/find-users.service';
@@ -18,6 +19,10 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { CreateCustomerUserDto } from '../dto/create-customer-user.dto';
 import { UpdateCustomerUserDto } from '../dto/update-customer-user.dto';
 import { CustomerUser } from '../../users/entities/customer-user.entity';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { AuthGuard } from '../../common/auth';
+import { RolesGuard } from '../../auth/guards/routes.guard';
 
 @Controller('customers')
 export class CustomersController {
@@ -28,6 +33,8 @@ export class CustomersController {
     private readonly updateUserService: UpdateUserService,
   ) {}
 
+  @Roles([UserTypes.Admin])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async find(
     @Req() request: CustomRequest,
@@ -36,6 +43,8 @@ export class CustomersController {
     return this.findUsersService.execute(userPagingDto, request.correlationId);
   }
 
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
   async findById(
     @Req() request: CustomRequest,
@@ -58,6 +67,8 @@ export class CustomersController {
     );
   }
 
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id')
   async update(
     @Req() request: CustomRequest,
@@ -65,7 +76,7 @@ export class CustomersController {
     @Body() updateUserDto: UpdateCustomerUserDto,
   ) {
     return this.updateUserService.execute(
-      +id,
+      request.user.sub || +id,
       updateUserDto,
       request?.correlationId,
     );

@@ -24,6 +24,9 @@ import { FindOrdersService } from '../../orders/services/find-orders.service';
 import { FindOrderByIdService } from '../../orders/services/find-order-by-id.service';
 import { UpdateOrderStatusDto } from '../../orders/dto/update-order-status.dto';
 import { UpdateOrderStatusService } from '../../orders/services/update-order-status.service';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { RolesGuard } from '../../auth/guards/routes.guard';
 
 @Controller('customers')
 export class CustomersOrdersController {
@@ -36,7 +39,8 @@ export class CustomersOrdersController {
     private readonly updateOrderStatusService: UpdateOrderStatusService,
   ) {}
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':customerId([0-9]+)/orders')
   find(
     @Req() request: CustomRequest,
@@ -47,7 +51,7 @@ export class CustomersOrdersController {
 
     orderPagingDto.conditions = {
       ...orderPagingDto.conditions,
-      customer: { eq: +customerId },
+      customer: { eq: request.user.sub || +customerId },
     };
 
     return this.findOrdersService.execute(
@@ -56,13 +60,15 @@ export class CustomersOrdersController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':customerId([0-9]+)/orders/:id([0-9]+)')
   findById(@Req() request: CustomRequest, @Param('id') id: string) {
     return this.findOrderByIdService.execute(+id, request?.correlationId);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post(':customerId([0-9]+)/orders')
   async create(
     @Request() request: CustomRequest,
@@ -70,7 +76,7 @@ export class CustomersOrdersController {
     @Body() createOrderDto: CreateOrderDto,
     @I18n() i18n: I18nContext,
   ) {
-    createOrderDto.customerId = +customerId;
+    createOrderDto.customerId = request.user.sub || +customerId;
 
     return this.createOrderService.execute(
       createOrderDto,
@@ -79,7 +85,8 @@ export class CustomersOrdersController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post(':customerId([0-9]+)/orders/:orderId([0-9]+)/addresses')
   async createAddress(
     @Request() request: CustomRequest,
@@ -96,7 +103,8 @@ export class CustomersOrdersController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post(':customerId([0-9]+)/orders/:id([0-9]+)/cart-products')
   async createCartProducts(
     @Request() request: CustomRequest,
@@ -105,7 +113,7 @@ export class CustomersOrdersController {
     @Body() createCartProductsDto: CreateCartProductsDto,
     @I18n() i18n: I18nContext,
   ) {
-    createCartProductsDto.customerId = +customerId;
+    createCartProductsDto.customerId = request.user.sub || +customerId;
     createCartProductsDto.orderId = +id;
 
     return this.createCartProductsService.execute(
@@ -115,7 +123,8 @@ export class CustomersOrdersController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':customerId([0-9]+)/orders/:id([0-9]+)/status')
   async update(
     @Req() request: CustomRequest,

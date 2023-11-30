@@ -16,6 +16,9 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { FindOrderByIdService } from '../../orders/services/find-order-by-id.service';
 import { UpdateOrderStatusDto } from '../../orders/dto/update-order-status.dto';
 import { UpdateOrderStatusService } from '../../orders/services/update-order-status.service';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { RolesGuard } from '../../auth/guards/routes.guard';
 
 @Controller('partners')
 export class PartnerOrdersController {
@@ -25,7 +28,8 @@ export class PartnerOrdersController {
     private readonly updateOrderStatusService: UpdateOrderStatusService,
   ) {}
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':partnerId([0-9]+)/orders')
   find(
     @Req() request: CustomRequest,
@@ -36,7 +40,7 @@ export class PartnerOrdersController {
 
     orderPagingDto.conditions = {
       ...orderPagingDto.conditions,
-      partner: { eq: +partnerId },
+      partner: { eq: request.user.partnerId || +partnerId },
     };
 
     return this.findOrdersService.execute(
@@ -45,7 +49,8 @@ export class PartnerOrdersController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':partnerId([0-9]+)/orders/:id([0-9]+)')
   async findById(
     @Req() request: CustomRequest,
@@ -55,7 +60,8 @@ export class PartnerOrdersController {
     return this.findOrderByIdService.execute(+id, request?.correlationId);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles([UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':partnerId([0-9]+)/orders/:id([0-9]+)/status')
   async updateStatus(
     @Req() request: CustomRequest,

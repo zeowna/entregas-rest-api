@@ -44,13 +44,13 @@ export abstract class AbstractFindEntitiesService<
     return this.repositoryImpl.find(plainConditions, skip, limit, sort);
   }
 
-  beforeFind(paging: Paging<T>, correlationId: string) {
+  protected async beforeFind(paging: Paging<T>, correlationId: string) {
     return paging;
   }
 
   async execute(pagingDto: AbstractPagingDto<T>, correlationId: string) {
     try {
-      const paging = this.beforeFind(pagingDto.toPaging(), correlationId);
+      const paging = await this.beforeFind(pagingDto.toPaging(), correlationId);
 
       this.logBefore({
         paging,

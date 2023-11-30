@@ -8,6 +8,7 @@ import {
   Query,
   Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FindPartnersService } from '../services/find-partners.service';
@@ -21,6 +22,10 @@ import { UpdatePartnerDto } from '../dto/update-partner.dto';
 import { UpdatePartnerService } from '../services/update-partner.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadPartnerPictureService } from '../services/upload-partner-picture.service';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { AuthGuard } from '../../common/auth';
+import { RolesGuard } from '../../auth/guards/routes.guard';
 
 @Controller('partners')
 export class PartnersController {
@@ -32,6 +37,27 @@ export class PartnersController {
     private readonly uploadPartnerPictureService: UploadPartnerPictureService,
   ) {}
 
+  @Roles([UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('/distance')
+  findByDistance(
+    @Req() request: CustomRequest,
+    @Query() queryParams: Record<string, string>,
+  ) {
+    const coordinates = {
+      lat: Number.parseFloat(queryParams.lat),
+      lng: Number.parseFloat(queryParams.lng),
+    };
+    const findPartnersDto = new PartnerPagingDto(queryParams);
+
+    return this.findPartnersService.execute(
+      findPartnersDto,
+      request?.correlationId,
+    );
+  }
+
+  @Roles([UserTypes.Admin, UserTypes.Partner, UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   find(
     @Req() request: CustomRequest,
@@ -45,6 +71,8 @@ export class PartnersController {
     );
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner, UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id([0-9]+)')
   async findById(
     @Req() request: CustomRequest,
@@ -54,6 +82,8 @@ export class PartnersController {
     return this.findPartnerById.execute(+id, request?.correlationId, i18n);
   }
 
+  @Roles([UserTypes.Admin])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post()
   async create(
     @Req() request: CustomRequest,
@@ -65,6 +95,8 @@ export class PartnersController {
     );
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id([0-9]+)')
   async update(
     @Req() request: CustomRequest,
@@ -72,23 +104,47 @@ export class PartnersController {
     @Body() updateUserDto: UpdatePartnerDto,
   ) {
     return this.updatePartnerService.execute(
-      +id,
+      request.user.partnerId || +id,
       updateUserDto,
       request?.correlationId,
     );
   }
 
-  @Post(':id([0-9]+)/pictures')
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file'))
+  @Post(':id([0-9]+)/pictures')
   async uploadFile(
     @Req() request: CustomRequest,
     @Param('id') id: ID,
     @UploadedFile('file') file: Express.Multer.File,
   ) {
     return this.uploadPartnerPictureService.execute(
-      +id,
+      request.user.partnerId || +id,
       file,
       request.correlationId,
+    );
+  }
+
+  @Roles([UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
+  @Patch(':id([0-9]+)/online')
+  setOnline(@Req() request: CustomRequest, @Param('id') id: string) {
+    return this.updatePartnerService.execute(
+      request.user.partnerId || +id,
+      new UpdatePartnerDto({ isOnline: true }),
+      request?.correlationId,
+    );
+  }
+
+  @Roles([UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
+  @Patch(':id([0-9]+)/offline')
+  setOffline(@Req() request: CustomRequest, @Param('id') id: string) {
+    return this.updatePartnerService.execute(
+      request.user.partnerId || +id,
+      new UpdatePartnerDto({ isOnline: false }),
+      request?.correlationId,
     );
   }
 }

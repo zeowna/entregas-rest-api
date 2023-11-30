@@ -7,11 +7,11 @@ import {
 
 export abstract class AbstractTypeORMEntity extends AbstractEntity {
   @PrimaryGeneratedColumn()
-  readonly id?: ID;
+  id?: ID;
 
   @CreateDateColumn()
-  readonly createdAt?: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  readonly updatedAt?: Date;
+  updatedAt?: Date;
 }

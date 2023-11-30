@@ -4,6 +4,7 @@ import { SignInResponse } from '../responses/sign-in.response';
 import { jwtConstants } from '../../common/auth/constants';
 import { FindUserByIdService } from '../../users/services/find-user-by-id.service';
 import { NestJwtService } from '../../common/auth';
+import { PartnerUser } from '../../users/entities/partner-user.entity';
 
 @Injectable()
 export class RefreshTokenService extends AbstractService<SignInResponse> {
@@ -33,6 +34,8 @@ export class RefreshTokenService extends AbstractService<SignInResponse> {
     const payload = {
       sub: user.id,
       username: user.email,
+      userType: user.type,
+      partnerId: (user as PartnerUser)?.partner?.id,
     } as DecodedJwt;
 
     const signed = await this.signPayload(payload, jwtConstants.secret);

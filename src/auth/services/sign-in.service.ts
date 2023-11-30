@@ -11,6 +11,7 @@ import { jwtConstants } from '../../common/auth/constants';
 import { SignInResponse } from '../responses/sign-in.response';
 import { FindUserByEmailService } from '../../users/services/find-user-by-email.service';
 import { I18nContext } from 'nestjs-i18n';
+import { PartnerUser } from '../../users/entities/partner-user.entity';
 
 @Injectable()
 export class SignInService extends AbstractSignInService {
@@ -59,6 +60,8 @@ export class SignInService extends AbstractSignInService {
     const payload = {
       sub: user.id,
       username: user.email,
+      userType: user.type,
+      partnerId: (user as PartnerUser)?.partner?.id,
     } as DecodedJwt;
 
     const signed = await this.signPayload(payload, jwtConstants.secret);

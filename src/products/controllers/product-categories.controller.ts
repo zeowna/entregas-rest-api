@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { CustomRequest } from '../../common';
 import { I18n, I18nContext } from 'nestjs-i18n';
@@ -17,6 +18,10 @@ import { UpdateProductCategoryService } from '../services/update-product-categor
 import { UpdateProductCategoryDto } from '../dto/update-product-category.dto';
 import { ProductCategoryPagingDto } from '../dto/product-category-paging.dto';
 import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { AuthGuard } from '../../common/auth';
+import { RolesGuard } from '../../auth/guards/routes.guard';
 
 @Controller('products/categories')
 export class ProductCategoriesController {
@@ -27,6 +32,8 @@ export class ProductCategoriesController {
     private readonly updateProductCategoryService: UpdateProductCategoryService,
   ) {}
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async find(
     @Req() request: CustomRequest,
@@ -38,6 +45,8 @@ export class ProductCategoriesController {
     );
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id([0-9]+)')
   async findById(
     @Req() request: CustomRequest,
@@ -47,6 +56,8 @@ export class ProductCategoriesController {
     return this.findProductCategoryById.execute(+id, request?.correlationId);
   }
 
+  @Roles([UserTypes.Admin])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post()
   async create(
     @Req() request: CustomRequest,
@@ -58,6 +69,8 @@ export class ProductCategoriesController {
     );
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id([0-9]+)')
   async update(
     @Req() request: CustomRequest,

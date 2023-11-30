@@ -2,11 +2,13 @@ import { AbstractEntity } from '../entities';
 import { Paging, PlainQueryConditions } from '../inputs';
 import { SortParams } from '../repositories';
 
-interface AbstractPagingDtoProps {
+export interface AbstractPagingDtoProps {
   conditions?: string;
   skip?: string;
   limit?: string;
   sort?: string;
+
+  [x: string]: any;
 }
 
 export abstract class AbstractPagingDto<T extends AbstractEntity>

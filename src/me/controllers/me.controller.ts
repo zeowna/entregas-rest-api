@@ -19,6 +19,9 @@ import { UploadUserProfilePictureService } from '../../users/services/upload-use
 import { UpdateUserPasswordService } from '../services/update-user-password.service';
 import { UpdateUserPasswordDto } from '../../users/dto/update-user-password.dto';
 import { UpdateUserDto } from '../../users/dto/update-user.dto';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { UserTypes } from '../../users/entities/user-types.enum';
+import { RolesGuard } from '../../auth/guards/routes.guard';
 
 @Controller('me')
 export class MeController {
@@ -29,8 +32,9 @@ export class MeController {
     private readonly uploadUserProfilePictureService: UploadUserProfilePictureService,
   ) {}
 
+  @Roles([UserTypes.Admin, UserTypes.Partner, UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
-  @UseGuards(AuthGuard)
   async findMe(@Request() request: CustomRequest) {
     return this.findUserByIdService.execute(
       request.user.sub,
@@ -38,8 +42,9 @@ export class MeController {
     );
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner, UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch()
-  @UseGuards(AuthGuard)
   async updateMe(
     @Req() request: CustomRequest,
     @Body() updateUserDto: UpdateUserDto,
@@ -51,8 +56,9 @@ export class MeController {
     );
   }
 
+  @Roles([UserTypes.Admin, UserTypes.Partner, UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch('password')
-  @UseGuards(AuthGuard)
   async updateMyPassword(
     @Req() request: CustomRequest,
     @Body() updateUserDto: UpdateUserPasswordDto,
@@ -64,9 +70,10 @@ export class MeController {
     );
   }
 
-  @Post('pictures')
+  @Roles([UserTypes.Admin, UserTypes.Partner, UserTypes.Customer])
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file'))
-  @UseGuards(AuthGuard)
+  @Post('pictures')
   async uploadFile(
     @Req() request: CustomRequest,
     @UploadedFile('file') file: Express.Multer.File,
