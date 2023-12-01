@@ -1,5 +1,5 @@
 export interface JwtServiceInterface {
-  sign(payload: Record<string, any>, secret: string): Promise<string>;
+  sign(payload: Record<string, any>, privateKey: Buffer): Promise<string>;
 
-  verify<T>(token: string, secret: string): Promise<T>;
+  verify<T>(token: string, publicKey: Buffer): Promise<T>;
 }

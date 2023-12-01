@@ -14,8 +14,11 @@ export abstract class AbstractSignInService extends AbstractService<AbstractSign
     super(loggerImpl);
   }
 
-  protected async signPayload(payload: Record<string, any>, secret: string) {
-    return this.jwtServiceImpl.sign(payload, secret);
+  protected async signPayload(
+    payload: Record<string, any>,
+    privateKey: Buffer,
+  ) {
+    return this.jwtServiceImpl.sign(payload, privateKey);
   }
 
   abstract execute(

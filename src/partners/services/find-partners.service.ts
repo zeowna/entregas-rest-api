@@ -4,7 +4,6 @@ import { Partner } from '../entities/partner.entity';
 import { FindPartnersResponse } from '../responses/find-partners.response';
 import { PartnersTypeORMRepository } from '../repositores/partners-typeorm.repository';
 import { CountPartnersService } from './count-partners.service';
-import { PartnerPagingDto } from '../dto/find-partiners.dto';
 
 @Injectable()
 export class FindPartnersService extends AbstractFindEntitiesService<
@@ -22,19 +21,5 @@ export class FindPartnersService extends AbstractFindEntitiesService<
       logger,
       FindPartnersResponse,
     );
-  }
-
-  async beforeFind(paging: PartnerPagingDto, correlationId: string) {
-    if (paging.coordinates) {
-      const ids = await this.partnersRepository.findIdsByDistance(
-        paging.coordinates.lat,
-        paging.coordinates.lng,
-        50000,
-      );
-
-      paging.conditions.id = { in: ids.map(({ id }) => id) };
-    }
-
-    return paging;
   }
 }

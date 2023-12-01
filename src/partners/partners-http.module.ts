@@ -29,6 +29,7 @@ import { UpdateAllPartnerProductsStatusByProductService } from './services/updat
 import { MailerModule } from '../mailer/mailer.module';
 import { PartnerOrdersController } from './controllers/partner-orders.controller';
 import { OrdersHttpModule } from '../orders/orders-http.module';
+import { FindPartnersByDistanceService } from './services/find-partners-by-distance.service';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { OrdersHttpModule } from '../orders/orders-http.module';
     CreatePartnerAddressService,
     CreatePartnerUserService,
     UpdateAllPartnerProductsStatusByProductService,
+    FindPartnersByDistanceService,
   ],
   exports: [
     CreatePartnerService,

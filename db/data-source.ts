@@ -15,6 +15,7 @@ export const dataSourceOptions: DataSourceOptions = {
   synchronize: false,
   migrations: ['dist/db/migrations/*.js'],
   namingStrategy: new SnakeNamingStrategy(),
+  logging: ENV !== 'production',
   ssl: ENV === 'production' ? { rejectUnauthorized: false } : undefined,
 };
 

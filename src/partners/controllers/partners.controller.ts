@@ -12,7 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FindPartnersService } from '../services/find-partners.service';
-import { PartnerPagingDto } from '../dto/find-partiners.dto';
+import { PartnerPagingDto } from '../dto/partner-paging.dto';
 import { CustomRequest, ID } from '../../common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { FindPartnerByIdService } from '../services/find-partner-by-id.service';
@@ -26,11 +26,14 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { UserTypes } from '../../users/entities/user-types.enum';
 import { AuthGuard } from '../../common/auth';
 import { RolesGuard } from '../../auth/guards/routes.guard';
+import { FindPartnersByDistanceService } from '../services/find-partners-by-distance.service';
+import { FindPartnersByDistanceDto } from '../dto/find-partners-by-distance.dto';
 
 @Controller('partners')
 export class PartnersController {
   constructor(
     private readonly findPartnersService: FindPartnersService,
+    private readonly findPartnersByDistanceService: FindPartnersByDistanceService,
     private readonly findPartnerById: FindPartnerByIdService,
     private readonly createPartnerService: CreatePartnerService,
     private readonly updatePartnerService: UpdatePartnerService,
@@ -39,18 +42,14 @@ export class PartnersController {
 
   @Roles([UserTypes.Customer])
   @UseGuards(AuthGuard, RolesGuard)
-  @Get('/distance')
+  @Get('distance')
   findByDistance(
     @Req() request: CustomRequest,
     @Query() queryParams: Record<string, string>,
   ) {
-    const coordinates = {
-      lat: Number.parseFloat(queryParams.lat),
-      lng: Number.parseFloat(queryParams.lng),
-    };
-    const findPartnersDto = new PartnerPagingDto(queryParams);
+    const findPartnersDto = new FindPartnersByDistanceDto(queryParams);
 
-    return this.findPartnersService.execute(
+    return this.findPartnersByDistanceService.execute(
       findPartnersDto,
       request?.correlationId,
     );

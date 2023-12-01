@@ -7,11 +7,11 @@ import { AbstractSignInService, NestJwtService } from '../../common/auth';
 import { BcryptHashService } from '../../hash/services/bcrypt-hash.service';
 import { DecodedJwt, NestLoggerService } from '../../common';
 import { SignInDto } from '../dto/sign-in.dto';
-import { jwtConstants } from '../../common/auth/constants';
 import { SignInResponse } from '../responses/sign-in.response';
 import { FindUserByEmailService } from '../../users/services/find-user-by-email.service';
 import { I18nContext } from 'nestjs-i18n';
 import { PartnerUser } from '../../users/entities/partner-user.entity';
+import { readFile } from 'fs/promises';
 
 @Injectable()
 export class SignInService extends AbstractSignInService {
@@ -64,7 +64,10 @@ export class SignInService extends AbstractSignInService {
       partnerId: (user as PartnerUser)?.partner?.id,
     } as DecodedJwt;
 
-    const signed = await this.signPayload(payload, jwtConstants.secret);
+    const signed = await this.signPayload(
+      payload,
+      await readFile(`${process.cwd()}/keys/rsa.key`),
+    );
 
     const response = new SignInResponse({
       user: user.present(),

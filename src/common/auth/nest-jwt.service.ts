@@ -6,12 +6,18 @@ import { JwtServiceInterface } from './jwt-service.interface';
 export class NestJwtService implements JwtServiceInterface {
   constructor(private readonly jwtService: JwtService) {}
 
-  async sign(payload: Record<string, any>, secret: string) {
-    return this.jwtService.signAsync(payload, { secret });
+  async sign(payload: Record<string, any>, privateKey: Buffer) {
+    return this.jwtService.signAsync(payload, {
+      privateKey,
+      algorithm: 'RS256',
+    });
   }
 
-  async verify<T>(token: string, secret: string) {
-    const decoded = await this.jwtService.verify(token, { secret });
+  async verify<T>(token: string, publicKey: Buffer) {
+    const decoded = await this.jwtService.verifyAsync(token, {
+      publicKey,
+      algorithms: ['RS256'],
+    });
 
     return decoded as T;
   }
