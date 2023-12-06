@@ -31,7 +31,7 @@ export class PartnerProductsController {
     private readonly updatePartnerProductService: UpdatePartnerProductService,
   ) {}
 
-  @Roles([UserTypes.Partner])
+  @Roles([UserTypes.Partner, UserTypes.Customer])
   @UseGuards(AuthGuard, RolesGuard)
   @Get(':partnerId([0-9]+)/products')
   find(
