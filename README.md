@@ -14,7 +14,7 @@ Prof. Dr. Dieval Guizelini
 
 Esse repositório versiona a Rest API do Entregas
 
-## Instalaçao
+## Instalação
 
 ```bash
 $ yarn install
@@ -29,19 +29,20 @@ $ yarn run start
 # watch mode
 $ yarn run start:dev
 
-# produçãp
+# produção
+$ yarn run build
 $ yarn run start:prod
 
 # local dentro do Docker
 $ docker compose up api
 ```
 
-## Migratioins do Banco de Dados
+## Migrações do Banco de Dados
 
 ```bash
-# sincronizar mirations
+# sincronizar migrações do Banco de Dados
 $ yarn migration:run
 
-# sincronizar mirations local dentro do Docker
+# sincronizar migrações do Banco de Dados local dentro do Docker
 $ docker compose exec api yarn migration:run
 ```
