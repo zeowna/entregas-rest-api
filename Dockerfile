@@ -6,8 +6,9 @@ COPY ./package.json .
 COPY ./yarn.lock .
 
 RUN yarn
+
 COPY . .
 
-EXPOSE 8080
+RUN yarn build
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start:prod"]
