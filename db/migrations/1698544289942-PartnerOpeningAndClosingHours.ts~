@@ -1,0 +1,16 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class PartnerOpeningAndClosingHours1698544289942 implements MigrationInterface {
+    name = 'PartnerOpeningAndClosingHours1698544289942'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "partner" ADD "opening_hour" character varying NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "partner" ADD "closing_hour" character varying NOT NULL`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "partner" DROP COLUMN "closing_hour"`);
+        await queryRunner.query(`ALTER TABLE "partner" DROP COLUMN "opening_hour"`);
+    }
+
+}

@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -24,7 +25,12 @@ import { AuthGuard } from '../../common/auth';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadUserProfilePictureService } from '../../users/services/upload-user-profile-picture.service';
 import { AdminUser } from '../../users/entities/admin-user.entity';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FindUsersResponse } from 'src/users/responses/find-users.response';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { AdminUserResponse } from 'src/users/responses/admin.response';
 
+@ApiTags('Admin Users')
 @Controller('admin/users')
 export class AdminUsersController {
   constructor(
@@ -35,17 +41,27 @@ export class AdminUsersController {
     private readonly uploadUserProfilePictureService: UploadUserProfilePictureService,
   ) {}
 
-  @Get()
+  @ApiBearerAuth()
+  @ApiQuery({ type: () => UserPagingDto<AdminUser> })
+  @ApiResponse({ type: () => FindUsersResponse })
+  @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard)
-  async find(@Req() request: CustomRequest) {
-    const userPagingDto = new UserPagingDto<AdminUser>(request.query);
+  @Get()
+  async find(
+    @Req() request: CustomRequest,
+    @Query() queryParams: Record<string, string>,
+  ) {
+    const userPagingDto = new UserPagingDto<AdminUser>(queryParams);
     userPagingDto.conditions.type = { eq: UserTypes.Admin };
 
     return this.findUsersService.execute(userPagingDto, request.correlationId);
   }
 
-  @Get(':id')
+  @ApiResponse({ type: () => AdminUserResponse })
+  @ApiBearerAuth()
+  @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard)
+  @Get(':id')
   async findById(
     @Req() request: CustomRequest,
     @Param('id') id: string,
@@ -54,8 +70,10 @@ export class AdminUsersController {
     return this.findUserById.execute(+id, request?.correlationId, i18n);
   }
 
-  @Post()
+  @ApiResponse({ type: () => AdminUserResponse })
+  @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard)
+  @Post()
   async create(
     @Req() request: CustomRequest,
     @Body() createAdminUserDto: CreateAdminUserDto,
@@ -66,8 +84,10 @@ export class AdminUsersController {
     );
   }
 
-  @Patch(':id')
+  @ApiResponse({ type: () => AdminUserResponse })
+  @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard)
+  @Patch(':id')
   async update(
     @Req() request: CustomRequest,
     @Param('id') id: string,
@@ -80,9 +100,11 @@ export class AdminUsersController {
     );
   }
 
-  @Post(':id([0-9]+)/pictures')
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiResponse({ type: String })
+  @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  @Post(':id([0-9]+)/pictures')
   async uploadFile(
     @Req() request: CustomRequest,
     @Param('id') id: ID,

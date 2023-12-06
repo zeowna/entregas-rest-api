@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -25,7 +26,11 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { UserTypes } from '../../users/entities/user-types.enum';
 import { AuthGuard } from '../../common/auth';
 import { RolesGuard } from '../../auth/guards/routes.guard';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FindProductResponse } from '../responses/find-product.response';
+import { ProductResponse } from '../responses/product.response';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -36,16 +41,24 @@ export class ProductsController {
     private readonly uploadProductPictureService: UploadProductPictureService,
   ) {}
 
+  @ApiBearerAuth()
+  @ApiQuery({ type: () => ProductPagingDto })
+  @ApiResponse({ type: () => FindProductResponse })
   @Roles([UserTypes.Admin, UserTypes.Partner])
   @UseGuards(AuthGuard, RolesGuard)
   @Get()
-  async find(@Req() request: CustomRequest) {
+  async find(
+    @Req() request: CustomRequest,
+    @Query() queryParams: Record<string, string>,
+  ) {
     return this.findProductsService.execute(
-      new ProductPagingDto(request.query),
+      new ProductPagingDto(queryParams),
       request.correlationId,
     );
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ type: () => ProductResponse })
   @Roles([UserTypes.Admin, UserTypes.Partner])
   @UseGuards(AuthGuard, RolesGuard)
   @Get(':id([0-9]+)')
@@ -54,9 +67,11 @@ export class ProductsController {
     @Param('id') id: string,
     @I18n() i18n: I18nContext,
   ) {
-    return this.findProductById.execute(+id, request?.correlationId);
+    return this.findProductById.execute(+id, request?.correlationId, i18n);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ type: () => ProductResponse })
   @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard, RolesGuard)
   @Post()
@@ -70,6 +85,8 @@ export class ProductsController {
     );
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ type: () => ProductResponse })
   @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id([0-9]+)')
@@ -85,6 +102,8 @@ export class ProductsController {
     );
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ type: String })
   @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file'))

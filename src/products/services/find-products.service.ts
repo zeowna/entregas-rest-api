@@ -4,11 +4,12 @@ import { Product } from '../entities/product.entity';
 import { ProductsTypeORMRepository } from '../repositories/products-typeorm.repository';
 import { FindProductSizeResponse } from '../responses/find-product-size.response';
 import { CountProductsService } from './count-products.service';
+import { FindProductResponse } from '../responses/find-product.response';
 
 @Injectable()
 export class FindProductsService extends AbstractFindEntitiesService<
   Product,
-  FindProductSizeResponse
+  FindProductResponse
 > {
   constructor(
     private readonly productsRepository: ProductsTypeORMRepository,
@@ -19,7 +20,7 @@ export class FindProductsService extends AbstractFindEntitiesService<
       productsRepository,
       countProductsService,
       logger,
-      FindProductSizeResponse,
+      FindProductResponse,
     );
   }
 }

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserService } from '../../users/services/create-user.service';
-import { CreatePartnerUserDto } from '../dto/create-partner-user.dto';
+import { CreateAdminUserDto } from '../dto/create-admin-user.dto';
 import { randomUUID } from 'crypto';
 import { User } from '../../users/entities/user.entity';
 import { readFile } from 'fs/promises';
 
 @Injectable()
-export class CreatePartnerUserService extends CreateUserService {
+export class CreateAdminUserService extends CreateUserService {
   protected async beforeCreate(
-    createUserDto: CreatePartnerUserDto,
+    createUserDto: CreateAdminUserDto,
     correlationId: string,
   ) {
     const uuid = randomUUID();
@@ -21,7 +21,7 @@ export class CreatePartnerUserService extends CreateUserService {
   }
 
   protected async afterCreate(
-    createEntityDto: CreatePartnerUserDto,
+    createEntityDto: CreateAdminUserDto,
     entity: User,
     correlationId: string,
   ): Promise<void> {

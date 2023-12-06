@@ -20,7 +20,11 @@ import { ProductCategorySizePagingDto } from '../dto/product-category-size-pagin
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { UserTypes } from '../../users/entities/user-types.enum';
 import { RolesGuard } from '../../auth/guards/routes.guard';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FindProductCategorySizeResponse } from '../responses/find-product-category-size.response';
+import { ProductCategorySizeResponse } from '../responses/product-category-size.response';
 
+@ApiTags('Products', 'Products Categories')
 @Controller('products/categories')
 export class ProductCategorySizesController {
   constructor(
@@ -29,6 +33,9 @@ export class ProductCategorySizesController {
     private readonly updateProductCategorySizesService: UpdateProductCategorySizeService,
   ) {}
 
+  @ApiBearerAuth()
+  @ApiQuery({ type: () => ProductCategorySizePagingDto })
+  @ApiResponse({ type: () => FindProductCategorySizeResponse })
   @Roles([UserTypes.Admin, UserTypes.Partner])
   @UseGuards(AuthGuard, RolesGuard)
   @Get(':productCategoryId([0-9]+)/sizes')
@@ -51,6 +58,8 @@ export class ProductCategorySizesController {
     );
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ type: () => ProductCategorySizeResponse })
   @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard, RolesGuard)
   @Post(':productCategoryId([0-9]+)/sizes')
@@ -67,6 +76,8 @@ export class ProductCategorySizesController {
     );
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ type: () => ProductCategorySizeResponse })
   @Roles([UserTypes.Admin])
   @UseGuards(AuthGuard, RolesGuard)
   @Patch(':productCategoryId([0-9]+)/sizes/:id')

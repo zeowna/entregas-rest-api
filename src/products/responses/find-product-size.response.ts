@@ -1,4 +1,4 @@
 import { AbstractFindEntitiesResponse } from '../../common';
-import { Product } from '../entities/product.entity';
+import { ProductCategorySize } from '../entities/product-category-size.entity';
 
-export class FindProductSizeResponse extends AbstractFindEntitiesResponse<Product> {}
+export class FindProductSizeResponse extends AbstractFindEntitiesResponse<ProductCategorySize> {}

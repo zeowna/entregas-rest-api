@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AbstractFindEntitiesResponse } from '../../common';
-import { User } from '../entities/user.entity';
-import { UserResponse } from './user.response';
+import { Product } from '../entities/product.entity';
+import { ProductResponse } from './product.response';
 
-export class FindUsersResponse extends AbstractFindEntitiesResponse<User> {
-  @ApiProperty({ type: () => [UserResponse] })
-  readonly list: User[];
+export class FindProductResponse extends AbstractFindEntitiesResponse<Product> {
+  @ApiProperty({ type: () => [ProductResponse] })
+  readonly list: Product[];
 
   @ApiProperty()
   readonly count: number;
