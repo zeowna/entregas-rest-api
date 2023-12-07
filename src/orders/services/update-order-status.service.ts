@@ -115,6 +115,7 @@ export class UpdateOrderStatusService extends AbstractService<Order> {
         },
         correlationId,
       );
+
       return updated;
     } catch (err) {
       this.logAfter({

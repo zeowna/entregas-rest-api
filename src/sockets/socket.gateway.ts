@@ -32,6 +32,7 @@ export class SocketGateway
   }
 
   emit(pattern: string, args: any) {
+    this.logger.log(pattern, args);
     this.server.emit(pattern, args);
   }
 

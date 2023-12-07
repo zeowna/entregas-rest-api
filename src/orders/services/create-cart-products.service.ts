@@ -9,6 +9,8 @@ import { CreateCartProductService } from './create-cart-product.service';
 import { TypeORMTransactionFactory } from '../../db/transaction/typeorm-transaction.factory';
 import { SocketGateway } from '../../sockets/socket.gateway';
 import { OrderStatus } from '../entities/order-status.enum';
+import { SendEmailService } from 'src/mailer/services/send-email.service';
+import { readFile } from 'fs/promises';
 
 @Injectable()
 export class CreateCartProductsService extends AbstractService<CartProduct[]> {
@@ -17,6 +19,7 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
     private readonly createCartProductService: CreateCartProductService,
     private readonly updateOrderService: UpdateOrderService,
     private readonly socket: SocketGateway,
+    private readonly sendEmailService: SendEmailService,
     private readonly logger: NestLoggerService,
   ) {
     super(logger);
@@ -86,6 +89,25 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
       this.socket.emit(
         `customer-order-customer-${createCartProductsDto.customerId}`,
         updated,
+      );
+
+      const template = await readFile(
+        `${process.cwd()}/media/templates/order-updated.html`,
+        'utf-8',
+      );
+
+      const orderId = `#${String(updated.id).padStart(4, '0')}`;
+
+      await this.sendEmailService.execute(
+        updated.customer.email,
+        `Atualização no Pedido ${orderId}`,
+        template,
+        {
+          userName: updated.customer.name,
+          orderId,
+          orderStatus: i18n.translate(`entity.Order.status.${updated.status}`),
+        },
+        correlationId,
       );
 
       return result;
