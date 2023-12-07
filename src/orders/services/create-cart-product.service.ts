@@ -81,7 +81,9 @@ export class CreateCartProductService extends AbstractCreateEntityService<CartPr
     await this.updatePartnerProductService.execute(
       cartProduct.partnerProduct.id,
       new UpdatePartnerProductDto({
-        inStockQuantity: cartProduct.partnerProduct.inStockQuantity - 1,
+        inStockQuantity:
+          cartProduct.partnerProduct.inStockQuantity -
+          createCartProductDto.quantity,
       }),
       correlationId,
       i18n,
