@@ -58,8 +58,8 @@
       "awaiting_partner": "Aguardando aprovação",
       "canceled_by_partner": "Cancelado pelo parceiro",
       "canceled_by_customer": "Cancelado pelo cliente",
-      "accepted_by_partner": "Recusado pelo parceiro",
-      "refused_by_partner": "Aceito pelo parceiro",
+      "accepted_by_partner": "Aceito pelo parceiro",
+      "refused_by_partner": "Recusado pelo parceiro",
       "awaiting_execution": "Aguardando pagamento",
       "in_delivery": "Saiu para entrega",
       "settled": "Finalizado"
