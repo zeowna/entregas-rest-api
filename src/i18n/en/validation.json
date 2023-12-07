@@ -7,7 +7,8 @@
   "invalid": "invalid",
   "notFound": "not found",
   "entity": {
-    "notFound": "{entityName} $t(validation.notFound) with {param}: {value}"
+    "notFound": "{entityName} $t(validation.notFound) with {param}: {value}",
+    "exist": "{entityName} already exists with {param}: {value}"
   },
   "auth": {
     "password": "$t(entity.User.entityName) $t(entity.User.properties.password) doesn't match"
@@ -42,6 +43,33 @@
     "type": {
       "required": "$t(entity.User.properties.type) $t(validation.required)",
       "isString": "$t(entity.User.properties.type) $t(validation.isString)"
+    }
+  },
+  "Partner": {
+    "name": {
+      "required": "$t(entity.User.properties.name) $t(validation.required)",
+      "isString": "$t(entity.User.properties.name) $t(validation.isString)"
+    },
+    "cnpj": {
+      "required": "$t(entity.Partner.properties.name) $t(validation.required)",
+      "isCNPJ": "$t(entity.Partner.properties.cnpj) precisa ser um CNPJ valido"
+    },
+    "pictureURI": {
+      "isString": "$t(entity.User.properties.pictureURI) $t(validation.isString)"
+    },
+    "openingHour": {
+      "isString": "$t(entity.User.properties.closingHour) $t(validation.isString)"
+    },
+    "closingHour": {
+      "isString": "$t(entity.User.properties.closingHour) $t(validation.isString)"
+    }
+  },
+  "CartProduct": {
+    "productUnavailable": "Product {productName} is unavailable"
+  },
+  "Order": {
+    "status": {
+      "isAlreadySettled": "Order Status cannot be changed anymore"
     }
   }
 }

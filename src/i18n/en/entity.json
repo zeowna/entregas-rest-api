@@ -1,7 +1,7 @@
 {
   "common": {
     "id": "id",
-    "createdAt": "create at",
+    "createdAt": "created at",
     "updatedAt": "updated at"
   },
   "User": {
@@ -28,10 +28,53 @@
       "updatedAt": "$t(entity.common.updatedAt)"
     }
   },
+  "ProductCategory": {
+    "entityName": "Category",
+    "properties": {
+      "id": "$t(entity.common.id)",
+      "name": "Name",
+      "createdAt": "$t(entity.common.createdAt)",
+      "updatedAt": "$t(entity.common.updatedAt)"
+    }
+  },
+  "ProductCategorySize": {
+    "entityName": "Size",
+    "properties": {
+      "id": "$t(entity.common.id)",
+      "name": "Name",
+      "createdAt": "$t(entity.common.createdAt)",
+      "updatedAt": "$t(entity.common.updatedAt)"
+    }
+  },
   "Order": {
     "entityName": "Order",
     "properties": {
       "id": "$t(entity.common.id)",
+      "createdAt": "$t(entity.common.createdAt)",
+      "updatedAt": "$t(entity.common.updatedAt)"
+    },
+    "status": {
+      "created": "Create",
+      "awaiting_partner": "Awaiting partner",
+      "canceled_by_partner": "Canceled by partner",
+      "canceled_by_customer": "Canceled by customer",
+      "accepted_by_partner": "Accepted by partner",
+      "refused_by_partner": "Refused by partner",
+      "awaiting_execution": "Awaiting execution",
+      "in_delivery": "In delivery",
+      "settled": "Settled"
+    }
+  },
+  "Partner": {
+    "entityName": "Partner",
+    "properties": {
+      "id": "$t(entity.common.id)",
+      "name": "Name",
+      "cnpj": "CNPJ",
+      "pictureURI": "Foto",
+      "status": "Status",
+      "openingHour": "Opening hours",
+      "closingHour": "Closing hours",
       "createdAt": "$t(entity.common.createdAt)",
       "updatedAt": "$t(entity.common.updatedAt)"
     }

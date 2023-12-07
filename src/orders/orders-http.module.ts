@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { OrdersModule } from './ordersModule';
+import { OrdersModule } from './orders.module';
 import { OrdersTypeORMRepository } from './repositories/orders-typeorm.repository';
 import { CartProductsTypeORMRepository } from './repositories/cart-products-typeorm.repository';
 import { CreateOrderService } from './services/create-order.service';
@@ -14,6 +14,7 @@ import { FindOrdersService } from './services/find-orders.service';
 import { CountOrdersService } from './services/count-orders.service';
 import { CreateCartProductService } from './services/create-cart-product.service';
 import { UpdateOrderStatusService } from './services/update-order-status.service';
+import { MailerModule } from 'src/mailer/mailer.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UpdateOrderStatusService } from './services/update-order-status.service
     UsersHttpModule,
     forwardRef(() => PartnersHttpModule),
     AddressesHttpModule,
+    MailerModule,
   ],
   controllers: [],
   providers: [

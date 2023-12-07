@@ -7,7 +7,8 @@
   "invalid": "invalido",
   "notFound": "não encontrado",
   "entity": {
-    "notFound": "{entityName} $t(validation.notFound) com o {param}: {value}"
+    "notFound": "{entityName} $t(validation.notFound) com o {param}: {value}",
+    "exist": "{entityName} já existe com o {param}: {value}"
   },
   "Auth": {
     "password": "E-mail e/ou Senha não correspondem",
@@ -69,7 +70,7 @@
   },
   "Order": {
     "status": {
-      "isAlreadySettled": "O Status do Pedido não pode mais ser alterado"
+      "isAlreadySettled": "Status do Pedido não pode mais ser alterado"
     }
   }
 }

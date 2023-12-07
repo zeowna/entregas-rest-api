@@ -98,6 +98,7 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
       });
 
       await transactionRunner.rollback();
+      throw err;
     } finally {
       await transactionRunner.release();
     }

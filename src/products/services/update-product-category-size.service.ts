@@ -4,19 +4,19 @@ import {
   ID,
   NestLoggerService,
 } from '../../common';
-import { FindProductCategoryByNameService } from './find-product-category-by-name.service';
 import { ProductCategorySize } from '../entities/product-category-size.entity';
 import { ProductCategorySizesTypeORMRepository } from '../repositories/product-category-sizes-typeorm.repository';
 import { FindProductCategorySizeByIdService } from './find-product-category-size-by-id.service';
 import { I18nContext } from 'nestjs-i18n';
 import { UpdateProductCategorySizeDto } from '../dto/update-product-category-size.dto';
+import { FindProductCategorySizeByCategoryIdAndNameService } from './find-product-category-size-by-category-id-and-name.service';
 
 @Injectable()
 export class UpdateProductCategorySizeService extends AbstractUpdateEntityService<ProductCategorySize> {
   constructor(
     private readonly productCategorySizesRepository: ProductCategorySizesTypeORMRepository,
     private readonly findProductCategorySizeByIdService: FindProductCategorySizeByIdService,
-    private readonly findProductCategoryByNameService: FindProductCategoryByNameService,
+    private readonly findProductCategorySizeByCategoryIdAndNameService: FindProductCategorySizeByCategoryIdAndNameService,
     private readonly logger: NestLoggerService,
   ) {
     super(
@@ -32,14 +32,22 @@ export class UpdateProductCategorySizeService extends AbstractUpdateEntityServic
     correlationId: string,
     i18n: I18nContext,
   ) {
-    const existing = await this.findProductCategoryByNameService.execute(
-      updateEntityDto.name,
-      correlationId,
-    );
+    const existing =
+      await this.findProductCategorySizeByCategoryIdAndNameService.execute(
+        updateEntityDto.categoryId,
+        updateEntityDto.name,
+        correlationId,
+      );
 
     if (existing && existing.id !== id) {
       throw new ConflictException(
-        `${this.productCategorySizesRepository.entityName} already exist with name: ${updateEntityDto.name}`,
+        i18n.translate('validation.entity.exist', {
+          args: {
+            entityName: i18n.translate(`entity.ProductCategorySize.entityName`),
+            param: i18n.translate('entity.ProductCategorySize.properties.name'),
+            value: updateEntityDto.name,
+          },
+        }),
       );
     }
 

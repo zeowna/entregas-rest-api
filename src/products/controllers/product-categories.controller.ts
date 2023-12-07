@@ -53,7 +53,11 @@ export class ProductCategoriesController {
     @Param('id') id: string,
     @I18n() i18n: I18nContext,
   ) {
-    return this.findProductCategoryById.execute(+id, request?.correlationId);
+    return this.findProductCategoryById.execute(
+      +id,
+      request?.correlationId,
+      i18n,
+    );
   }
 
   @Roles([UserTypes.Admin])
@@ -62,10 +66,12 @@ export class ProductCategoriesController {
   async create(
     @Req() request: CustomRequest,
     @Body() updateProductCategoryDto: CreateProductCategoryDto,
+    @I18n() i18n: I18nContext,
   ) {
     return this.createProductCategoryService.execute(
       updateProductCategoryDto,
       request?.correlationId,
+      i18n,
     );
   }
 
@@ -76,11 +82,13 @@ export class ProductCategoriesController {
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @Body() updateUserDto: UpdateProductCategoryDto,
+    @I18n() i18n: I18nContext,
   ) {
     return this.updateProductCategoryService.execute(
       +id,
       updateUserDto,
       request?.correlationId,
+      i18n,
     );
   }
 }

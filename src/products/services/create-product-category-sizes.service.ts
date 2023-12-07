@@ -4,6 +4,7 @@ import { ProductCategorySize } from '../entities/product-category-size.entity';
 import { ProductCategorySizesTypeORMRepository } from '../repositories/product-category-sizes-typeorm.repository';
 import { CreateProductCategorySizeDto } from '../dto/create-product-category-size.dto';
 import { FindProductCategorySizeByCategoryIdAndNameService } from './find-product-category-size-by-category-id-and-name.service';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class CreateProductCategorySizeService extends AbstractCreateEntityService<ProductCategorySize> {
@@ -18,6 +19,7 @@ export class CreateProductCategorySizeService extends AbstractCreateEntityServic
   protected async beforeCreate(
     createEntityDto: CreateProductCategorySizeDto,
     correlationId: string,
+    i18n: I18nContext,
   ) {
     const existing =
       await this.findProductCategorySizeByCategoryIdAndNameService.execute(
@@ -28,7 +30,13 @@ export class CreateProductCategorySizeService extends AbstractCreateEntityServic
 
     if (existing) {
       throw new ConflictException(
-        `${this.productCategoriesRepository.entityName} already exist with name: ${createEntityDto.name}`,
+        i18n.translate('validation.entity.exist', {
+          args: {
+            entityName: i18n.translate(`entity.ProductCategorySize.entityName`),
+            param: i18n.translate('entity.ProductCategorySize.properties.name'),
+            value: createEntityDto.name,
+          },
+        }),
       );
     }
 

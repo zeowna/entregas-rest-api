@@ -23,6 +23,7 @@ import { RolesGuard } from '../../auth/guards/routes.guard';
 import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FindProductCategorySizeResponse } from '../responses/find-product-category-size.response';
 import { ProductCategorySizeResponse } from '../responses/product-category-size.response';
+import { I18n, I18nContext } from 'nestjs-i18n';
 
 @ApiTags('Products', 'Products Categories')
 @Controller('products/categories')
@@ -67,12 +68,14 @@ export class ProductCategorySizesController {
     @Req() request: CustomRequest,
     @Param('productCategoryId') productCategoryId: string,
     @Body() createProductCategorySizeDto: CreateProductCategorySizeDto,
+    @I18n() i18n: I18nContext,
   ) {
     createProductCategorySizeDto.categoryId = +productCategoryId;
 
     return this.createProductCategorySizeService.execute(
       createProductCategorySizeDto,
       request?.correlationId,
+      i18n,
     );
   }
 
@@ -85,11 +88,13 @@ export class ProductCategorySizesController {
     @Req() request: CustomRequest,
     @Param('id') id: string,
     @Body() updateProductCategorySizeDto: UpdateProductCategorySizeDto,
+    @I18n() i18n: I18nContext,
   ) {
     return this.updateProductCategorySizesService.execute(
       +id,
       updateProductCategorySizeDto,
       request?.correlationId,
+      i18n,
     );
   }
 }

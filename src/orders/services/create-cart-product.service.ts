@@ -50,7 +50,7 @@ export class CreateCartProductService extends AbstractCreateEntityService<CartPr
 
     const inStock =
       partnerProduct.inStockQuantity - createCartProductDto.quantity;
-    const isProductAvailable = inStock > 0;
+    const isProductAvailable = inStock >= 0;
 
     if (!isProductAvailable) {
       throw new NotFoundException(

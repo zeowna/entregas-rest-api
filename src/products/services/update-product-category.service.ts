@@ -35,7 +35,13 @@ export class UpdateProductCategoryService extends AbstractUpdateEntityService<Pr
 
     if (existing && existing.id !== id) {
       throw new ConflictException(
-        `${this.productCategoriesRepository.entityName} already exist with name: ${updateEntityDto.name}`,
+        i18n.translate('validation.entity.exist', {
+          args: {
+            entityName: i18n.translate(`entity.ProductCategory.entityName`),
+            param: i18n.translate('entity.ProductCategory.properties.name'),
+            value: updateEntityDto.name,
+          },
+        }),
       );
     }
 

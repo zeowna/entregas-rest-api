@@ -10,6 +10,8 @@ import { I18nContext } from 'nestjs-i18n';
 import { UpdatePartnerProductService } from '../../partners/services/update-partner-product.service';
 import { UpdatePartnerProductDto } from '../../partners/dto/update-partner-product.dto';
 import { SocketGateway } from '../../sockets/socket.gateway';
+import { SendEmailService } from 'src/mailer/services/send-email.service';
+import { readFile } from 'fs/promises';
 
 @Injectable()
 export class UpdateOrderStatusService extends AbstractService<Order> {
@@ -18,6 +20,7 @@ export class UpdateOrderStatusService extends AbstractService<Order> {
     private readonly findOrderByIdService: FindOrderByIdService,
     private readonly updatePartnerProductService: UpdatePartnerProductService,
     private readonly socket: SocketGateway,
+    private readonly sendEmailService: SendEmailService,
     private readonly logger: NestLoggerService,
   ) {
     super(logger);
@@ -94,6 +97,24 @@ export class UpdateOrderStatusService extends AbstractService<Order> {
         updated,
       );
 
+      const template = await readFile(
+        `${process.cwd()}/media/templates/order-updated.html`,
+        'utf-8',
+      );
+
+      const orderId = `#${String(updated.id).padStart(4, '0')}`;
+
+      await this.sendEmailService.execute(
+        updated.customer.email,
+        `Atualização no Pedido ${orderId}`,
+        template,
+        {
+          userName: updated.customer.name,
+          orderId,
+          orderStatus: i18n.translate(`entity.Order.status.${updated.status}`),
+        },
+        correlationId,
+      );
       return updated;
     } catch (err) {
       this.logAfter({
