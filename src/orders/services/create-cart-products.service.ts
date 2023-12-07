@@ -100,15 +100,13 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
       const orderId = `#${String(updatedOrder?.id).padStart(4, '0')}`;
 
       await this.sendEmailService.execute(
-        updatedOrder.customer.email,
+        result[0].customer.email,
         `Atualização no Pedido ${orderId}`,
         template,
         {
-          userName: updatedOrder?.customer?.name,
+          userName: result[0].customer.name,
           orderId,
-          orderStatus: i18n.translate(
-            `entity.Order.status.${updatedOrder?.status}`,
-          ),
+          orderStatus: i18n.translate(`entity.Order.status.awaiting_partner`),
         },
         correlationId,
       );
