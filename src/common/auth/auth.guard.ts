@@ -23,8 +23,6 @@ export class AuthGuard implements CanActivate {
         publicKey: await readFile(`${process.cwd()}/keys/rsa.key.pub`),
         algorithms: ['RS256'],
       });
-
-      console.log(request['user']);
     } catch (err) {
       throw new UnauthorizedException(err);
     }

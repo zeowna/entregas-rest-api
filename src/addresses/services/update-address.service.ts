@@ -28,8 +28,6 @@ export class UpdateAddressService extends AbstractUpdateEntityService<Address> {
     correlationId: string,
     i18n: I18nContext,
   ) {
-    console.log('here');
-
     const coordinates = await this.geocodingService.execute(
       new Address(updateEntityDto.toEntity()),
       correlationId,

@@ -4,6 +4,7 @@ import { Partner } from '../entities/partner.entity';
 import { DataSource, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { PartnerStatus } from '../entities/partner.status';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class PartnersTypeORMRepository extends AbstractTypeORMRepository<Partner> {
@@ -49,8 +50,15 @@ export class PartnersTypeORMRepository extends AbstractTypeORMRepository<Partner
       limit,
     ]);
 
-    console.log(result);
-
     return Promise.all(result.map(async ({ id }) => this.findById(id)));
+  }
+
+  async setPartnersOfflineByClosingHours() {
+    const time = DateTime.now();
+
+    await this.partnerRepository.query(
+      'UPDATE SET is_online = $1 WHERE closing_hours >= $2',
+      [false, time.toJSDate().toISOString],
+    );
   }
 }

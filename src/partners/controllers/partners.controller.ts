@@ -28,6 +28,7 @@ import { AuthGuard } from '../../common/auth';
 import { RolesGuard } from '../../auth/guards/routes.guard';
 import { FindPartnersByDistanceService } from '../services/find-partners-by-distance.service';
 import { FindPartnersByDistanceDto } from '../dto/find-partners-by-distance.dto';
+import { SetPartnersOfflineScheduler } from '../schedulers/set-partners-offline.scheduler';
 
 @Controller('partners')
 export class PartnersController {
@@ -38,6 +39,7 @@ export class PartnersController {
     private readonly createPartnerService: CreatePartnerService,
     private readonly updatePartnerService: UpdatePartnerService,
     private readonly uploadPartnerPictureService: UploadPartnerPictureService,
+    private readonly setPartnersOfflineScheduler: SetPartnersOfflineScheduler,
   ) {}
 
   @Roles([UserTypes.Customer])
@@ -145,5 +147,10 @@ export class PartnersController {
       new UpdatePartnerDto({ isOnline: false }),
       request?.correlationId,
     );
+  }
+
+  @Post('scheduler/set-offline')
+  async setPartnersOffline(@Req() request: CustomRequest) {
+    return this.setPartnersOfflineScheduler.execute(request?.correlationId);
   }
 }

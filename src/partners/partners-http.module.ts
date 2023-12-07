@@ -30,6 +30,7 @@ import { MailerModule } from '../mailer/mailer.module';
 import { PartnerOrdersController } from './controllers/partner-orders.controller';
 import { OrdersHttpModule } from '../orders/orders-http.module';
 import { FindPartnersByDistanceService } from './services/find-partners-by-distance.service';
+import { SetPartnersOfflineScheduler } from './schedulers/set-partners-offline.scheduler';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { FindPartnersByDistanceService } from './services/find-partners-by-dista
     CreatePartnerUserService,
     UpdateAllPartnerProductsStatusByProductService,
     FindPartnersByDistanceService,
+    SetPartnersOfflineScheduler,
   ],
   exports: [
     CreatePartnerService,
