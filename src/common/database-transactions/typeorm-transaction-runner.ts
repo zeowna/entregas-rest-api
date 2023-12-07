@@ -11,11 +11,15 @@ export class TypeORMTransactionRunner
   }
 
   async commit() {
-    await this.runner.commitTransaction();
+    if (this.runner.isTransactionActive) {
+      await this.runner.commitTransaction();
+    }
   }
 
   async rollback() {
-    await this.runner.rollbackTransaction();
+    if (this.runner.isTransactionActive) {
+      await this.runner.rollbackTransaction();
+    }
   }
 
   async release() {

@@ -59,7 +59,7 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
         );
       }
 
-      const updated = await this.updateOrderService.execute(
+      const updatedOrder = await this.updateOrderService.execute(
         createCartProductsDto.cart[0].orderId,
         new UpdateOrderDto({
           status: OrderStatus.AwaitingPartner,
@@ -79,16 +79,17 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
         createCartProductsDto,
         correlationId,
         result,
+        updatedOrder,
         success: true,
       });
 
       this.socket.emit(
         `partner-order-updated-${result[0].partnerProduct.partner.id}`,
-        updated,
+        updatedOrder,
       );
       this.socket.emit(
         `customer-order-customer-${createCartProductsDto.customerId}`,
-        updated,
+        updatedOrder,
       );
 
       const template = await readFile(
@@ -96,16 +97,18 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
         'utf-8',
       );
 
-      const orderId = `#${String(updated.id).padStart(4, '0')}`;
+      const orderId = `#${String(updatedOrder?.id).padStart(4, '0')}`;
 
       await this.sendEmailService.execute(
-        updated.customer.email,
+        updatedOrder.customer.email,
         `Atualização no Pedido ${orderId}`,
         template,
         {
-          userName: updated.customer.name,
+          userName: updatedOrder?.customer?.name,
           orderId,
-          orderStatus: i18n.translate(`entity.Order.status.${updated.status}`),
+          orderStatus: i18n.translate(
+            `entity.Order.status.${updatedOrder?.status}`,
+          ),
         },
         correlationId,
       );
