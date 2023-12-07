@@ -93,7 +93,7 @@ export class UpdateOrderStatusService extends AbstractService<Order> {
 
       this.socket.emit(`partner-order-updated-${updated.partner.id}`, updated);
       this.socket.emit(
-        `customer-order-customer-${updated.customer.id}`,
+        `customer-order-updated-${updated.customer.id}`,
         updated,
       );
 

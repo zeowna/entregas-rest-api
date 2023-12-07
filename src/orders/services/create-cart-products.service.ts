@@ -11,6 +11,7 @@ import { SocketGateway } from '../../sockets/socket.gateway';
 import { OrderStatus } from '../entities/order-status.enum';
 import { SendEmailService } from 'src/mailer/services/send-email.service';
 import { readFile } from 'fs/promises';
+import { FindOrderByIdService } from './find-order-by-id.service';
 
 @Injectable()
 export class CreateCartProductsService extends AbstractService<CartProduct[]> {
@@ -18,6 +19,7 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
     private readonly transactionFactory: TypeORMTransactionFactory,
     private readonly createCartProductService: CreateCartProductService,
     private readonly updateOrderService: UpdateOrderService,
+    private readonly findOrderByIdService: FindOrderByIdService,
     private readonly socket: SocketGateway,
     private readonly sendEmailService: SendEmailService,
     private readonly logger: NestLoggerService,
@@ -59,7 +61,7 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
         );
       }
 
-      const updatedOrder = await this.updateOrderService.execute(
+      await this.updateOrderService.execute(
         createCartProductsDto.cart[0].orderId,
         new UpdateOrderDto({
           status: OrderStatus.AwaitingPartner,
@@ -75,6 +77,11 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
 
       await transactionRunner.commit();
 
+      const updatedOrder = await this.findOrderByIdService.execute(
+        createCartProductsDto.cart[0].orderId,
+        correlationId,
+      );
+
       this.logAfter({
         createCartProductsDto,
         correlationId,
@@ -84,11 +91,11 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
       });
 
       this.socket.emit(
-        `partner-order-updated-${result[0].partnerProduct.partner.id}`,
+        `partner-order-updated-${updatedOrder.partner.id}`,
         updatedOrder,
       );
       this.socket.emit(
-        `customer-order-customer-${createCartProductsDto.customerId}`,
+        `customer-order-updated-${createCartProductsDto.customerId}`,
         updatedOrder,
       );
 
@@ -106,7 +113,9 @@ export class CreateCartProductsService extends AbstractService<CartProduct[]> {
         {
           userName: result[0].customer.name,
           orderId,
-          orderStatus: i18n.translate(`entity.Order.status.awaiting_partner`),
+          orderStatus: i18n.translate(
+            `entity.Order.status.${updatedOrder.status}`,
+          ),
         },
         correlationId,
       );
